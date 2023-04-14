@@ -1,8 +1,9 @@
 package dtu.mennekser.softwarehuset.backend.db;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Log{
+public class Log implements Serializable {
     final LogLevel logLevel;
     final Date date;
     final String message;

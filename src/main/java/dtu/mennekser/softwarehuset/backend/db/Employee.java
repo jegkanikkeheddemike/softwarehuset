@@ -1,11 +1,11 @@
 package dtu.mennekser.softwarehuset.backend.db;
 
-public final class Employee{
-    public String username;
-    public String realName;
+import java.io.Serializable;
 
-    public Employee(String username, String realName) {
-        this.username = username;
-        this.realName = realName;
+public final class Employee implements Serializable {
+    public String name;
+
+    public Employee(String name) {
+        this.name =name;
     }
 }
