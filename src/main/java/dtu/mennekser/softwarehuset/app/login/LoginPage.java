@@ -2,12 +2,15 @@ package dtu.mennekser.softwarehuset.app.login;
 
 import dtu.mennekser.softwarehuset.backend.db.Database;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
+import dtu.mennekser.softwarehuset.backend.db.Log;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientQuery;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
 
 public class LoginPage extends VBox {
 
@@ -19,6 +22,14 @@ public class LoginPage extends VBox {
         getChildren().add(errorField);
 
         usernameField.setOnAction(actionEvent -> attempLogin());
+
+
+        ClientSubscriber<ArrayList<Log>> logsSubscriber = new ClientSubscriber<>(
+                "koebstoffer,info",
+                database -> database.logs,
+                logs -> errorField.setText(logs.toString()),
+                Throwable::printStackTrace
+        );
     }
 
     void attempLogin() {
