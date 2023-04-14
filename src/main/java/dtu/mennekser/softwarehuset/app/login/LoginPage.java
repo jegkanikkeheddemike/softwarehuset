@@ -49,11 +49,14 @@ public class LoginPage extends VBox {
                 database -> database.findEmployee(username),
                 Throwable::printStackTrace
         ).fetch();
-        System.out.printf("Testing: " + employee);
-        if (employee == null) {
-            errorField.setText("No such employee");
-        } else {
-            errorField.setText("Yeah congratz not you can login :)");
-        }
+        Platform.runLater(()-> {
+            System.out.printf("Testing: " + employee);
+            if (employee == null) {
+                errorField.setText("No such employee");
+            } else {
+                errorField.setText("Yeah congratz not you can login :)");
+            }
+        });
+
     }
 }
