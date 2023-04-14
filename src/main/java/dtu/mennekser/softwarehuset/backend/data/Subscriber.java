@@ -9,10 +9,10 @@ import java.net.Socket;
 
 public class Subscriber<T extends Serializable> {
     T prevData = null;
-    final DataFilter<T> filter;
+    final DataQuery<T> filter;
     final Socket client;
 
-    public Subscriber(DataFilter<T> filter, Socket client) {
+    public Subscriber(DataQuery<T> filter, Socket client) {
         this.filter = filter;
         this.client = client;
     }

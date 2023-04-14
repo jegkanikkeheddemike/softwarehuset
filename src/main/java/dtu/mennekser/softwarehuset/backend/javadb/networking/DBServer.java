@@ -1,6 +1,6 @@
 package dtu.mennekser.softwarehuset.backend.javadb.networking;
 
-import dtu.mennekser.softwarehuset.backend.data.DataFilter;
+import dtu.mennekser.softwarehuset.backend.data.DataQuery;
 import dtu.mennekser.softwarehuset.backend.data.DataTask;
 import dtu.mennekser.softwarehuset.backend.data.Subscriber;
 import dtu.mennekser.softwarehuset.backend.javadb.JavaDB;
@@ -65,7 +65,7 @@ public class DBServer {
                     DataTask task = ConnInterface.receive(client);
                     database.submitTask(task);
                 } else {
-                    DataFilter<?> filter = ConnInterface.receive(client);
+                    DataQuery<?> filter = ConnInterface.receive(client);
                     Subscriber<?> subscriber = new Subscriber<>(filter,client);
                     database.submitSubscriber(subscriber);
                 }

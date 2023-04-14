@@ -1,6 +1,6 @@
 package dtu.mennekser.softwarehuset.backend.javadb.client;
 
-import dtu.mennekser.softwarehuset.backend.data.DataFilter;
+import dtu.mennekser.softwarehuset.backend.data.DataQuery;
 import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnInterface;
 import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnType;
 import dtu.mennekser.softwarehuset.backend.db.Database;
@@ -17,14 +17,14 @@ public class ClientSubscriber<T extends Serializable> {
     public final int port = 7009;
 
     private final Consumer<T> callback;
-    private final Function<Database,T> filter;
+    private final Function<Database,T> query;
     private final Consumer<IOException> onError;
 
     private final Thread thread;
-    public ClientSubscriber(String address, DataFilter<T> filter, Consumer<T> callback, Consumer<IOException> onError) {
+    public ClientSubscriber(String address, DataQuery<T> query, Consumer<T> callback, Consumer<IOException> onError) {
         this.address = address;
         this.callback = callback;
-        this.filter = filter;
+        this.query = query;
         this.onError = onError;
         thread = new Thread(this::run);
         thread.start();
@@ -46,7 +46,7 @@ public class ClientSubscriber<T extends Serializable> {
         try {
             socket = new Socket(address, port);
             ConnInterface.send(ConnType.Subscribe,socket);
-            ConnInterface.send((Function<Database,T> & Serializable) filter,socket);
+            ConnInterface.send((Function<Database,T> & Serializable) query,socket);
             while (true) {
                 T updatedData = ConnInterface.receive(socket);
                 callback.accept(updatedData);
