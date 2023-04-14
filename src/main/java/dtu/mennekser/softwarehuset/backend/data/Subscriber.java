@@ -25,6 +25,15 @@ public class Subscriber<T extends Serializable> {
     public boolean update(Database tables) {
         T newData = filter.apply(tables);
 
+        if (newData == null) {
+            if (prevData == null) {
+                return true;
+            } else {
+                prevData = null;
+                return false;
+            }
+        }
+
         if (newData.equals(prevData)) {
             return true;
         }

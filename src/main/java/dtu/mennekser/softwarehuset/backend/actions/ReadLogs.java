@@ -11,7 +11,11 @@ public class ReadLogs {
         ClientSubscriber<ArrayList<Log>> logSubscriber = new ClientSubscriber<>(
             "koebstoffer.info",
             database -> database.logs,
-            System.out::println,
+            logs -> {
+                for (Log log : logs) {
+                    System.out.println(log);
+                }
+            },
             Throwable::printStackTrace
         );
     }

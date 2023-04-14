@@ -30,7 +30,6 @@ public class ClientQuery<T extends Serializable> {
                 Socket socket = new Socket(address, port);
                 ConnInterface.send(ConnType.Subscribe,socket);
                 ConnInterface.send((Function<Database,T> & Serializable) query,socket);
-                System.out.printf("Recieved stuff :)");
                 return ConnInterface.receive(socket);
 
             } catch (IOException e) {
