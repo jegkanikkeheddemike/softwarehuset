@@ -1,7 +1,7 @@
 package dtu.mennekser.softwarehuset.backend.data;
 
 import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnInterface;
-import dtu.mennekser.softwarehuset.backend.tables.Tables;
+import dtu.mennekser.softwarehuset.backend.db.Database;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ public class Subscriber<T extends Serializable> {
      * True is ok status.
      * False means the connection has been severed and the subscriber needs to be killed
      */
-    public boolean update(Tables tables) {
+    public boolean update(Database tables) {
         T newData = filter.apply(tables);
 
         if (newData.equals(prevData)) {

@@ -1,8 +1,6 @@
-package dtu.mennekser.softwarehuset.backend.tables;
+package dtu.mennekser.softwarehuset.backend.db;
 
-import dtu.mennekser.softwarehuset.backend.data.TableData;
-
-public final class Employee extends TableData<Employee> {
+public final class Employee{
     public String username;
     public String realName;
 

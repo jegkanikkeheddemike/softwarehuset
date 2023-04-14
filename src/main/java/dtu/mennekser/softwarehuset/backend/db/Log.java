@@ -1,10 +1,8 @@
-package dtu.mennekser.softwarehuset.backend.tables;
-
-import dtu.mennekser.softwarehuset.backend.data.TableData;
+package dtu.mennekser.softwarehuset.backend.db;
 
 import java.util.Date;
 
-public class Log extends TableData<Log> {
+public class Log{
     final LogLevel logLevel;
     final Date date;
     final String message;

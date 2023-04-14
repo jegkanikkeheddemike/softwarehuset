@@ -4,7 +4,7 @@ import dtu.mennekser.softwarehuset.backend.data.DataFilter;
 import dtu.mennekser.softwarehuset.backend.data.DataTask;
 import dtu.mennekser.softwarehuset.backend.data.Subscriber;
 import dtu.mennekser.softwarehuset.backend.javadb.JavaDB;
-import dtu.mennekser.softwarehuset.backend.tables.Log;
+import dtu.mennekser.softwarehuset.backend.db.Log;
 
 import java.io.IOException;
 import java.io.InvalidClassException;

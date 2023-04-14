@@ -3,7 +3,7 @@ package dtu.mennekser.softwarehuset.backend.javadb.client;
 import dtu.mennekser.softwarehuset.backend.data.DataFilter;
 import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnInterface;
 import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnType;
-import dtu.mennekser.softwarehuset.backend.tables.Tables;
+import dtu.mennekser.softwarehuset.backend.db.Database;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -17,7 +17,7 @@ public class ClientSubscriber<T extends Serializable> {
     public final int port = 7009;
 
     private final Consumer<T> callback;
-    private final Function<Tables,T> filter;
+    private final Function<Database,T> filter;
     private final Consumer<IOException> onError;
 
     private final Thread thread;
@@ -46,7 +46,7 @@ public class ClientSubscriber<T extends Serializable> {
         try {
             socket = new Socket(address, port);
             ConnInterface.send(ConnType.Subscribe,socket);
-            ConnInterface.send((Function<Tables,T> & Serializable) filter,socket);
+            ConnInterface.send((Function<Database,T> & Serializable) filter,socket);
             while (true) {
                 T updatedData = ConnInterface.receive(socket);
                 callback.accept(updatedData);

@@ -2,8 +2,8 @@ package dtu.mennekser.softwarehuset.backend.javadb;
 
 import dtu.mennekser.softwarehuset.backend.data.DataTask;
 import dtu.mennekser.softwarehuset.backend.data.Subscriber;
-import dtu.mennekser.softwarehuset.backend.tables.Log;
-import dtu.mennekser.softwarehuset.backend.tables.Tables;
+import dtu.mennekser.softwarehuset.backend.db.Log;
+import dtu.mennekser.softwarehuset.backend.db.Database;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,18 +13,18 @@ import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JavaDB {
-    private final Tables tables;
+    private final Database tables;
 
 
     public JavaDB() {
-        tables = new Tables();
+        tables = new Database();
     }
 
     public JavaDB(String filePath) throws IOException, ClassNotFoundException {
         byte[] bin = Files.readAllBytes(Paths.get(filePath));
         ByteArrayInputStream bis = new ByteArrayInputStream(bin);
         ObjectInputStream ois = new ObjectInputStream(bis);
-        tables = (Tables) ois.readObject();
+        tables = (Database) ois.readObject();
     }
 
     private LinkedBlockingQueue<DataTask> tasks = new LinkedBlockingQueue<>();
@@ -139,7 +139,7 @@ public class JavaDB {
 
     private void submitLog(Log.LogLevel logLevel, String message, boolean forceUpdate) {
         Log log = new Log(logLevel, message);
-        tables.logs.insert(log);
+        tables.logs.add(log);
         System.out.println(log);
         if (forceUpdate) {
             //If tasks is not empty, then just do it.
