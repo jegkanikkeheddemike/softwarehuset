@@ -1,8 +1,8 @@
-module dtu.mennekser.softwarehusetas {
+module dtu.mennekser.softwarehuset {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens dtu.mennekser.softwarehusetas to javafx.fxml;
-    exports dtu.mennekser.softwarehusetas;
+    opens dtu.mennekser.softwarehuset to javafx.fxml;
+    exports dtu.mennekser.softwarehuset;
 }
