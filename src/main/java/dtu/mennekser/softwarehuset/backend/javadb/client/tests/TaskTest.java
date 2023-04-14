@@ -1,7 +1,7 @@
 package dtu.mennekser.softwarehuset.backend.javadb.client.tests;
 
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientTask;
-import dtu.mennekser.softwarehuset.backend.tables.User;
+import dtu.mennekser.softwarehuset.backend.tables.Employee;
 
 import java.util.Scanner;
 
@@ -11,7 +11,7 @@ public class TaskTest {
         var uname = scanner.nextLine();
         var realName = scanner.nextLine();
 
-        User myUser = new User(uname,realName);
+        Employee myUser = new Employee(uname,realName);
         ClientTask.SubmitTask("koebstoffer.info",tables -> {
             tables.users.insert(myUser);
         },Throwable::printStackTrace);
