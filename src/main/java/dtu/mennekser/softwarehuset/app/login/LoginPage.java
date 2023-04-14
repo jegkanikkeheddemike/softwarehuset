@@ -43,8 +43,8 @@ public class LoginPage extends VBox {
     }
 
     void attemptLogin() {
-        String usernameTmp = " "+usernameField.getText();
-        final String username = usernameTmp.trim();
+        String username = "username/"+usernameField.getText();
+
         Employee employee = new ClientQuery<Employee>(
                 "koebstoffer.info",
                 database -> database.findEmployee(username),
