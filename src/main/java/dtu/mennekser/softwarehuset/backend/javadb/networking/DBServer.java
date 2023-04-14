@@ -64,9 +64,9 @@ public class DBServer {
                 if (connType == ConnType.Task) {
                     DataTask task = ConnInterface.receive(client);
                     database.submitTask(task);
-                } else {
-                    DataQuery<?> filter = ConnInterface.receive(client);
-                    Subscriber<?> subscriber = new Subscriber<>(filter,client);
+                }  else {
+                    DataQuery<?> query = ConnInterface.receive(client);
+                    Subscriber<?> subscriber = new Subscriber<>(query,client);
                     database.submitSubscriber(subscriber);
                 }
             } catch (Exception e) {

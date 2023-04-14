@@ -5,6 +5,7 @@ import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Log;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientQuery;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -21,18 +22,27 @@ public class LoginPage extends VBox {
         getChildren().add(usernameField);
         getChildren().add(errorField);
 
-        usernameField.setOnAction(actionEvent -> attempLogin());
+        usernameField.setOnAction(actionEvent -> attemptLogin());
 
 
         ClientSubscriber<ArrayList<Log>> logsSubscriber = new ClientSubscriber<>(
-                "koebstoffer,info",
+                "koebstoffer.info",
                 database -> database.logs,
-                logs -> errorField.setText(logs.toString()),
+                logs -> {
+                    Platform.runLater(() -> {
+                        String lines = "";
+                        for (Log log : logs) {
+                            lines  += log + "\n";
+                        }
+                        errorField.setText(lines);
+                    });
+                },
                 Throwable::printStackTrace
         );
+
     }
 
-    void attempLogin() {
+    void attemptLogin() {
         String username = usernameField.getText();
         Employee employee = new ClientQuery<Employee>(
                 "koebstoffer.info",
