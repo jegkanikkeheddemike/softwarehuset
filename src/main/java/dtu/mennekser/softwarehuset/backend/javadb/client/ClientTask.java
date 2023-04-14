@@ -15,7 +15,7 @@ public class ClientTask {
     private final DataTask task;
     private final Consumer<IOException> onError;
 
-    private ClientTask(String address, DataTask task, Consumer<IOException> onError) {
+    public ClientTask(String address, DataTask task, Consumer<IOException> onError) {
         this.address = address;
         this.task =task;
         this.onError = onError;
