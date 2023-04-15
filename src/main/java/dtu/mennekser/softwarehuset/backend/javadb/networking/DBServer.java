@@ -8,6 +8,8 @@ import dtu.mennekser.softwarehuset.backend.db.Log;
 
 import java.io.IOException;
 import java.io.InvalidClassException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -71,7 +73,12 @@ public class DBServer {
                     System.out.println("Recieved subscriber");
                 }
             } catch (Exception e) {
-                database.pubSubmitLog(Log.LogLevel.ERROR,e.toString());
+
+                StringWriter writer = new StringWriter();
+                PrintWriter printWriter = new PrintWriter(writer);
+                e.printStackTrace(printWriter);
+
+                database.pubSubmitLog(Log.LogLevel.ERROR,writer.toString());
             }
         }
         database.pubSubmitLog(Log.LogLevel.FATAL, "Server has crashed. Exiting");
