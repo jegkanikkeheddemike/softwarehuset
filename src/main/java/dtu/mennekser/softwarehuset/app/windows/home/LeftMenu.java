@@ -1,6 +1,7 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
+import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.scene.control.Button;
@@ -30,6 +31,7 @@ public class LeftMenu extends VBox {
                     for (Project project : projects) {
 
                         Button button = new Button(project.name);
+                        Style.setProjectButtonStyle(button);
                         getChildren().add(button);
                     }
                 }
