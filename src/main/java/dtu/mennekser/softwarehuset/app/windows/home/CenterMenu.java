@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class CenterMenu extends BorderPane implements HasDBConnection {
@@ -87,13 +88,15 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                     }
                     notAssignedSubscriber = new DBSubscriber<>(database -> {
                         ArrayList<Employee> notAssigned = new ArrayList<>();
+                        List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
                         for (Employee employee : database.employees) {
-                            if (!employees.stream().map(employee1 -> employee1.id).toList().contains(employee.id)) {
+                            if (!allEmployees.contains(employee.id)) {
                                 notAssigned.add(employee);
                             }
                         }
                         return notAssigned;
                     }, notAssigned -> {
+                        employeeDropdown.getItems().clear();
                         for (Employee employee : notAssigned) {
                             employeeDropdown.getItems().add(employee.name);
                         }
