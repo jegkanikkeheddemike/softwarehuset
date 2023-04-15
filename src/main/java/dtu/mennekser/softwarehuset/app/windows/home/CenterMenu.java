@@ -32,14 +32,7 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
 
 
     CenterMenu(int projectID) {
-        projectSubscriber = new DBSubscriber<>(database -> {
-            Project project = database.projects.get(projectID);
-            System.out.println("Project hash:" + Objects.hash(project));
-            return project;
-        },project -> {
-
-            System.out.println("Loaded project with leader: " + project.projectLeaderId);
-            System.out.println("Loaded project with hash" + Objects.hash(project));
+        projectSubscriber = new DBSubscriber<>(database -> database.projects.get(projectID), project -> {
 
             activitiesPane = new FlowPane();
             assignedPane = new BorderPane();
