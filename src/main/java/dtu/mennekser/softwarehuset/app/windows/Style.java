@@ -50,12 +50,16 @@ public class Style {
 
     }
 
-    public static void setEmployeeButtonStyle(Button button, boolean entered){
-        if(entered){
+    public static void setEmployeeButtonStyle(Button button){
+        button.setBackground(setBackground(0,5.0));
+        button.setOnMouseEntered(actionEvent -> {
             button.setBackground(setBackground(3,5.0));
-        } else {
+
+        });
+        button.setOnMouseExited(actionEvent -> {
             button.setBackground(setBackground(0,5.0));
-        }
+
+        });
             button.setFont(setTextFont());
             button.setPrefSize(110, 20);
 
