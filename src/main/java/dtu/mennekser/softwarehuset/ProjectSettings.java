@@ -17,8 +17,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class ProjectSettings {
-    //private static String remoteLocation = "koebstoffer.info";
-    private static String remoteLocation = "localhost";
+    private static String remoteLocation = "koebstoffer.info";
+    //private static String remoteLocation = "localhost";
 
     public static boolean debugMode = true;
 

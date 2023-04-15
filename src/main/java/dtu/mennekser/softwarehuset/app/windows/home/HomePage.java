@@ -11,9 +11,9 @@ public class HomePage extends Scene implements HasDBConnection {
     static Employee loggedInAs;
 
     BorderPane root;
-    public HomePage(Employee loggedInAs) {
+    public HomePage(Employee employee) {
         super(new BorderPane(), 1920*0.5,1080*0.5);
-        HomePage.loggedInAs = loggedInAs;
+        HomePage.loggedInAs = employee;
         root = (BorderPane) getRoot();
         root.setTop(new TopBar());
         root.setLeft(new LeftMenu());

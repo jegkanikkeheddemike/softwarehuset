@@ -14,13 +14,12 @@ public class LeftMenu extends VBox {
     LeftMenu() {
         setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderWidths.DEFAULT)));
 
-
-
+        Employee employee = HomePage.loggedInAs;
         DBSubscriber<ArrayList<Project>> projectSubscriber = new DBSubscriber<>(
                 database -> {
                     ArrayList<Project> assigned = new ArrayList<>();
                     for (Project project : database.projects) {
-                        if (project.assignedEmployees.contains(HomePage.loggedInAs.id)) {
+                        if (project.assignedEmployees.contains(employee.id)) {
                             assigned.add(project);
                         }
                     }
