@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 public class Style {
 
@@ -20,7 +21,8 @@ public class Style {
         //all the settings for project buttons
         button.setFont(setTitleFont());
         button.setPrefSize(160, 40);
-        button.setBorder(setBorder(2,5, "nej"));
+        //button.setBorder(setBorder(2,5, "nej"));
+
 
     }
     public static void setActivityButtonStyle(Button button, boolean entered){
@@ -56,6 +58,7 @@ public class Style {
         }
             button.setFont(setTextFont());
             button.setPrefSize(110, 20);
+
     }
 
     public static Border setBorder(int theme, double corner, String edge){
