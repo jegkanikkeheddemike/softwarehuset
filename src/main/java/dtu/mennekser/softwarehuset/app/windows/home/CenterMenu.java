@@ -88,6 +88,7 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                         }
                         return notAssigned;
                     }, notAssigned -> {
+                        employeeDropdown.getItems().clear();
                         for (Employee employee : notAssigned) {
                             employeeDropdown.getItems().add(employee.name);
                         }
