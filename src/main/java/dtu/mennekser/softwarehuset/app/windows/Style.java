@@ -18,7 +18,7 @@ public class Style {
         button.setBackground(setBackground(1,2.0));
     }
     public static void setActivityButtonStyle(Button button){
-        //all the settings for project buttons
+        //all the settings for activity buttons
         button.setFont(setTextFont());
         button.setPrefSize(100, 120);
         button.setBackground(setBackground(1,5.0));
@@ -31,9 +31,9 @@ public class Style {
 
     public static Color setTheme(int theme){
         if(theme == 1){
-            return Color.LIGHTBLUE;
-        } else if (theme==2) {
-            return Color.CADETBLUE;
+            return Color.rgb(101,204,153);
+        } else if (theme == 2) {
+            return Color.rgb(69,145,107);
         }
         return Color.RED;
     }
