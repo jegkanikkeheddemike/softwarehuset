@@ -23,8 +23,9 @@ public class Project implements Serializable {
 
         return timeSum;
     }
-    public void createActivity(String name, int budgetedTime) {
-        activities.add(new Activity(name, budgetedTime));
+    public int createActivity(String name, int budgetedTime) {
+        activities.add(new Activity(name, budgetedTime,activities.size()));
+        return activities.size()-1;
     }
 
     public void assignEmployee(int employeeID) {
