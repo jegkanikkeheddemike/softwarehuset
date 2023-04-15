@@ -136,6 +136,7 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                 }
         );
 
+        setTop(new CenterTopBar(project));
     }
 
 
