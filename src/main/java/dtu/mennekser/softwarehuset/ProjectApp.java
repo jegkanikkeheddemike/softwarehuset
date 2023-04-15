@@ -10,10 +10,14 @@ import javafx.stage.Stage;
 
 public class ProjectApp extends Application {
 
-    private static Pane root = new LoginPage();
+    private static Pane root;
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        ProjectSettings.init();
+        root = new LoginPage();
+
         Scene scene = new Scene(root, 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);

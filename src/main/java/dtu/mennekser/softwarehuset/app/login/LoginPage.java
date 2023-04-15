@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class LoginPage extends VBox implements HasDBConnection {
 
@@ -37,8 +38,8 @@ public class LoginPage extends VBox implements HasDBConnection {
                         System.out.println("Recieved employees");
                         StringBuilder lines = new StringBuilder();
                         lines.append("Available users:\n    ");
+                        employees.sort(Comparator.comparing(employee -> employee.name));
                         for (Employee employee : employees) {
-
                             lines.append(employee.name).append("\n    ");
                         }
                         availableField.setText(lines.toString());
