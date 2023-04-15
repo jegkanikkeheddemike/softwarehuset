@@ -44,23 +44,35 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
 
         assignedPane.setBorder(Style.setBorder(2,0,"left"));
         assignedPane.setPadding(new Insets(5,5,5,5));
-        assignedPane.setPrefWidth(100);
+        assignedPane.setPrefWidth(120);
 
         activitySubscriber = new DBSubscriber<>(
                 database -> database.projects.get(project.id).activities,
                 activities -> {
                     activitiesPane.getChildren().clear();
                     Button newActivity = new Button("+");
-                    Style.setActivityButtonStyle(newActivity);
+                    Style.setActivityButtonStyle(newActivity, false);
                     activitiesPane.getChildren().add(newActivity);
                     newActivity.setOnAction(actionEvent -> {
                         NewActivityWindow.tryCreate(project.id);
                     });
+                    newActivity.setOnMouseEntered(mouseEvent -> {
+                        Style.setActivityButtonStyle(newActivity, true);
+                    });
+                    newActivity.setOnMouseExited(mouseEvent -> {
+                        Style.setActivityButtonStyle(newActivity, false);
+                    });
 
                     for (Activity activity : activities) {
                         Button button = new Button(activity.name);
-                        Style.setActivityButtonStyle(button);
+                        Style.setActivityButtonStyle(button, false);
                         activitiesPane.getChildren().add(button);
+                        button.setOnMouseEntered(mouseEvent -> {
+                            Style.setActivityButtonStyle(button, true);
+                        });
+                        button.setOnMouseExited(mouseEvent -> {
+                            Style.setActivityButtonStyle(button, false);
+                        });
                     }
                 }
         );

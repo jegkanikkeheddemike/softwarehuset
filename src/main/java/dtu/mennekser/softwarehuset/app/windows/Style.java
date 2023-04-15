@@ -11,36 +11,51 @@ import javafx.scene.text.FontWeight;
 public class Style {
 
 
-    public static void setProjectButtonStyle(Button button){
+    public static void setProjectButtonStyle(Button button, boolean entered){
+        if(entered){
+            button.setBackground(setBackground(2,5.0));
+        } else {
+            button.setBackground(setBackground(1,5.0));
+        }
         //all the settings for project buttons
         button.setFont(setTitleFont());
         button.setPrefSize(160, 40);
         button.setBorder(setBorder(2,5, "nej"));
-        button.setBackground(setBackground(1,5.0));
+
     }
-    public static void setActivityButtonStyle(Button button){
+    public static void setActivityButtonStyle(Button button, boolean entered){
+        if(entered){
+            button.setBackground(setBackground(2,5.0));
+        } else {
+            button.setBackground(setBackground(1,5.0));
+        }
         //all the settings for activity buttons
         button.setFont(setTextFont());
         button.setPrefSize(100, 120);
-        button.setBackground(setBackground(1,5.0));
+
     }
 
-    public static void setBarButtonStyle(Button button, double width){
+    public static void setBarButtonStyle(Button button, double width, boolean entered){
+        if(entered){
+            button.setBackground(setBackground(2,5.0));
+        }else {
+            button.setBackground(setBackground(1,5.0));
+        }
         //all the settings for bar buttons
         button.setFont(setTextFont());
         button.setPrefSize(width, 20);
         button.setBorder(setBorder(2,2, "nej"));
-        button.setBackground(setBackground(1,5.0));
+
     }
 
-    public static void setEmployeeButtonStyle(Button button, boolean enterned){
-        if(enterned){
+    public static void setEmployeeButtonStyle(Button button, boolean entered){
+        if(entered){
             button.setBackground(setBackground(3,5.0));
         } else {
             button.setBackground(setBackground(0,5.0));
         }
             button.setFont(setTextFont());
-            button.setPrefSize(90, 20);
+            button.setPrefSize(110, 20);
     }
 
     public static Border setBorder(int theme, double corner, String edge){
