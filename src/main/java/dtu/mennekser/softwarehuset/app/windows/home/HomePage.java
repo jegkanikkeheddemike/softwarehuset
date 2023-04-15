@@ -12,6 +12,7 @@ public class HomePage extends Scene implements HasDBConnection {
         super(new BorderPane(), 1920*0.5,1080*0.5);
         root = (BorderPane) getRoot();
         root.setTop(new TopBar());
+        root.setLeft(new LeftMenu());
     }
 
     @Override
