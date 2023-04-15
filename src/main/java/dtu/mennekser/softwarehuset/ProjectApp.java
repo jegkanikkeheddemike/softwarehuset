@@ -13,6 +13,7 @@ public class ProjectApp extends Application {
     static Stage mainStage;
     @Override
     public void start(Stage stage) throws Exception {
+
         ProjectSettings.init();
         mainStage = stage;
 

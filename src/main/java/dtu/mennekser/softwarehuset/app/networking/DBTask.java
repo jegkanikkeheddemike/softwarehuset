@@ -7,4 +7,8 @@ public class DBTask extends ClientTask {
     public DBTask(DataTask task) {
         super(task, Throwable::printStackTrace);
     }
+
+    public static void ExecuteTask(DataTask task) {
+        new DBTask(task);
+    }
 }

@@ -11,8 +11,9 @@ public class Database implements Serializable {
 
 
     //Den her synes jeg stadig bruges meeeeget underligt. Se klassediagrammet
-    public void createProject() {
-
+    public int createProject(String name) {
+        projects.add(new Project(name, projects.size()));
+        return projects.size()-1;
     }
     public Employee findEmployee(String name) {
         for (Employee employee : employees) {
@@ -22,7 +23,8 @@ public class Database implements Serializable {
         }
         return null;
     }
-    public void createEmployee(String name) {
-        employees.add(new Employee(name));
+    public int createEmployee(String name) {
+        employees.add(new Employee(name, employees.size()));
+        return employees.size()-1;
     }
 }

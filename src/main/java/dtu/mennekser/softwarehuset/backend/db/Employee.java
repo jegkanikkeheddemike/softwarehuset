@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 public final class Employee implements Serializable {
     public String name;
-    public Employee(String name) {
-        this.name =name;
+    public final int id;
+    public Employee(String name, int id) {
+        this.name =name; this.id = id;
     }
 
 
