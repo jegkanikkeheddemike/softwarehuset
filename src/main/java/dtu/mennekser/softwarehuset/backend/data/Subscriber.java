@@ -62,12 +62,12 @@ public class Subscriber<T extends Serializable> {
     //Okay så, hele pointen med den her klasse er at den skal kunne sammenligne resultatet af en query med
     // det tidligere resultat af samme query. Det første man tænker at man kan gøre er man kan bruge
     // Object.equals(). Men det virker ikke fordi resultatet af en query godt kan være en reference til et objekt
-    // i databasen. Så hvis den underliggende data i koden ændres vil den også ændres i den gamle reference,
+    // i databasen. Så hvis den underliggende data i objektet ændres vil den også ændres i den gamle reference,
     // hvilket betyder at sammenligningen vil sige at der ikke er nogen forskel, selvom objektet har ændret sig.
     // Det betyder at klienten ikke får den nyeste version af objektet.
 
-    // Min løsning til dette er at brug Objects.hash(...). Det her virkede bedre, men stadig ikke godt nok.
-    // Foe hvem villede havde gætte at hvis man ændre en primitive i et objekt, FORBLIVER DETS HASH DET SAMME.
+    // Min løsning til dette var at brug Objects.hash(...). Det her virkede bedre, men stadig ikke godt nok.
+    // For hvem villede havde gætte at hvis man ændre en primitivt felt i et objekt, FORBLIVER DETS HASH DET SAMME.
 
     // WWWWWWWWTTTTTTTTFFFFFFFF
     // Hele pointen med hashes er at kunne sammenligne to ting, men hvis den siger de er ens selvom de ikke er
