@@ -44,6 +44,7 @@ public class ClientSubscriber<T extends Serializable> {
     private void run(){
         try {
             socket = new Socket(ClientSettings.remoteLocation, port);
+            socket.setKeepAlive(true);
             ConnInterface.send(ConnType.Subscribe,socket);
             ConnInterface.send((Function<Database,T> & Serializable) query,socket);
             while (true) {
