@@ -35,7 +35,6 @@ public class LoginPage extends VBox implements HasDBConnection {
                 database -> database.employees,
                 employees -> {
                     Platform.runLater(() -> {
-                        System.out.println("Recieved employees");
                         StringBuilder lines = new StringBuilder();
                         lines.append("Available users:\n    ");
                         employees.sort(Comparator.comparing(employee -> employee.name));
@@ -50,7 +49,7 @@ public class LoginPage extends VBox implements HasDBConnection {
     }
 
     void attemptLogin() {
-        String username = usernameField.getText();
+        String username = usernameField.getText().trim();
         Employee employee = new ClientQuery<Employee>(
                 database -> database.findEmployee(username),
                 Throwable::printStackTrace
