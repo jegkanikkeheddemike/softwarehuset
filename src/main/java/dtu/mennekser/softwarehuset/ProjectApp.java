@@ -1,5 +1,6 @@
 package dtu.mennekser.softwarehuset;
 
+import dtu.mennekser.softwarehuset.app.HasDBConnection;
 import dtu.mennekser.softwarehuset.app.login.LoginPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -9,23 +10,35 @@ import javafx.stage.Stage;
 
 public class ProjectApp extends Application {
 
-    private static StackPane root = new StackPane();
-    private static LoginPage loginPage = new LoginPage();
+    private static Pane root = new LoginPage();
 
     @Override
     public void start(Stage stage) throws Exception {
-        setRoot(loginPage);
-
         Scene scene = new Scene(root, 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(windowEvent -> System.exit(0));
     }
 
     public static void setRoot(Pane pane) {
-        root.getChildren().clear();
+        recursiveCleanup(root);
+        root = pane;
 
-        root.getChildren().add(pane);
+    }
+
+    private static void recursiveCleanup(Pane pane) {
+        //Depth first
+        for (Object child : pane.getChildren()) {
+            if (child instanceof Pane) {
+                recursiveCleanup((Pane) child);
+            } else if (child instanceof HasDBConnection) {
+                ((HasDBConnection) child).cleanup();
+            }
+        }
+        if (pane instanceof HasDBConnection) {
+            ((HasDBConnection) pane).cleanup();
+        }
     }
     public static void main(String[] args) {
         launch();
