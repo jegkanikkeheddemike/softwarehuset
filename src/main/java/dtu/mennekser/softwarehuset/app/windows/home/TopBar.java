@@ -16,7 +16,7 @@ public class TopBar extends HBox {
         Button logoutButton = new Button("Logout");
         getChildren().add(logoutButton);
         setAlignment(Pos.TOP_RIGHT);
-        setBorder(new Border(new BorderStroke(Style.setTheme(2),BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderWidths.DEFAULT)));
+        setBorder(Style.setBorder(2,0,"bottom"));
         setBackground(Style.setBackground(1,0));
         setPadding(new Insets(5,5,5,5));
 

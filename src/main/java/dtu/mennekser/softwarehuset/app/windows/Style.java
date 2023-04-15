@@ -36,15 +36,24 @@ public class Style {
     public static Border setBorder(int theme, double corner, String edge){
         if(edge.equals("right")) {
             return new Border(new BorderStroke(
-                    setTheme(theme), Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT,
-                    BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
+                    setTheme(theme), setTheme(theme), setTheme(theme), setTheme(theme),
+                    BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
                     new CornerRadii(corner), BorderWidths.DEFAULT,Insets.EMPTY));
         } else if(edge.equals("left")){
-
+            return new Border(new BorderStroke(
+                    setTheme(theme), setTheme(theme), setTheme(theme), setTheme(theme),
+                    BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID,
+                    new CornerRadii(corner), BorderWidths.DEFAULT,Insets.EMPTY));
         } else if(edge.equals("top")){
-
+            return new Border(new BorderStroke(
+                    setTheme(theme), setTheme(theme), setTheme(theme), setTheme(theme),
+                    BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
+                    new CornerRadii(corner), BorderWidths.DEFAULT,Insets.EMPTY));
         } else if(edge.equals("bottom")){
-
+            return new Border(new BorderStroke(
+                    setTheme(theme), setTheme(theme), setTheme(theme), setTheme(theme),
+                    BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE,
+                    new CornerRadii(corner), BorderWidths.DEFAULT,Insets.EMPTY));
         }
         return new Border(new BorderStroke(setTheme(theme), BorderStrokeStyle.SOLID, new CornerRadii(corner), BorderWidths.DEFAULT));
     }
