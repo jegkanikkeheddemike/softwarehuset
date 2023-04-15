@@ -25,24 +25,32 @@ public class Style {
 
 
     }
-    public static void setActivityButtonStyle(Button button, boolean entered){
-        if(entered){
+    public static void setActivityButtonStyle(Button button){
+        button.setBackground(setBackground(1,5.0));
+        button.setOnMouseEntered(actionEvent -> {
             button.setBackground(setBackground(2,5.0));
-        } else {
+
+        });
+        button.setOnMouseExited(actionEvent -> {
             button.setBackground(setBackground(1,5.0));
-        }
+
+        });
         //all the settings for activity buttons
         button.setFont(setTextFont());
         button.setPrefSize(100, 120);
 
     }
 
-    public static void setBarButtonStyle(Button button, double width, boolean entered){
-        if(entered){
+    public static void setBarButtonStyle(Button button, double width){
+        button.setBackground(setBackground(1,5.0));
+        button.setOnMouseEntered(actionEvent -> {
             button.setBackground(setBackground(2,5.0));
-        }else {
+
+        });
+        button.setOnMouseExited(actionEvent -> {
             button.setBackground(setBackground(1,5.0));
-        }
+
+        });
         //all the settings for bar buttons
         button.setFont(setTextFont());
         button.setPrefSize(width, 20);
