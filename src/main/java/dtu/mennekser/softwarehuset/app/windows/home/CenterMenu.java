@@ -106,6 +106,7 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                     assignedPane.setBottom(bottomMenu);
 
                     ComboBox<String> employeeDropdown = new ComboBox<>();
+                    employeeDropdown.setPrefSize(80,30);
                     bottomMenu.getChildren().add(employeeDropdown);
                     if (notAssignedSubscriber != null) {
                         notAssignedSubscriber.kill();
@@ -127,10 +128,18 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                     });
 
                     Button addEmployee = new Button("+");
+                    addEmployee.setFont(Style.setTextFont());
+                    Style.setEmployeeButtonStyle(addEmployee,false);
+                    addEmployee.setPrefSize(30, 30);
+
                     bottomMenu.getChildren().add(addEmployee);
                     addEmployee.setOnAction(actionEvent -> {
                         String employeeName = employeeDropdown.getValue();
                         DBTask.SubmitTask(database -> database.projects.get(project.id).assignEmployee(database.findEmployee(employeeName).id));
+                    });
+                    addEmployee.setOnMouseEntered(actionEvent -> {
+                        Style.setEmployeeButtonStyle(addEmployee,true);
+                        addEmployee.setPrefSize(30, 30);
                     });
 
                 }
