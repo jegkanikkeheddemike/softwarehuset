@@ -20,6 +20,20 @@ public class DBServer {
         //Server side code
         DBServer server = new DBServer();
         server.start();
+
+        //A thread to keep the database up to date
+        new Thread(() -> {
+            while (server.running) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                server.database.submitTask(database1 -> {});
+            }
+
+        }).start();
     }
 
     public DBServer() {

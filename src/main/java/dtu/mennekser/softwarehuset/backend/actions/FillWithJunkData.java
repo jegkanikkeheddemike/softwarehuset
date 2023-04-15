@@ -27,16 +27,12 @@ public class FillWithJunkData {
             int byg = database.createProject("Byg et tårn");
             database.projects.get(byg).assignEmployee(thor);
             database.projects.get(byg).assignEmployee(frederik);
-            database.projects.get(byg).assignEmployee(karsten);
-            database.projects.get(byg).assignEmployee(jens);
             database.projects.get(byg).assignEmployee(katinka);
             database.projects.get(byg).assignEmployee(obama);
 
             int kage = database.createProject("Bag en kage");
             database.projects.get(kage).assignEmployee(katinka);
             database.projects.get(kage).assignEmployee(christan);
-            database.projects.get(kage).assignEmployee(tobias);
-            database.projects.get(kage).assignEmployee(obama);
             database.projects.get(kage).assignEmployee(thor);
 
             int byggeplads = database.projects.get(byg).createActivity("Find en byggeplads", 30);
