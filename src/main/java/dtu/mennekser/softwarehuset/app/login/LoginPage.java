@@ -22,7 +22,7 @@ public class LoginPage extends VBox {
         getChildren().add(usernameField);
         getChildren().add(errorField);
 
-        usernameField.setOnAction(actionEvent -> attemptLogin());
+        usernameField.setOnAction(actionEvent -> new Thread(this::attemptLogin).start());
 
 
         ClientSubscriber<ArrayList<Log>> logsSubscriber = new ClientSubscriber<>(
@@ -43,19 +43,21 @@ public class LoginPage extends VBox {
     }
 
     void attemptLogin() {
-        String username = "username/"+usernameField.getText();
 
+        String username = "jens";
+        System.out.println("Beginnin fetch");
         Employee employee = new ClientQuery<Employee>(
                 "koebstoffer.info",
                 database -> database.findEmployee(username),
                 Throwable::printStackTrace
         ).fetch();
+        System.out.println("Recieved fetch");
         Platform.runLater(()-> {
             System.out.printf("Testing: " + employee);
             if (employee == null) {
-                errorField.setText("No such employee");
+                errorField.setText("No such employee: " + username);
             } else {
-                errorField.setText("Yeah congratz not you can login :)");
+                errorField.setText("Yeah congratz not you can login as " + username);
             }
         });
 

@@ -22,4 +22,7 @@ public class Database implements Serializable {
         }
         return null;
     }
+    public void createEmployee(String name) {
+        employees.add(new Employee(name));
+    }
 }
