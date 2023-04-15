@@ -73,12 +73,20 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                     return assigned;
                 }, employees -> {
                     VBox assignedList = new VBox();
+                    assignedList.setSpacing(5);
 
                     assignedPane.getChildren().clear();
                     assignedPane.setCenter(assignedList);
 
                     for (Employee employee: employees) {
                         Button employeeButton = new Button(employee.name);
+                        Style.setEmployeeButtonStyle(employeeButton,false);
+                        employeeButton.setOnMouseEntered(mouseEvent -> {
+                            Style.setEmployeeButtonStyle(employeeButton,true);
+                        });
+                        employeeButton.setOnMouseExited(mouseEvent -> {
+                            Style.setEmployeeButtonStyle(employeeButton,false);
+                        });
                         assignedList.getChildren().add(employeeButton);
                     }
 
