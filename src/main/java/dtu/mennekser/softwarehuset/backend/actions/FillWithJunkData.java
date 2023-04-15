@@ -1,11 +1,18 @@
 package dtu.mennekser.softwarehuset.backend.actions;
 
+import dtu.mennekser.softwarehuset.ProjectSettings;
 import dtu.mennekser.softwarehuset.app.networking.DBTask;
-import dtu.mennekser.softwarehuset.backend.db.Employee;
-import dtu.mennekser.softwarehuset.backend.javadb.client.ClientTask;
 
 public class FillWithJunkData {
     public static void main(String[] args) {
+
+
+        //Yeah det her er lidt scuffed men det bliver man nødt til for at den
+        // følger med ProjectSettigns.remoteLocation.
+
+
+        ProjectSettings.debugMode = false;
+        ProjectSettings.init();
 
         DBTask.SubmitTask(database -> {
             int thor = database.createEmployee("Thor");
