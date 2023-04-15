@@ -17,7 +17,7 @@ public class LeftMenu extends VBox implements HasDBConnection {
     final DBSubscriber<ArrayList<Project>> projectSubscriber;
     LeftMenu() {
         setBackground(Style.setBackground(1,0));
-        setBorder(Style.setBorder(2,0));
+        setBorder(Style.setBorder(2,0,"right"));
         //setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderWidths.DEFAULT)));
         setPadding(new Insets(5,5,5,5));
         setSpacing(5);
