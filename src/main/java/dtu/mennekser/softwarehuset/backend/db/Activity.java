@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Activity implements Serializable {
     public final int id;
-    String name;
+    public String name;
     int budgetedTime;
     boolean finished = false;
     public ArrayList<Integer> assigned = new ArrayList<>();

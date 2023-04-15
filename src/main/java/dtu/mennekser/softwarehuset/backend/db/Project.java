@@ -10,6 +10,8 @@ public class Project implements Serializable {
     public ArrayList<Activity> activities = new ArrayList<>();
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
 
+    public int projectLeaderId = -1;
+
     public Project(String name, int id) {
         this.name = name;
         this.id = id;
@@ -33,5 +35,10 @@ public class Project implements Serializable {
             assignedEmployees.add(employeeID);
         }
     }
-
+    public void setProjectLeader(int employeeID) {
+        projectLeaderId = employeeID;
+    }
+    public boolean isProjectLeader(int employeeID) {
+        return projectLeaderId == employeeID;
+    }
 }
