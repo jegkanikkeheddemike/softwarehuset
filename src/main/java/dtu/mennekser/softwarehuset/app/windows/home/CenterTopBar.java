@@ -21,7 +21,7 @@ public class CenterTopBar extends BorderPane {
         right = new HBox();
 
         setLeft(left);
-        setCenter(right);
+        setRight(right);
 
         Label title = new Label(project.name);
         title.setFont(Style.setTitleFont());
