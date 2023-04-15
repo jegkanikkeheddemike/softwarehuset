@@ -30,9 +30,9 @@ public class JavaDB {
         tables = (Database) ois.readObject();
     }
 
-    private LinkedBlockingQueue<DataTask> tasks = new LinkedBlockingQueue<>();
+    final private LinkedBlockingQueue<DataTask> tasks = new LinkedBlockingQueue<>();
 
-    private LinkedList<Subscriber> subscribers = new LinkedList<>();
+    final private LinkedList<Subscriber<?>> subscribers = new LinkedList<>();
 
     public void submitTask(DataTask task) {
         try {
@@ -42,7 +42,7 @@ public class JavaDB {
         }
     }
 
-    public void submitSubscriber(Subscriber subscriber) {
+    public void submitSubscriber(Subscriber<?> subscriber) {
         synchronized (tables) {
             try {
                 subscriber.update(tables);
