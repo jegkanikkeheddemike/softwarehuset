@@ -42,6 +42,10 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
         activitiesPane.setVgap(10);
         activitiesPane.setPadding(new Insets(5,5,5,5));
 
+        assignedPane.setBorder(Style.setBorder(2,0,"left"));
+        assignedPane.setPadding(new Insets(5,5,5,5));
+        assignedPane.setPrefWidth(100);
+
         activitySubscriber = new DBSubscriber<>(
                 database -> database.projects.get(project.id).activities,
                 activities -> {

@@ -76,7 +76,7 @@ public class Style {
     }
 
     public static Font setTextFont(){
-        return Font.font("Verdana", FontWeight.NORMAL, 10);
+        return Font.font("Verdana", FontWeight.NORMAL, 12);
     }
 
 
