@@ -24,7 +24,7 @@ public class LoginPage extends Scene implements HasDBConnection {
     TextField usernameField = new TextField("");
     Label errorField = new Label("");
     Label availableField = new Label("Loading");
-    ClientSubscriber<ArrayList<Employee>> employeesSubscriber;
+    DBSubscriber<ArrayList<Employee>> employeesSubscriber;
     public LoginPage() {
         super(new VBox(),320, 240);
         root = (VBox) getRoot();
