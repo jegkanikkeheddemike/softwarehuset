@@ -3,9 +3,11 @@ package dtu.mennekser.softwarehuset.app.windows.home;
 import dtu.mennekser.softwarehuset.app.HasDBConnection;
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.app.networking.DBTask;
+import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.db.Activity;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
@@ -35,11 +37,16 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
         setCenter(activitiesPane);
         setRight(assignedPane);
 
+        activitiesPane.setHgap(10);
+        activitiesPane.setVgap(10);
+        activitiesPane.setPadding(new Insets(5,5,5,5));
+
         activitySubscriber = new DBSubscriber<>(
                 database -> database.projects.get(project.id).activities,
                 activities -> {
                     activitiesPane.getChildren().clear();
                     Button newActivity = new Button("+");
+                    Style.setActivityButtonStyle(newActivity);
                     activitiesPane.getChildren().add(newActivity);
                     newActivity.setOnAction(actionEvent -> {
                         NewActivityWindow.tryCreate(project.id);
@@ -47,6 +54,7 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
 
                     for (Activity activity : activities) {
                         Button button = new Button(activity.name);
+                        Style.setActivityButtonStyle(button);
                         activitiesPane.getChildren().add(button);
                     }
                 }

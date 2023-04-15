@@ -17,10 +17,10 @@ public class Style {
         button.setPrefSize(160, 40);
         button.setBackground(setBackground(1,2.0));
     }
-    public static void setActicityButtonStyle(Button button){
+    public static void setActivityButtonStyle(Button button){
         //all the settings for project buttons
         button.setFont(setTextFont());
-        button.setPrefSize(160, 200);
+        button.setPrefSize(100, 120);
         button.setBackground(setBackground(1,5.0));
     }
 
