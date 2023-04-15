@@ -8,8 +8,10 @@ import dtu.mennekser.softwarehuset.backend.javadb.networking.Ping;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -41,12 +43,12 @@ public class ClientSubscriber<T extends Serializable> {
 
     Socket socket = null;
 
-    private void run(){
+    private void run() {
         try {
             socket = new Socket(ClientSettings.remoteLocation, port);
             socket.setKeepAlive(true);
-            ConnInterface.send(ConnType.Subscribe,socket);
-            ConnInterface.send((Function<Database,T> & Serializable) query,socket);
+            ConnInterface.send(ConnType.Subscribe, socket);
+            ConnInterface.send((Function<Database, T> & Serializable) query, socket);
             while (true) {
                 Object data = ConnInterface.receive(socket);
                 if (data instanceof Ping) {

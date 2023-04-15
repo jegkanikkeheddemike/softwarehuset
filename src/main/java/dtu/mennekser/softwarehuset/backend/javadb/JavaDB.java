@@ -4,12 +4,15 @@ import dtu.mennekser.softwarehuset.backend.data.DataTask;
 import dtu.mennekser.softwarehuset.backend.data.Subscriber;
 import dtu.mennekser.softwarehuset.backend.db.Log;
 import dtu.mennekser.softwarehuset.backend.db.Database;
+import dtu.mennekser.softwarehuset.backend.db.Project;
+import dtu.mennekser.softwarehuset.backend.javadb.networking.Ping;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JavaDB {
