@@ -3,6 +3,7 @@ package dtu.mennekser.softwarehuset;
 import dtu.mennekser.softwarehuset.app.HasDBConnection;
 import dtu.mennekser.softwarehuset.app.login.LoginPage;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -10,25 +11,29 @@ import javafx.stage.Stage;
 
 public class ProjectApp extends Application {
 
-    private static Pane root;
 
+
+    static Stage mainStage;
     @Override
     public void start(Stage stage) throws Exception {
-
         ProjectSettings.init();
-        root = new LoginPage();
 
-        Scene scene = new Scene(root, 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
-        stage.setOnCloseRequest(windowEvent -> System.exit(0));
+        mainStage = stage;
+
+        Scene scene = new Scene(new LoginPage(), 320, 240);
+
+        mainStage.setTitle("Login");
+        mainStage.setScene(scene);
+        mainStage.show();
+        mainStage.setOnCloseRequest(windowEvent -> System.exit(0));
+
     }
 
-    public static void setRoot(Pane pane) {
-        recursiveCleanup(root);
-        root = pane;
-
+    public static void setScene(Scene newScene) {
+        Platform.runLater(() -> {
+            //recursiveCleanup(mainStage.getScene().getRoot());
+            mainStage.setScene(newScene);
+        });
     }
 
     private static void recursiveCleanup(Pane pane) {

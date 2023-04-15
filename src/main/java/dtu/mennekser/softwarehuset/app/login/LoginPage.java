@@ -1,6 +1,8 @@
 package dtu.mennekser.softwarehuset.app.login;
 
+import dtu.mennekser.softwarehuset.ProjectApp;
 import dtu.mennekser.softwarehuset.app.HasDBConnection;
+import dtu.mennekser.softwarehuset.app.home.HomePage;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientQuery;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
@@ -58,7 +60,7 @@ public class LoginPage extends VBox implements HasDBConnection {
             if (employee == null) {
                 errorField.setText("No such employee: " + username);
             } else {
-                errorField.setText("Yeah congratz not you can login as " + username);
+                //ProjectApp.setRoot(new HomePage());
             }
         });
     }
