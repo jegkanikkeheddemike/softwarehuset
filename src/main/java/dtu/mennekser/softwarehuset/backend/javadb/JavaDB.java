@@ -80,9 +80,9 @@ public class JavaDB {
                 }
 
                 synchronized (subscribers) {
-                    LinkedList<Subscriber> failed = new LinkedList<>();
+                    LinkedList<Subscriber<?>> failed = new LinkedList<>();
 
-                    for (Subscriber subscriber : subscribers) {
+                    for (Subscriber<?> subscriber : subscribers) {
                         try {
                             boolean success = subscriber.update(tables);
                             if (!success) {
@@ -94,7 +94,8 @@ public class JavaDB {
                         }
 
                     }
-                    for (Subscriber failedSub : failed) {
+                    for (Subscriber<?> failedSub : failed) {
+                        pubSubmitLog(Log.LogLevel.INFO, "Terminated subscriber");
                         subscribers.remove(failedSub);
                     }
                 }

@@ -68,6 +68,7 @@ public class DBServer {
                     DataQuery<?> query = ConnInterface.receive(client);
                     Subscriber<?> subscriber = new Subscriber<>(query,client);
                     database.submitSubscriber(subscriber);
+                    System.out.println("Recieved subscriber");
                 }
             } catch (Exception e) {
                 database.pubSubmitLog(Log.LogLevel.ERROR,e.toString());

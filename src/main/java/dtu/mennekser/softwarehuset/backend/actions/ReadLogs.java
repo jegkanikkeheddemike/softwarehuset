@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class ReadLogs {
     public static void main(String[] args) {
-        ArrayList<Log> logs = new ClientQuery<>("koebstoffer.info",database -> database.logs,Throwable::printStackTrace).fetch();
+        ArrayList<Log> logs = new ClientQuery<>(database -> database.logs,Throwable::printStackTrace).fetch();
         for (Log log : logs) {
             System.out.println(log);
         }

@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 
 public class ProjectApp extends Application {
 
-
     private static StackPane root = new StackPane();
     private static LoginPage loginPage = new LoginPage();
 

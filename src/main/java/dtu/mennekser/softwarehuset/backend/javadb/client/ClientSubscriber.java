@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ClientSubscriber<T extends Serializable> {
-    public final String address;
     public final int port = 7009;
 
     private final Consumer<T> callback;
@@ -21,8 +20,7 @@ public class ClientSubscriber<T extends Serializable> {
     private final Consumer<IOException> onError;
 
     private final Thread thread;
-    public ClientSubscriber(String address, DataQuery<T> query, Consumer<T> callback, Consumer<IOException> onError) {
-        this.address = address;
+    public ClientSubscriber(DataQuery<T> query, Consumer<T> callback, Consumer<IOException> onError) {
         this.callback = callback;
         this.query = query;
         this.onError = onError;
@@ -44,7 +42,7 @@ public class ClientSubscriber<T extends Serializable> {
 
     private void run(){
         try {
-            socket = new Socket(address, port);
+            socket = new Socket(ClientSettings.remoteLocation, port);
             ConnInterface.send(ConnType.Subscribe,socket);
             ConnInterface.send((Function<Database,T> & Serializable) query,socket);
             while (true) {
