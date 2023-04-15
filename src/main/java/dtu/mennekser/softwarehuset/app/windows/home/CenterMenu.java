@@ -52,28 +52,17 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                     activities -> {
                         activitiesPane.getChildren().clear();
                         Button newActivity = new Button("+");
-                        Style.setActivityButtonStyle(newActivity, false);
+                        Style.setActivityButtonStyle(newActivity);
                         activitiesPane.getChildren().add(newActivity);
                         newActivity.setOnAction(actionEvent -> {
                             NewActivityWindow.tryCreate(project.id);
                         });
-                        newActivity.setOnMouseEntered(mouseEvent -> {
-                            Style.setActivityButtonStyle(newActivity, true);
-                        });
-                        newActivity.setOnMouseExited(mouseEvent -> {
-                            Style.setActivityButtonStyle(newActivity, false);
-                        });
+
 
                         for (Activity activity : activities) {
                             Button button = new Button(activity.name);
-                            Style.setActivityButtonStyle(button, false);
+                            Style.setActivityButtonStyle(button);
                             activitiesPane.getChildren().add(button);
-                            button.setOnMouseEntered(mouseEvent -> {
-                                Style.setActivityButtonStyle(button, true);
-                            });
-                            button.setOnMouseExited(mouseEvent -> {
-                                Style.setActivityButtonStyle(button, false);
-                            });
                         }
                     }
             );

@@ -11,43 +11,32 @@ import javafx.scene.text.TextAlignment;
 
 public class Style {
 
-
-    public static void setProjectButtonStyle(Button button, boolean entered){
-        if(entered){
+    public static void setActivityButtonStyle(Button button){
+        //all the settings for activity buttons
+        button.setBackground(setBackground(1,5.0));
+        button.setOnMouseEntered(actionEvent -> {
             button.setBackground(setBackground(2,5.0));
-        } else {
+        });
+        button.setOnMouseExited(actionEvent -> {
             button.setBackground(setBackground(1,5.0));
-        }
+        });
+        button.setFont(setTextFont());
+        button.setPrefSize(100, 120);
+    }
+    public static void setProjectButtonStyle(Button button){
         //all the settings for project buttons
+        setActivityButtonStyle(button);
         button.setFont(setTitleFont());
         button.setPrefSize(160, 40);
         //button.setBorder(setBorder(2,5, "nej"));
-
-
-    }
-    public static void setActivityButtonStyle(Button button, boolean entered){
-        if(entered){
-            button.setBackground(setBackground(2,5.0));
-        } else {
-            button.setBackground(setBackground(1,5.0));
-        }
-        //all the settings for activity buttons
-        button.setFont(setTextFont());
-        button.setPrefSize(100, 120);
-
     }
 
-    public static void setBarButtonStyle(Button button, double width, boolean entered){
-        if(entered){
-            button.setBackground(setBackground(2,5.0));
-        }else {
-            button.setBackground(setBackground(1,5.0));
-        }
+    public static void setBarButtonStyle(Button button, double width){
         //all the settings for bar buttons
+        setActivityButtonStyle(button);
         button.setFont(setTextFont());
         button.setPrefSize(width, 20);
         button.setBorder(setBorder(2,2, "nej"));
-
     }
 
     public static void setEmployeeButtonStyle(Button button){

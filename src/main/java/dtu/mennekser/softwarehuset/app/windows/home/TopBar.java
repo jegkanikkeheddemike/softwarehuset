@@ -20,16 +20,11 @@ public class TopBar extends HBox {
         setBackground(Style.setBackground(1,0));
         setPadding(new Insets(5,5,5,5));
 
-        Style.setBarButtonStyle(logoutButton, 60, false);
+        Style.setBarButtonStyle(logoutButton, 60);
 
         logoutButton.setOnAction(actionEvent -> {
             ProjectApp.setScene(new LoginPage(), "Login");
         });
-        logoutButton.setOnMouseEntered(actionEvent -> {
-            Style.setBarButtonStyle(logoutButton, 60, true);
-        });
-        logoutButton.setOnMouseExited(actionEvent -> {
-            Style.setBarButtonStyle(logoutButton, 60, false);
-        });
+
     }
 }
