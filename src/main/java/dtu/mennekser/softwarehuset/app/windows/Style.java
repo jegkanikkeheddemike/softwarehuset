@@ -33,6 +33,16 @@ public class Style {
         button.setBackground(setBackground(1,5.0));
     }
 
+    public static void setEmployeeButtonStyle(Button button, boolean enterned){
+        if(enterned){
+            button.setBackground(setBackground(3,5.0));
+        } else {
+            button.setBackground(setBackground(0,5.0));
+        }
+            button.setFont(setTextFont());
+            button.setPrefSize(90, 20);
+    }
+
     public static Border setBorder(int theme, double corner, String edge){
         if(edge.equals("right")) {
             return new Border(new BorderStroke(
@@ -62,10 +72,14 @@ public class Style {
     }
 
     public static Color setTheme(int theme){
-        if(theme == 1){
+        if(theme == 0){
+            return Color.WHITE;
+        } else if(theme == 1){
             return Color.rgb(101,204,153);
         } else if (theme == 2) {
             return Color.rgb(69,145,107);
+        } else if (theme ==3) {
+            return Color.LIGHTGREY;
         }
         return Color.RED;
     }
