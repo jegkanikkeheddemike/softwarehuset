@@ -20,7 +20,8 @@ public class LeftMenu extends BorderPane implements HasDBConnection {
         VBox projectList = new VBox();
         setCenter(projectList);
 
-        setBackground(Style.setBackground(2,0));
+        setBackground(Style.setBackground(1,0));
+        setBorder(Style.setBorder(2,0,"right"));
 
         setPadding(new Insets(5,5,5,5));
 
