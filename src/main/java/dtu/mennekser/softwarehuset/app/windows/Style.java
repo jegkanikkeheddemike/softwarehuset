@@ -2,9 +2,7 @@ package dtu.mennekser.softwarehuset.app.windows;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -17,12 +15,25 @@ public class Style {
         //all the settings for project buttons
         button.setFont(setTitleFont());
         button.setPrefSize(160, 40);
-        button.setBackground(new Background(new BackgroundFill(setTheme(1), new CornerRadii(15.0),null)));
+        button.setBackground(setBackground(1,2.0));
+    }
+    public static void setActicityButtonStyle(Button button){
+        //all the settings for project buttons
+        button.setFont(setTextFont());
+        button.setPrefSize(160, 200);
+        button.setBackground(setBackground(1,5.0));
+    }
+
+
+    public static Background setBackground(int theme, double corner){
+        return new Background(new BackgroundFill(setTheme(theme), new CornerRadii(corner),null));
     }
 
     public static Color setTheme(int theme){
         if(theme == 1){
             return Color.LIGHTBLUE;
+        } else if (theme==2) {
+            return Color.CADETBLUE;
         }
         return Color.RED;
     }
