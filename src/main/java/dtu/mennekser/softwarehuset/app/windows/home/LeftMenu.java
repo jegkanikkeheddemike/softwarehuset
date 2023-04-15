@@ -13,13 +13,18 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
-public class LeftMenu extends VBox implements HasDBConnection {
+public class LeftMenu extends BorderPane implements HasDBConnection {
     final DBSubscriber<ArrayList<Project>> projectSubscriber;
+
     LeftMenu() {
+        VBox projectList = new VBox();
+        setCenter(projectList);
+
         setBackground(Style.setBackground(2,0));
-        //setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderWidths.DEFAULT)));
+
         setPadding(new Insets(5,5,5,5));
-        setSpacing(5);
+
+        projectList.setSpacing(5);
 
         Employee employee = HomePage.loggedInAs;
         projectSubscriber = new DBSubscriber<>(
@@ -32,15 +37,15 @@ public class LeftMenu extends VBox implements HasDBConnection {
                     }
                     return assigned;
                 }, projects -> {
-                    getChildren().clear();
+                    projectList.getChildren().clear();
                     Label title = new Label("Mine Projekter");
                     title.setFont(Style.setTitleFont());
-                    getChildren().add(title);
+                    projectList.getChildren().add(title);
                     for (Project project : projects) {
                         Button button = new Button(project.name);
                         button.setOnAction(actionEvent -> HomePage.setProject(project));
                         Style.setProjectButtonStyle(button);
-                        getChildren().add(button);
+                        projectList.getChildren().add(button);
                     }
                 }
         );
