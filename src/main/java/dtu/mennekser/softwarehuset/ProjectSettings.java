@@ -9,16 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class ProjectSettings {
-    //private static String remoteLocation = "koebstoffer.info";
-    private static String remoteLocation = "localhost";
+    private static String remoteLocation = "koebstoffer.info";
+    //private static String remoteLocation = "localhost";
 
     public static boolean debugMode = true;
 
