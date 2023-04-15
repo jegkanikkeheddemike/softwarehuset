@@ -51,6 +51,10 @@ public class LeftMenu extends BorderPane implements HasDBConnection {
                 }
         );
 
+        Button createProjectButton = new Button("New Project");
+        setBottom(createProjectButton);
+        createProjectButton.setOnAction(actionEvent -> NewProjectWindow.tryCreate(HomePage.loggedInAs.id));
+
 
     }
 
