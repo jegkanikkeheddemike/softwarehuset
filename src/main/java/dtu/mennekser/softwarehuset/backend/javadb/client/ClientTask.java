@@ -26,7 +26,6 @@ public class ClientTask {
 
     void run() {
         try {
-            System.out.println("Connecting to" + ClientSettings.remoteLocation);
             Socket socket = new Socket(ClientSettings.remoteLocation,port);
             ConnInterface.send(ConnType.Task, socket);
             ConnInterface.send(task, socket);
