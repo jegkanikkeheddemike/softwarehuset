@@ -62,6 +62,7 @@ public class DBServer {
         while (running) {
             try {
                 Socket client = socket.accept();
+                client.setKeepAlive(true);
                 ConnType connType = ConnInterface.receive(client);
                 if (connType == ConnType.Task) {
                     DataTask task = ConnInterface.receive(client);
