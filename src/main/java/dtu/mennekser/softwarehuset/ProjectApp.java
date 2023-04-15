@@ -1,12 +1,11 @@
 package dtu.mennekser.softwarehuset;
 
 import dtu.mennekser.softwarehuset.app.HasDBConnection;
-import dtu.mennekser.softwarehuset.app.login.LoginPage;
+import dtu.mennekser.softwarehuset.app.windows.login.LoginPage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class ProjectApp extends Application {
@@ -29,9 +28,10 @@ public class ProjectApp extends Application {
 
     }
 
-    public static void setScene(Scene newScene) {
+    public static void setScene(Scene newScene, String title) {
         Platform.runLater(() -> {
-            //recursiveCleanup(mainStage.getScene().getRoot());
+            mainStage.setTitle(title);
+            recursiveCleanup((Pane) mainStage.getScene().getRoot());
             mainStage.setScene(newScene);
         });
     }

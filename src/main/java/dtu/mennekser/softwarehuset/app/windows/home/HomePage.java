@@ -1,4 +1,4 @@
-package dtu.mennekser.softwarehuset.app.home;
+package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.app.HasDBConnection;
 import javafx.scene.layout.BorderPane;

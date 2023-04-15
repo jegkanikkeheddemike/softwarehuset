@@ -1,14 +1,16 @@
-package dtu.mennekser.softwarehuset.app.login;
+package dtu.mennekser.softwarehuset.app.windows.login;
 
 import dtu.mennekser.softwarehuset.ProjectApp;
 import dtu.mennekser.softwarehuset.app.HasDBConnection;
-import dtu.mennekser.softwarehuset.app.home.HomePage;
+import dtu.mennekser.softwarehuset.app.networking.DBQuery;
+import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
+import dtu.mennekser.softwarehuset.app.windows.home.HomePage;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
-import dtu.mennekser.softwarehuset.backend.javadb.client.ClientQuery;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -33,36 +35,31 @@ public class LoginPage extends VBox implements HasDBConnection {
         usernameField.setOnAction(actionEvent -> attemptLogin());
 
 
-        employeesSubscriber = new ClientSubscriber<>(
-                database -> database.employees,
-                employees -> {
-                    Platform.runLater(() -> {
-                        StringBuilder lines = new StringBuilder();
-                        lines.append("Available users:\n    ");
-                        employees.sort(Comparator.comparing(employee -> employee.name));
-                        for (Employee employee : employees) {
-                            lines.append(employee.name).append("\n    ");
-                        }
-                        availableField.setText(lines.toString());
-                    });
-                },
-                Throwable::printStackTrace
+        employeesSubscriber = new DBSubscriber<>(
+            database -> database.employees,
+            employees -> {
+                StringBuilder lines = new StringBuilder();
+                lines.append("Available users:\n    ");
+                employees.sort(Comparator.comparing(employee -> employee.name));
+                for (Employee employee : employees) {
+                    lines.append(employee.name).append("\n    ");
+                }
+                availableField.setText(lines.toString());
+            }
         );
     }
 
     void attemptLogin() {
         String username = usernameField.getText().trim();
-        Employee employee = new ClientQuery<Employee>(
-                database -> database.findEmployee(username),
-                Throwable::printStackTrace
+        Employee employee = new DBQuery<Employee>(
+                database -> database.findEmployee(username)
         ).fetch();
-        Platform.runLater(()-> {
-            if (employee == null) {
-                errorField.setText("No such employee: " + username);
-            } else {
-                //ProjectApp.setRoot(new HomePage());
-            }
-        });
+
+        if (employee == null) {
+            errorField.setText("No such employee: " + username);
+        } else {
+            ProjectApp.setScene(new Scene(new HomePage(),1920*0.5,1080*0.5), "Home");
+        }
     }
 
     @Override

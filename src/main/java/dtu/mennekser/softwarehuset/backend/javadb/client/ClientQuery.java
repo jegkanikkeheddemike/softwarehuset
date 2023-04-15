@@ -28,7 +28,6 @@ public class ClientQuery<T extends Serializable> {
                 Socket socket = new Socket(ClientSettings.remoteLocation, port);
                 ConnInterface.send(ConnType.Subscribe,socket);
                 ConnInterface.send((Function<Database,T> & Serializable) query,socket);
-                System.out.println("Query submittet. Awaiting response");
                 T response =  ConnInterface.receive(socket);
                 socket.close();
                 return response;
