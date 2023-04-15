@@ -1,5 +1,6 @@
 package dtu.mennekser.softwarehuset;
 
+import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.backend.db.Log;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSettings;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
@@ -15,8 +16,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class ProjectSettings {
-    private static final String remoteLocation = "koebstoffer.info";
-    //private static final String remoteLocation = "localhost";
+    //private static final String remoteLocation = "koebstoffer.info";
+    private static final String remoteLocation = "localhost";
 
     public static boolean debugMode = true;
 
@@ -37,13 +38,16 @@ public class ProjectSettings {
         ScrollPane scrollPane = new ScrollPane(content);
         root.setCenter(scrollPane);
 
+        Label activeConnections = new Label("");
+        root.setTop(activeConnections);
+
 
         Scene debugScene = new Scene(root,300,500);
         debugWindow.setScene(debugScene);
 
         debugWindow.show();
 
-        ClientSubscriber<ArrayList<Log>> logSubscriber = new ClientSubscriber<>(database -> database.logs,
+        ClientSubscriber<ArrayList<Log>> logSubscriber = new DBSubscriber<>(database -> database.logs,
             logs -> {
                 Platform.runLater(() -> {
                     content.getChildren().clear();
@@ -51,10 +55,18 @@ public class ProjectSettings {
                         content.getChildren().add(new Label(log.toString()));
                     }
                 });
-            },
-        Throwable::printStackTrace);
+            });
 
-        debugWindow.setOnCloseRequest(windowEvent -> logSubscriber.kill());
+        ClientSubscriber<Integer> activeSubscribersSubscriber = new DBSubscriber<>(
+                database -> database.activeConnections,
+                integer -> activeConnections.setText("Active connections: " + integer)
+        );
+
+
+        debugWindow.setOnCloseRequest(windowEvent -> {
+            logSubscriber.kill();
+            activeSubscribersSubscriber.kill();
+        });
 
 
 

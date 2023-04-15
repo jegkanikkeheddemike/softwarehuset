@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
@@ -26,14 +27,15 @@ public class LoginPage extends Scene implements HasDBConnection {
     Label availableField = new Label("Loading");
     DBSubscriber<ArrayList<Employee>> employeesSubscriber;
     public LoginPage() {
-        super(new VBox(),320, 240);
+        super(new VBox(),320, 260);
         root = (VBox) getRoot();
         root.setAlignment(Pos.CENTER_LEFT);
         root.setPadding(new Insets(20));
         root.getChildren().add(new Label("Name:"));
         root.getChildren().add(usernameField);
         root.getChildren().add(errorField);
-        root.getChildren().add(availableField);
+        root.getChildren().add(new Label("Available users:"));
+        root.getChildren().add(new ScrollPane(availableField));
 
         usernameField.setOnAction(actionEvent -> attemptLogin());
 
@@ -42,10 +44,9 @@ public class LoginPage extends Scene implements HasDBConnection {
             database -> database.employees,
             employees -> {
                 StringBuilder lines = new StringBuilder();
-                lines.append("Available users:\n    ");
                 employees.sort(Comparator.comparing(employee -> employee.name));
                 for (Employee employee : employees) {
-                    lines.append(employee.name).append("\n    ");
+                    lines.append(employee.name).append("\n");
                 }
                 availableField.setText(lines.toString());
             }

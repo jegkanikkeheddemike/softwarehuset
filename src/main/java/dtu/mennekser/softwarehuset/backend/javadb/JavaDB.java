@@ -86,11 +86,12 @@ public class JavaDB {
                         try {
                             boolean success = subscriber.update(tables);
                             if (!success) {
+                                System.out.println("Success returned false on update attemp: ");
                                 failed.add(subscriber);
                             }
                         } catch (Exception e) {
                             failed.add(subscriber);
-                            submitLog(Log.LogLevel.ERROR, "Failed to execute filter on nonfirst attempt: " + e, true);
+                            submitLog(Log.LogLevel.ERROR, "Failed to execute query on nonfirst attempt: " + e, true);
                         }
 
                     }
@@ -98,6 +99,7 @@ public class JavaDB {
                         pubSubmitLog(Log.LogLevel.INFO, "Terminated subscriber");
                         subscribers.remove(failedSub);
                     }
+                    tables.activeConnections = subscribers.stream().toArray().length;
                 }
             }
             if (tasks.isEmpty()) {

@@ -4,6 +4,7 @@ import dtu.mennekser.softwarehuset.backend.data.DataQuery;
 import dtu.mennekser.softwarehuset.backend.db.Database;
 import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnInterface;
 import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnType;
+import dtu.mennekser.softwarehuset.backend.javadb.networking.Ping;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,6 +29,8 @@ public class ClientQuery<T extends Serializable> {
                 Socket socket = new Socket(ClientSettings.remoteLocation, port);
                 ConnInterface.send(ConnType.Subscribe,socket);
                 ConnInterface.send((Function<Database,T> & Serializable) query,socket);
+
+                Ping ping = (Ping) ConnInterface.receive(socket);
                 T response =  ConnInterface.receive(socket);
                 socket.close();
                 return response;

@@ -2,6 +2,7 @@ package dtu.mennekser.softwarehuset.backend.data;
 
 import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnInterface;
 import dtu.mennekser.softwarehuset.backend.db.Database;
+import dtu.mennekser.softwarehuset.backend.javadb.networking.Ping;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Random;
 
 public class Subscriber<T extends Serializable> {
     boolean prevDataExists = false;
@@ -27,6 +29,14 @@ public class Subscriber<T extends Serializable> {
      * False means the connection has been severed and the subscriber needs to be killed
      */
     public boolean update(Database tables) {
+        //Ping to check if still alive
+        try {
+            ConnInterface.send(new Ping(new Random().nextInt()),client);
+        } catch (IOException e) {
+            return false;
+        }
+
+
         T newData = query.apply(tables);
         int newHash = Objects.hash(newData);
 
@@ -42,7 +52,6 @@ public class Subscriber<T extends Serializable> {
         try {
             ConnInterface.send(newData, client);
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
         return true;
