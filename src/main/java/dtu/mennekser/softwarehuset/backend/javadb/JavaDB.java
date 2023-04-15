@@ -99,10 +99,9 @@ public class JavaDB {
 
                     }
                     for (Subscriber<?> failedSub : failed) {
-                        pubSubmitLog(Log.LogLevel.INFO, "Terminated subscriber");
                         subscribers.remove(failedSub);
                     }
-                    tables.activeConnections = subscribers.stream().toArray().length;
+                    tables.activeConnections = subscribers.size();
                 }
             }
             if (tasks.isEmpty()) {
@@ -135,9 +134,7 @@ public class JavaDB {
             Files.write(Path.of( getTablesSavePath()), tablesBin);
         } catch (IOException e) {
             submitLog(Log.LogLevel.ERROR, e.toString(), false);
-            return;
         }
-        submitLog(Log.LogLevel.INFO,"successfully wrote table updates to disk", false);
     }
     public void pubSubmitLog(Log.LogLevel logLevel, String message) {
         submitTask(tables1 -> submitLog(logLevel,message,true));
