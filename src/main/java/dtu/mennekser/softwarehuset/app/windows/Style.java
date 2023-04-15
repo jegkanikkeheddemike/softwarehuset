@@ -15,7 +15,7 @@ public class Style {
         //all the settings for project buttons
         button.setFont(setTitleFont());
         button.setPrefSize(160, 40);
-        button.setBorder(setBorder(2,5, null));
+        button.setBorder(setBorder(2,5, "nej"));
         button.setBackground(setBackground(1,5.0));
     }
     public static void setActivityButtonStyle(Button button){
@@ -29,7 +29,7 @@ public class Style {
         //all the settings for bar buttons
         button.setFont(setTextFont());
         button.setPrefSize(width, 20);
-        button.setBorder(setBorder(2,2, null));
+        button.setBorder(setBorder(2,2, "nej"));
         button.setBackground(setBackground(1,5.0));
     }
 
