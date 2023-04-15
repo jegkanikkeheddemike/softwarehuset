@@ -30,7 +30,7 @@ public class HomePage extends Scene implements HasDBConnection {
             ((HasDBConnection) instance.root.getCenter()).cleanup();
         }
 
-        instance.root.setCenter(new CenterMenu(project));
+        instance.root.setCenter(new CenterMenu(project.id));
     }
 
     @Override
