@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Project implements Serializable {
 
     public final int id;
-    String name;
+    public String name;
     public ArrayList<Activity> activities = new ArrayList<>();
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
 

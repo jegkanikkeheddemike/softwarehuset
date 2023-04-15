@@ -6,7 +6,7 @@ import dtu.mennekser.softwarehuset.backend.javadb.client.ClientTask;
 
 public class FillWithJunkData {
     public static void main(String[] args) {
-        ClientTask.SubmitTask(database -> {
+        DBTask.SubmitTask(database -> {
             int thor = database.createEmployee("Thor");
             int frederik = database.createEmployee("Frederik");
             int katinka = database.createEmployee("Katinka");

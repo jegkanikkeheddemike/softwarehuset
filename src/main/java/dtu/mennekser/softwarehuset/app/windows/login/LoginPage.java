@@ -61,7 +61,7 @@ public class LoginPage extends Scene implements HasDBConnection {
         if (employee == null) {
             errorField.setText("No such employee: " + username);
         } else {
-            ProjectApp.setScene(new HomePage(),"Home");
+            ProjectApp.setScene(new HomePage(employee),"Home");
         }
     }
 
