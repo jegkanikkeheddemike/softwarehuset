@@ -6,10 +6,12 @@ import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 
@@ -46,6 +48,7 @@ public class LeftMenu extends BorderPane implements HasDBConnection {
                         Button button = new Button(project.name);
                         button.setOnAction(actionEvent -> HomePage.setProject(project));
                         Style.setProjectButtonStyle(button);
+                        button.setAlignment(Pos.CENTER_LEFT);
                         projectList.getChildren().add(button);
                     }
                 }
@@ -53,6 +56,7 @@ public class LeftMenu extends BorderPane implements HasDBConnection {
 
         Button createProjectButton = new Button("New Project");
         Style.setProjectButtonStyle(createProjectButton);
+        createProjectButton.setAlignment(Pos.CENTER);
         setBottom(createProjectButton);
         createProjectButton.setOnAction(actionEvent -> NewProjectWindow.tryCreate(HomePage.loggedInAs.id));
 
