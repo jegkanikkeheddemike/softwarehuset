@@ -33,7 +33,6 @@ public class LeftMenu extends VBox {
                         getChildren().add(button);
                     }
                 }
-
         );
 
 
