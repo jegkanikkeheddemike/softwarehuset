@@ -25,16 +25,16 @@ public class LoginPage extends VBox {
         usernameField.setOnAction(actionEvent -> new Thread(this::attemptLogin).start());
 
 
-        ClientSubscriber<ArrayList<Log>> logsSubscriber = new ClientSubscriber<>(
+        ClientSubscriber<ArrayList<Employee>> logsSubscriber = new ClientSubscriber<>(
                 "koebstoffer.info",
-                database -> database.logs,
-                logs -> {
+                database -> database.employees,
+                employees -> {
                     Platform.runLater(() -> {
-                        String lines = "";
-                        for (Log log : logs) {
-                            lines  += log + "\n";
+                        StringBuilder lines = new StringBuilder();
+                        for (Employee employee : employees) {
+                            lines.append(employee).append("\n");
                         }
-                        errorField.setText(lines);
+                        errorField.setText(lines.toString());
                     });
                 },
                 Throwable::printStackTrace
