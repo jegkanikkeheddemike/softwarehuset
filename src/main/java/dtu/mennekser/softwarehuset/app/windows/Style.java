@@ -15,7 +15,8 @@ public class Style {
         //all the settings for project buttons
         button.setFont(setTitleFont());
         button.setPrefSize(160, 40);
-        button.setBackground(setBackground(1,2.0));
+        button.setBorder(setBorder(2,5));
+        button.setBackground(setBackground(1,5.0));
     }
     public static void setActivityButtonStyle(Button button){
         //all the settings for activity buttons
@@ -24,7 +25,17 @@ public class Style {
         button.setBackground(setBackground(1,5.0));
     }
 
+    public static void setBarButtonStyle(Button button, double width){
+        //all the settings for bar buttons
+        button.setFont(setTextFont());
+        button.setPrefSize(width, 20);
+        button.setBorder(setBorder(2,2));
+        button.setBackground(setBackground(1,5.0));
+    }
 
+    public static Border setBorder(int theme, double corner){
+        return new Border(new BorderStroke(setTheme(theme),BorderStrokeStyle.SOLID,new CornerRadii(corner),BorderWidths.DEFAULT));
+    }
     public static Background setBackground(int theme, double corner){
         return new Background(new BackgroundFill(setTheme(theme), new CornerRadii(corner),null));
     }
