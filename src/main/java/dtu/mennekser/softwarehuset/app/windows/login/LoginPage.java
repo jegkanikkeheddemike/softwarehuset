@@ -7,7 +7,6 @@ import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.app.windows.home.HomePage;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,19 +17,23 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class LoginPage extends VBox implements HasDBConnection {
+public class LoginPage extends Scene implements HasDBConnection {
 
+
+    VBox root;
     TextField usernameField = new TextField("");
     Label errorField = new Label("");
     Label availableField = new Label("Loading");
     ClientSubscriber<ArrayList<Employee>> employeesSubscriber;
     public LoginPage() {
-        setAlignment(Pos.CENTER_LEFT);
-        setPadding(new Insets(20));
-        getChildren().add(new Label("Name:"));
-        getChildren().add(usernameField);
-        getChildren().add(errorField);
-        getChildren().add(availableField);
+        super(new VBox(),320, 240);
+        root = (VBox) getRoot();
+        root.setAlignment(Pos.CENTER_LEFT);
+        root.setPadding(new Insets(20));
+        root.getChildren().add(new Label("Name:"));
+        root.getChildren().add(usernameField);
+        root.getChildren().add(errorField);
+        root.getChildren().add(availableField);
 
         usernameField.setOnAction(actionEvent -> attemptLogin());
 
@@ -58,7 +61,7 @@ public class LoginPage extends VBox implements HasDBConnection {
         if (employee == null) {
             errorField.setText("No such employee: " + username);
         } else {
-            ProjectApp.setScene(new Scene(new HomePage(),1920*0.5,1080*0.5), "Home");
+            ProjectApp.setScene(new HomePage(),"Home");
         }
     }
 

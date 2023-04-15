@@ -10,16 +10,13 @@ import javafx.stage.Stage;
 
 public class ProjectApp extends Application {
 
-
-
     static Stage mainStage;
     @Override
     public void start(Stage stage) throws Exception {
         ProjectSettings.init();
-
         mainStage = stage;
 
-        Scene scene = new Scene(new LoginPage(), 320, 240);
+        Scene scene = new LoginPage();
 
         mainStage.setTitle("Login");
         mainStage.setScene(scene);
