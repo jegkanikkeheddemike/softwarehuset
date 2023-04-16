@@ -28,6 +28,10 @@ public class ActivityTopBar extends BorderPane {
         setLeft(left);
         setRight(right);
 
+        Button backbutton = new Button("<");
+        backbutton.setOnAction(actionEvent -> HomePage.setProject(project));
+        left.getChildren().add(backbutton);
+
         Label title = new Label(project.name +"  ▶  "+ activity.name);
         title.setFont(Style.setTitleFont());
         left.getChildren().add(title);
