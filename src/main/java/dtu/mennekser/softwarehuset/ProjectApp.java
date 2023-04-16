@@ -1,5 +1,6 @@
 package dtu.mennekser.softwarehuset;
 
+import dtu.mennekser.softwarehuset.app.networking.GarbageCollector;
 import dtu.mennekser.softwarehuset.app.windows.login.LoginPage;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,7 +23,7 @@ public class ProjectApp extends Application {
         mainStage.setScene(scene);
         mainStage.show();
         mainStage.setOnCloseRequest(windowEvent -> System.exit(0));
-
+        GarbageCollector.init();
     }
 
     public static void setScene(Scene newScene, String title) {
