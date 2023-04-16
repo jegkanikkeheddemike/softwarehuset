@@ -33,7 +33,7 @@ public class LoginPage extends Scene {
         root.setPadding(new Insets(20));
         Label name = new Label("Name:");
         name.setFont(Style.setTitleFont());
-        name.setStyle("-fx-text-fill: rgb(101,204,153);");
+        name.setStyle("-fx-text-fill: rgb(54,174,123);");
         root.getChildren().add(name);
         root.getChildren().add(usernameField);
         root.getChildren().add(errorField);

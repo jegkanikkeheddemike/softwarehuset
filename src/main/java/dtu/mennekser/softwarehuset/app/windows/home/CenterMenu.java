@@ -44,6 +44,7 @@ public class CenterMenu extends BorderPane {
             activitiesPane.setVgap(10);
             activitiesPane.setPadding(new Insets(5,5,5,5));
 
+
             assignedPane.setBorder(Style.setBorder(3,0,"left"));
             assignedPane.setPadding(new Insets(5,5,5,5));
             assignedPane.setPrefWidth(120);
@@ -57,9 +58,16 @@ public class CenterMenu extends BorderPane {
                     activities -> {
                         activitiesPane.getChildren().clear();
                         Button newActivity = new Button("+");
-                        Style.setActivityButtonStyle(newActivity);
+                        newActivity.setBackground(Style.setBackground(4,5.0));
+                        newActivity.setOnMouseEntered(actionEvent -> {
+                            newActivity.setBackground(Style.setBackground(0,5.0));
+                        });
+                        newActivity.setOnMouseExited(actionEvent -> {
+                            newActivity.setBackground(Style.setBackground(4,5.0));
+                        });
                         newActivity.setFont(Font.font("Impact", FontWeight.BOLD, 40));
                         newActivity.setStyle("-fx-text-fill: rgb(60,130,100)");
+                        newActivity.setPrefSize(100, 120);
                         activitiesPane.getChildren().add(newActivity);
                         newActivity.setOnAction(actionEvent -> {
                             NewActivityWindow.tryCreate(project.id);
@@ -69,6 +77,7 @@ public class CenterMenu extends BorderPane {
                         for (Activity activity : activities) {
                             Button button = new Button(activity.name);
                             Style.setActivityButtonStyle(button);
+                            //button.setStyle("-fx-text-fill: rgb(60,130,100)");
                             button.setOnAction(actionEvent -> HomePage.setActivity(project,activity));
                             activitiesPane.getChildren().add(button);
                         }
