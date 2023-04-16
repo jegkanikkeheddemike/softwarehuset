@@ -49,12 +49,12 @@ public class ProjectSettings {
 
         ClientSubscriber<ArrayList<Log>> logSubscriber = new DBSubscriber<>(database -> database.logs,
             logs -> {
-                Platform.runLater(() -> {
-                    content.getChildren().clear();
-                    for (Log log : logs) {
-                        content.getChildren().add(new Label(log.toString()));
-                    }
-                });
+                content.getChildren().clear();
+                scrollPane.setHvalue(1D);
+                for (Log log : logs) {
+                    content.getChildren().add(new Label(log.toString()));
+                }
+                scrollPane.setHvalue(1D);
             });
 
         ClientSubscriber<Integer> activeSubscribersSubscriber = new DBSubscriber<>(
