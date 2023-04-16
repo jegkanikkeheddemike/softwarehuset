@@ -43,7 +43,6 @@ public final class GarbageCollector {
                     List<Window> windows = Window.getWindows();
 
                     for (Window window : windows) {
-                        System.out.println("___________");
                         tagObject(window);
                         Scene scene = window.getScene();
                         tagObject(scene);
@@ -52,9 +51,19 @@ public final class GarbageCollector {
                     }
 
                     synchronized (subscribers) {
+                        ArrayList<Integer> toBeCollected = new ArrayList<>();
+
                         subscribers.forEach((id,subscriber) -> {
-                            System.out.println(id + ": " + subscriber.garbageTagged);
+                            //System.out.println(id + ": " + subscriber.garbageTagged);
+                            if (!subscriber.garbageTagged) {
+                                toBeCollected.add(id);
+                            }
                         });
+                        for (Integer id : toBeCollected) {
+                            DBSubscriber<?> subscriber = subscribers.remove(id);
+                            subscriber.kill();
+                        }
+
                         subscribers.forEach((id,subscriber) -> {
                             subscriber.garbageTagged = false;
                         });
@@ -66,10 +75,8 @@ public final class GarbageCollector {
         }
     }
     private static void recursiveTag(Pane pane) {
-        System.out.println("Found pane " + pane.getClass().getName());
         //Loop over children first
         for (Object child : pane.getChildren()) {
-            System.out.println(pane.getClass().getName() + " has child " + child.getClass().getName());
             tagObject(child);
 
             if (child instanceof Pane childPane) {
@@ -79,17 +86,18 @@ public final class GarbageCollector {
     }
 
     private static void tagObject(Object object) {
+        if (object == null) {
+            return;
+        }
+
         if (!object.getClass().getName().startsWith("dtu")) {
             return;
         }
-        System.out.println("Tagging " + object.getClass().getName());
         for (Field field : object.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
                 Object value = field.get(object);
-                System.out.println("    Found field: " + field.getName() + " " + value);
                 if (value instanceof DBSubscriber<?> subscriber) {
-                    System.out.println("FOUND SUBSCRIBER");
                     subscriber.garbageTagged = true;
                 }
             } catch (IllegalAccessException e) {
