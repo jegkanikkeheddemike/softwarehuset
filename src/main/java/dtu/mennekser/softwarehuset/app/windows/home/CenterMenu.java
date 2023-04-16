@@ -7,6 +7,7 @@ import dtu.mennekser.softwarehuset.backend.db.Activity;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
@@ -84,7 +85,7 @@ public class CenterMenu extends BorderPane {
                     }
                 }
         );
-
+        assignedPane.setMinWidth(180);
         assignedSubscriber = new DBSubscriber<>(
                 database -> {
                     ArrayList<Employee> assigned = new ArrayList<>();
@@ -94,6 +95,7 @@ public class CenterMenu extends BorderPane {
                     return assigned;
                 }, employees -> {
             VBox assignedList = new VBox();
+            assignedList.setAlignment(Pos.TOP_CENTER);
             assignedList.setSpacing(5);
 
             assignedPane.getChildren().clear();
@@ -106,6 +108,7 @@ public class CenterMenu extends BorderPane {
             }
 
             HBox bottomMenu = new HBox();
+            bottomMenu.setSpacing(5);
             assignedPane.setBottom(bottomMenu);
 
             ComboBox<String> employeeDropdown = new ComboBox<>();
@@ -143,8 +146,7 @@ public class CenterMenu extends BorderPane {
             Button addEmployee = new Button("+");
             addEmployee.setFont(Style.setTextFont());
             Style.setEmployeeButtonStyle(addEmployee);
-            addEmployee.setMinSize(5,5);
-            addEmployee.setMaxSize(30, 30);
+            addEmployee.setMinSize(30,30);
 
             bottomMenu.getChildren().add(addEmployee);
             addEmployee.setOnAction(actionEvent -> {

@@ -102,7 +102,7 @@ public class ActivityMenu extends BorderPane {
 
         //--------------------------------------
 
-
+        assignedPane.setMinWidth(180);
         assignedSubscriber = new DBSubscriber<>(
             database -> {
                 ArrayList<Employee> assigned = new ArrayList<>();
@@ -112,6 +112,7 @@ public class ActivityMenu extends BorderPane {
                 return assigned;
             }, employees -> {
                 VBox assignedList = new VBox();
+                assignedList.setAlignment(Pos.TOP_CENTER);
                 assignedList.setSpacing(5);
 
                 assignedPane.getChildren().clear();
@@ -125,6 +126,7 @@ public class ActivityMenu extends BorderPane {
                 }
 
                 HBox bottomMenu = new HBox();
+                bottomMenu.setSpacing(5);
                 assignedPane.setBottom(bottomMenu);
 
                 //DropDown menu for choosing who to add to an activity
@@ -165,8 +167,7 @@ public class ActivityMenu extends BorderPane {
                 Button addEmployee = new Button("+");
                 addEmployee.setFont(Style.setTextFont());
                 Style.setEmployeeButtonStyle(addEmployee);
-                addEmployee.setMinSize(5,5);
-                addEmployee.setMaxSize(30, 30);
+                addEmployee.setMinSize(30,30);
 
                 bottomMenu.getChildren().add(addEmployee);
                 addEmployee.setOnAction(actionEvent -> {
