@@ -49,8 +49,8 @@ public class Style {
             button.setBackground(setBackground(0,5.0));
 
         });
-            button.setFont(setTextFont());
-            button.setPrefSize(110, 20);
+        button.setFont(setTextFont());
+        button.setMinSize(160, 20);
 
     }
 
