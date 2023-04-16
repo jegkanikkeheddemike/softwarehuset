@@ -157,7 +157,8 @@ public class ActivityMenu extends BorderPane {
                     Button addEmployee = new Button("+");
                     addEmployee.setFont(Style.setTextFont());
                     Style.setEmployeeButtonStyle(addEmployee);
-                    addEmployee.setPrefSize(30, 30);
+                    addEmployee.setMinSize(5,5);
+                    addEmployee.setMaxSize(30, 30);
 
                     bottomMenu.getChildren().add(addEmployee);
                     addEmployee.setOnAction(actionEvent -> {
