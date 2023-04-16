@@ -20,6 +20,8 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
             assignedPane = new BorderPane();
             setRight(assignedPane);
 
+            
+
 
             assignedPane.setBorder(Style.setBorder(2,0,"left"));
             assignedPane.setPadding(new Insets(5,5,5,5));
