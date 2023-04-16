@@ -85,9 +85,9 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
                     List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
                     for (Employee employee : database.employees) {
                         if(database.projects.get(project.id).assignedEmployees.contains(employee.id)) {
-                            //if (!allEmployees.contains(employee.id)) {
+                            if (!allEmployees.contains(employee.id)) {
                                 notAssigned.add(employee);
-                            //}
+                            }
                         }
                     }
                     return notAssigned;
