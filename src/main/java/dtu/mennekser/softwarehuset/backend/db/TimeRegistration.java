@@ -3,10 +3,12 @@ package dtu.mennekser.softwarehuset.backend.db;
 import java.io.Serializable;
 
 public class TimeRegistration implements Serializable {
-    final int usedTime;
-    final Employee employee;
-    public TimeRegistration(Employee employee, int usedTime) {
+    public final int usedTime;
+    public final int employeeID;
+    public final boolean halfhour;
+    public TimeRegistration(int employeeID, int usedTime, boolean halfhour) {
         this.usedTime = usedTime;
-        this.employee = employee;
+        this.employeeID = employeeID;
+        this.halfhour = halfhour;
     }
 }

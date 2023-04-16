@@ -35,6 +35,10 @@ public class Activity implements Serializable {
         return timeSum;
     }
 
+    public void registerTime(int employeeID, int hours, int minuts) {
+        timeRegistrations.add(new TimeRegistration(employeeID,hours,false));
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

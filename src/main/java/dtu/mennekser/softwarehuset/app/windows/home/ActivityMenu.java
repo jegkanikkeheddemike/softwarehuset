@@ -6,11 +6,12 @@ import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.db.Activity;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
+import dtu.mennekser.softwarehuset.backend.db.TimeRegistration;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class ActivityMenu extends BorderPane {
 
     BorderPane assignedPane;
     VBox description;
+    BorderPane activityCenter;
 
     TextArea descriptionText;
 
@@ -27,6 +29,7 @@ public class ActivityMenu extends BorderPane {
 
     DBSubscriber<ArrayList<Employee>> assignedSubscriber;
     DBSubscriber<ArrayList<Employee>> notAssignedSubscriber;
+    DBSubscriber<ArrayList<TimeRegistration>> timerSubscriber;
 
     //Det her gør at hvis der kommer ændringer på projektet mens den er åben bliver det ikke reflekteret.
     //Men det er vel ok siden man ikke kan ændre på projektnavnet osv.
@@ -36,7 +39,16 @@ public class ActivityMenu extends BorderPane {
         activitySubscriber = new DBSubscriber<>(database -> database.projects.get(project.id).activities.get(activityID), activity -> {
 
             assignedPane = new BorderPane();
+            activityCenter = new BorderPane();
             description = new VBox();
+            activityCenter.setCenter(description);
+            BorderPane timerPane = new BorderPane();
+            activityCenter.setRight(timerPane);
+
+            setMargin(activityCenter,new Insets(10));
+            activityCenter.setBorder(Style.setBorder(1,10,"all"));
+
+
 
             Text descriptionTitle = new Text("Description: ");
             descriptionTitle.setFont(Style.setTitleFont());
@@ -85,7 +97,7 @@ public class ActivityMenu extends BorderPane {
             description.setPadding(new Insets(5,5,5,5));
             description.getChildren().addAll(descriptionTitle,descriptionText,save);
 
-            setCenter(description);
+            setCenter(activityCenter);
             setRight(assignedPane);
 
 
@@ -170,6 +182,64 @@ public class ActivityMenu extends BorderPane {
                 }
             );
             //--------------------------------
+
+
+
+            BorderPane bottomBox = new BorderPane();
+            timerPane.setBottom(bottomBox);
+
+            Button addTimerButton = new Button("+");
+            bottomBox.setRight(addTimerButton);
+
+            TextField timerField = new TextField("");
+            bottomBox.setCenter(timerField);
+
+
+            addTimerButton.setOnAction(actionEvent -> {
+                Employee self = HomePage.loggedInAs;
+                String timeStr = timerField.getText().trim();
+                String[] split = timeStr.split(":");
+                int hours  =     Integer.parseInt(split[0]);
+                int minutes =    Integer.parseInt(split[1]);
+
+                DBTask.SubmitTask(database -> {
+                    database.projects.get(project.id).activities.get(activityID).registerTime(
+                            self.id,
+                            hours,
+                            minutes
+                    );
+                });
+            });
+
+            VBox timerBox = new VBox();
+            ScrollPane scrollPane = new ScrollPane(timerBox);
+            scrollPane.setStyle(
+                    "-fx-control-inner-background: rgb(244, 244, 244);" +
+                            "-fx-faint-focus-color: transparent;" +
+                            "-fx-focus-color: transparent;" +
+                            "-fx-highlight-fill: rgb(101,204,153);"+
+                            "-fx-background-insets: 10;" +
+                            "-fx-control-background: transparent;"
+            );
+            timerPane.setCenter(scrollPane);
+            scrollPane.setBorder(new Border(new BorderStroke(Color.rgb(0,0,0,0D),BorderStrokeStyle.NONE,new CornerRadii(10),BorderWidths.DEFAULT)));
+
+
+
+            timerSubscriber = new DBSubscriber<>(
+                database -> database.projects.get(project.id).activities.get(activityID).timeRegistrations,
+                timeRegistrations -> {
+
+                    timerBox.getChildren().clear();
+                    for (TimeRegistration regis: timeRegistrations) {
+                        timerBox.getChildren().add(new Label(regis.employeeID + " : " + regis.usedTime));
+                    }
+                }
+            );
+
+            timerPane.setMinWidth(150);
+            timerPane.setBorder(Style.setBorder(3,0,"left"));
+
 
             assignedPane.setBorder(Style.setBorder(3,0,"left"));
             assignedPane.setPadding(new Insets(5,5,5,5));
