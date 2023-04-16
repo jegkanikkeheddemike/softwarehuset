@@ -7,7 +7,7 @@ public class Activity implements Serializable {
     public final int id;
     public String name;
     int budgetedTime;
-    public String description = "No description...";
+    public String description;
     boolean finished = false;
     public ArrayList<Integer> assigned = new ArrayList<>();
     public ArrayList<TimeRegistration> timeRegistrations = new ArrayList<>();

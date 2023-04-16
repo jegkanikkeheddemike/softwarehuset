@@ -42,8 +42,12 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
             Text descriptionTitle = new Text("Description: ");
             descriptionTitle.setFont(Style.setTitleFont());
 
-
-            descriptionText = new TextArea(activity.description);
+            if(!activity.description.isEmpty()) {
+                descriptionText = new TextArea(activity.description);
+            } else {
+                descriptionText = new TextArea();
+            }
+            descriptionText.setPromptText("Add description...");
             descriptionText.setFont(Style.setTextFont());
             descriptionText.setStyle(
                     "-fx-control-inner-background: rgb(244, 244, 244);" +
