@@ -25,7 +25,6 @@ public class ActivityMenu extends BorderPane {
     TextArea descriptionText;
 
     DBSubscriber<Activity> activitySubscriber;
-
     DBSubscriber<ArrayList<Employee>> assignedSubscriber;
     DBSubscriber<ArrayList<Employee>> notAssignedSubscriber;
     DBSubscriber<ArrayList<TimeRegistration>> timerSubscriber;
@@ -35,24 +34,20 @@ public class ActivityMenu extends BorderPane {
     //Måske kan det fikses men det er ok som det er indtil videre.
 
     public ActivityMenu(Project project,int activityID){
+        assignedPane = new BorderPane();
+        activityCenter = new BorderPane();
+        description = new VBox();
+        activityCenter.setCenter(description);
+        BorderPane timerPane = new BorderPane();
+        activityCenter.setRight(timerPane);
+
+        setMargin(activityCenter,new Insets(10));
+        activityCenter.setBorder(Style.setBorder(1,10,"all"));
+
+        Text descriptionTitle = new Text("Description: ");
+        descriptionTitle.setFont(Style.setTitleFont());
+
         activitySubscriber = new DBSubscriber<>(database -> database.projects.get(project.id).activities.get(activityID), activity -> {
-
-            assignedPane = new BorderPane();
-            activityCenter = new BorderPane();
-            description = new VBox();
-            activityCenter.setCenter(description);
-            BorderPane timerPane = new BorderPane();
-            activityCenter.setRight(timerPane);
-
-            setMargin(activityCenter,new Insets(10));
-            activityCenter.setBorder(Style.setBorder(1,10,"all"));
-
-
-
-
-            Text descriptionTitle = new Text("Description: ");
-            descriptionTitle.setFont(Style.setTitleFont());
-
             if(!activity.description.isEmpty()) {
                 descriptionText = new TextArea(activity.description);
             } else {
@@ -62,10 +57,10 @@ public class ActivityMenu extends BorderPane {
             descriptionText.setFont(Style.setTextFont());
             descriptionText.setStyle(
                     "-fx-control-inner-background: rgb(244, 244, 244);" +
-                    "-fx-faint-focus-color: transparent;" +
-                    "-fx-focus-color: transparent;" +
-                    "-fx-highlight-fill: rgb(101,204,153);"+
-                    "-fx-background-insets: 10;");
+                            "-fx-faint-focus-color: transparent;" +
+                            "-fx-focus-color: transparent;" +
+                            "-fx-highlight-fill: rgb(101,204,153);"+
+                            "-fx-background-insets: 10;");
 
 
             descriptionText.setOnMouseEntered(mouseEvent -> {
@@ -78,10 +73,10 @@ public class ActivityMenu extends BorderPane {
             descriptionText.setOnMouseExited(mouseEvent -> {
                 descriptionText.setStyle(
                         "-fx-control-inner-background:  rgb(244, 244, 244);"+
-                        "-fx-faint-focus-color: transparent;" +
-                        "-fx-focus-color: transparent;" +
-                        "-fx-highlight-fill: rgb(101,204,153);"+
-                        "-fx-background-insets: 10;");
+                                "-fx-faint-focus-color: transparent;" +
+                                "-fx-focus-color: transparent;" +
+                                "-fx-highlight-fill: rgb(101,204,153);"+
+                                "-fx-background-insets: 10;");
             });
 
 
@@ -97,156 +92,154 @@ public class ActivityMenu extends BorderPane {
             description.setPadding(new Insets(5,5,5,5));
             description.getChildren().addAll(descriptionTitle,descriptionText,save);
 
-            setCenter(activityCenter);
-            setRight(assignedPane);
-
-
-
-
-
-            //--------------------------------------
-
-
-            assignedSubscriber = new DBSubscriber<>(
-                database -> {
-                    ArrayList<Employee> assigned = new ArrayList<>();
-                    for (int id : database.projects.get(project.id).activities.get(activityID).assigned) {
-                        assigned.add(database.employees.get(id));
-                    }
-                    return assigned;
-                }, employees -> {
-                    VBox assignedList = new VBox();
-                    assignedList.setSpacing(5);
-
-                    assignedPane.getChildren().clear();
-                    assignedPane.setCenter(assignedList);
-
-                    //Create the buttons that show assigned employee
-                    for (Employee employee: employees) {
-                        Button employeeButton = new Button(employee.name);
-                        Style.setEmployeeButtonStyle(employeeButton);
-                        assignedList.getChildren().add(employeeButton);
-                    }
-
-                    HBox bottomMenu = new HBox();
-                    assignedPane.setBottom(bottomMenu);
-
-                    //DropDown menu for choosing who to add to an activity
-                    ComboBox<String> employeeDropdown = new ComboBox<>();
-
-                    employeeDropdown.setBackground(Style.setBackground(0,5.0));
-                    employeeDropdown.setOnMouseEntered(actionEvent -> {
-                        employeeDropdown.setBackground(Style.setBackground(3,5.0));
-
-                    });
-                    employeeDropdown.setOnMouseExited(actionEvent -> {
-                        employeeDropdown.setBackground(Style.setBackground(0,5.0));
-
-                    });
-                    employeeDropdown.setPrefSize(130,30);
-
-                    //set dropdown at bottom of employee overview
-                    bottomMenu.getChildren().add(employeeDropdown);
-
-                    notAssignedSubscriber = new DBSubscriber<>(database -> {
-                        ArrayList<Employee> notAssigned = new ArrayList<>();
-                        List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
-                        for (Employee employee : database.employees) {
-                            if(database.projects.get(project.id).assignedEmployees.contains(employee.id)) {
-                                if (!allEmployees.contains(employee.id)) {
-                                    notAssigned.add(employee);
-                                }
-                            }
-                        }
-                        return notAssigned;
-                    }, notAssigned -> {
-                        employeeDropdown.getItems().clear();
-                        for (Employee employee : notAssigned) {
-                            employeeDropdown.getItems().add(employee.name);
-                        }
-                    });
-
-                    Button addEmployee = new Button("+");
-                    addEmployee.setFont(Style.setTextFont());
-                    Style.setEmployeeButtonStyle(addEmployee);
-                    addEmployee.setMinSize(5,5);
-                    addEmployee.setMaxSize(30, 30);
-
-                    bottomMenu.getChildren().add(addEmployee);
-                    addEmployee.setOnAction(actionEvent -> {
-                        String employeeName = employeeDropdown.getValue();
-                        DBTask.SubmitTask(database -> database.projects.get(project.id).activities.get(activityID).assignEmployee(database.findEmployee(employeeName).id));
-                    });
-
-
-                }
-            );
-            //--------------------------------
-
-
-
-            BorderPane bottomBox = new BorderPane();
-            timerPane.setBottom(bottomBox);
-
-            Button addTimerButton = new Button("+");
-            bottomBox.setRight(addTimerButton);
-
-            TextField timerField = new TextField("");
-            bottomBox.setCenter(timerField);
-
-
-            addTimerButton.setOnAction(actionEvent -> {
-                Employee self = HomePage.loggedInAs;
-                String timeStr = timerField.getText().trim();
-                String[] split = timeStr.split(":");
-                int hours  =     Integer.parseInt(split[0]);
-                int minutes =    Integer.parseInt(split[1]);
-
-                DBTask.SubmitTask(database -> {
-                    database.projects.get(project.id).activities.get(activityID).registerTime(
-                            self.id,
-                            hours,
-                            minutes
-                    );
-                });
-            });
-
-            VBox timerBox = new VBox();
-            ScrollPane scrollPane = new ScrollPane(timerBox);
-            scrollPane.setStyle(
-                    "-fx-control-inner-background: rgb(244, 244, 244);" +
-                            "-fx-faint-focus-color: transparent;" +
-                            "-fx-focus-color: transparent;" +
-                            "-fx-highlight-fill: rgb(101,204,153);"+
-                            "-fx-background-insets: 10;" +
-                            "-fx-control-background: transparent;"
-            );
-            timerPane.setCenter(scrollPane);
-            scrollPane.setBorder(new Border(new BorderStroke(Color.rgb(0,0,0,0D),BorderStrokeStyle.NONE,new CornerRadii(10),BorderWidths.DEFAULT)));
-
-
-
-            timerSubscriber = new DBSubscriber<>(
-                database -> database.projects.get(project.id).activities.get(activityID).timeRegistrations,
-                timeRegistrations -> {
-
-                    timerBox.getChildren().clear();
-                    for (TimeRegistration regis: timeRegistrations) {
-                        timerBox.getChildren().add(new Label(regis.employeeID + " : " + regis.usedTime));
-                    }
-                }
-            );
-
-            timerPane.setMinWidth(150);
-            timerPane.setBorder(Style.setBorder(3,0,"left"));
-
-
-            assignedPane.setBorder(Style.setBorder(3,0,"left"));
-            assignedPane.setPadding(new Insets(5,5,5,5));
-            assignedPane.setPrefWidth(120);
-
             setTop(new ActivityTopBar(project, activity));
         });
+
+        setCenter(activityCenter);
+        setRight(assignedPane);
+
+        //--------------------------------------
+
+
+        assignedSubscriber = new DBSubscriber<>(
+            database -> {
+                ArrayList<Employee> assigned = new ArrayList<>();
+                for (int id : database.projects.get(project.id).activities.get(activityID).assigned) {
+                    assigned.add(database.employees.get(id));
+                }
+                return assigned;
+            }, employees -> {
+                VBox assignedList = new VBox();
+                assignedList.setSpacing(5);
+
+                assignedPane.getChildren().clear();
+                assignedPane.setCenter(assignedList);
+
+                //Create the buttons that show assigned employee
+                for (Employee employee: employees) {
+                    Button employeeButton = new Button(employee.name);
+                    Style.setEmployeeButtonStyle(employeeButton);
+                    assignedList.getChildren().add(employeeButton);
+                }
+
+                HBox bottomMenu = new HBox();
+                assignedPane.setBottom(bottomMenu);
+
+                //DropDown menu for choosing who to add to an activity
+                ComboBox<String> employeeDropdown = new ComboBox<>();
+
+                employeeDropdown.setBackground(Style.setBackground(0,5.0));
+                employeeDropdown.setOnMouseEntered(actionEvent -> {
+                    employeeDropdown.setBackground(Style.setBackground(3,5.0));
+
+                });
+                employeeDropdown.setOnMouseExited(actionEvent -> {
+                    employeeDropdown.setBackground(Style.setBackground(0,5.0));
+
+                });
+                employeeDropdown.setPrefSize(130,30);
+
+                //set dropdown at bottom of employee overview
+                bottomMenu.getChildren().add(employeeDropdown);
+
+                notAssignedSubscriber = new DBSubscriber<>(database -> {
+                    ArrayList<Employee> notAssigned = new ArrayList<>();
+                    List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
+                    for (Employee employee : database.employees) {
+                        if(database.projects.get(project.id).assignedEmployees.contains(employee.id)) {
+                            if (!allEmployees.contains(employee.id)) {
+                                notAssigned.add(employee);
+                            }
+                        }
+                    }
+                    return notAssigned;
+                }, notAssigned -> {
+                    employeeDropdown.getItems().clear();
+                    for (Employee employee : notAssigned) {
+                        employeeDropdown.getItems().add(employee.name);
+                    }
+                });
+
+                Button addEmployee = new Button("+");
+                addEmployee.setFont(Style.setTextFont());
+                Style.setEmployeeButtonStyle(addEmployee);
+                addEmployee.setMinSize(5,5);
+                addEmployee.setMaxSize(30, 30);
+
+                bottomMenu.getChildren().add(addEmployee);
+                addEmployee.setOnAction(actionEvent -> {
+                    String employeeName = employeeDropdown.getValue();
+                    DBTask.SubmitTask(database -> database.projects.get(project.id).activities.get(activityID).assignEmployee(database.findEmployee(employeeName).id));
+                });
+
+
+            }
+        );
+        //--------------------------------
+
+
+
+        BorderPane bottomBox = new BorderPane();
+        timerPane.setBottom(bottomBox);
+
+        Button addTimerButton = new Button("+");
+        bottomBox.setRight(addTimerButton);
+
+        TextField timerField = new TextField("");
+        bottomBox.setCenter(timerField);
+
+
+        addTimerButton.setOnAction(actionEvent -> {
+            Employee self = HomePage.loggedInAs;
+            String timeStr = timerField.getText().trim();
+            String[] split = timeStr.split(":");
+            int hours  =     Integer.parseInt(split[0]);
+            int minutes =    Integer.parseInt(split[1]);
+
+            DBTask.SubmitTask(database -> {
+                database.projects.get(project.id).activities.get(activityID).registerTime(
+                        self.id,
+                        hours,
+                        minutes
+                );
+            });
+        });
+
+        VBox timerBox = new VBox();
+        ScrollPane scrollPane = new ScrollPane(timerBox);
+        scrollPane.setStyle(
+                "-fx-control-inner-background: rgb(244, 244, 244);" +
+                        "-fx-faint-focus-color: transparent;" +
+                        "-fx-focus-color: transparent;" +
+                        "-fx-highlight-fill: rgb(101,204,153);"+
+                        "-fx-background-insets: 10;" +
+                        "-fx-control-background: transparent;"
+        );
+        timerPane.setCenter(scrollPane);
+        scrollPane.setBorder(new Border(new BorderStroke(Color.rgb(0,0,0,0D),BorderStrokeStyle.NONE,new CornerRadii(10),BorderWidths.DEFAULT)));
+
+
+
+        timerSubscriber = new DBSubscriber<>(
+            database -> database.projects.get(project.id).activities.get(activityID).timeRegistrations,
+            timeRegistrations -> {
+
+                timerBox.getChildren().clear();
+                for (TimeRegistration regis: timeRegistrations) {
+                    timerBox.getChildren().add(new Label(regis.employeeID + " : " + regis.usedTime));
+                }
+            }
+        );
+
+        timerPane.setMinWidth(150);
+        timerPane.setBorder(Style.setBorder(3,0,"left"));
+
+
+        assignedPane.setBorder(Style.setBorder(3,0,"left"));
+        assignedPane.setPadding(new Insets(5,5,5,5));
+        assignedPane.setPrefWidth(120);
+
+
 
     }
 }
