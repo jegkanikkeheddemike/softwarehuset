@@ -1,6 +1,5 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.app.HasDBConnection;
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
@@ -13,7 +12,7 @@ import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 
-public class LeftMenu extends BorderPane implements HasDBConnection {
+public class LeftMenu extends BorderPane {
     final DBSubscriber<ArrayList<Project>> projectSubscriber;
 
     LeftMenu() {
@@ -58,10 +57,5 @@ public class LeftMenu extends BorderPane implements HasDBConnection {
         setBottom(createProjectButton);
         createProjectButton.setOnAction(actionEvent -> NewProjectWindow.tryCreate(HomePage.loggedInAs.id));
 
-    }
-
-    @Override
-    public void killSubscribers() {
-        projectSubscriber.kill();
     }
 }

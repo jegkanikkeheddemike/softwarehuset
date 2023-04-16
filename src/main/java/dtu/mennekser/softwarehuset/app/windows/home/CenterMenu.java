@@ -1,6 +1,5 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.app.HasDBConnection;
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.app.networking.DBTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class CenterMenu extends BorderPane implements HasDBConnection {
+public class CenterMenu extends BorderPane {
 
     FlowPane activitiesPane;
     BorderPane assignedPane;
@@ -150,13 +149,5 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
             );
             setTop(new CenterTopBar(project));
         });
-    }
-
-    @Override
-    public void killSubscribers() {
-        projectSubscriber.kill();
-        activitySubscriber.kill();
-        notAssignedSubscriber.kill();
-        assignedSubscriber.kill();
     }
 }

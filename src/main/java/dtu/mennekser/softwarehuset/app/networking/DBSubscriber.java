@@ -9,6 +9,9 @@ import java.util.function.Consumer;
 
 public class DBSubscriber<T extends Serializable> extends ClientSubscriber<T> {
 
+    final int garbageID;
+    boolean garbageTagged = false;
+
     public DBSubscriber(DataQuery<T> query, Consumer<T> callback) {
         super(
                 query,
@@ -17,5 +20,7 @@ public class DBSubscriber<T extends Serializable> extends ClientSubscriber<T> {
                 }),
                 Throwable::printStackTrace
         );
+        this.garbageID = GarbageCollector.addSubscriber(this);
+
     }
 }
