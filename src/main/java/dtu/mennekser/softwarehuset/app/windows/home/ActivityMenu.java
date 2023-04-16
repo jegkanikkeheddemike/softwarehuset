@@ -8,11 +8,8 @@ import dtu.mennekser.softwarehuset.backend.db.Activity;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -48,13 +45,30 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
 
             descriptionText = new TextArea(activity.description);
             descriptionText.setFont(Style.setTextFont());
-            descriptionText.setBackground(Style.setBackground(4,5));
+            descriptionText.setStyle(
+                    "-fx-control-inner-background: rgb(244, 244, 244);" +
+                    "-fx-faint-focus-color: transparent;" +
+                    "-fx-focus-color: transparent;" +
+                    "-fx-highlight-fill: rgb(101,204,153);"+
+                    "-fx-background-insets: 10;");
+
+
             descriptionText.setOnMouseEntered(mouseEvent -> {
-                descriptionText.setBackground(Style.setBackground(0,5));
+                descriptionText.setStyle("-fx-control-inner-background: white;" +
+                        "-fx-faint-focus-color: transparent;" +
+                        "-fx-focus-color: transparent;" +
+                        "-fx-highlight-fill: rgb(101,204,153);"+
+                        "-fx-background-insets: 10;");
             });
             descriptionText.setOnMouseExited(mouseEvent -> {
-                descriptionText.setBackground(Style.setBackground(4,5));
+                descriptionText.setStyle(
+                        "-fx-control-inner-background:  rgb(244, 244, 244);"+
+                        "-fx-faint-focus-color: transparent;" +
+                        "-fx-focus-color: transparent;" +
+                        "-fx-highlight-fill: rgb(101,204,153);"+
+                        "-fx-background-insets: 10;");
             });
+
 
             Button save = new Button("Save");
             save.setOnAction(actionEvent -> {
