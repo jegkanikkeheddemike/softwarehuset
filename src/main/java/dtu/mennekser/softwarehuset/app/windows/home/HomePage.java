@@ -28,7 +28,6 @@ public class HomePage extends Scene implements HasDBConnection {
 
     public static void setProject(Project project) {
         if (instance.root.getCenter() != null && instance.root.getCenter() instanceof HasDBConnection) {
-            System.out.println("Cleaning prev center");
             ((HasDBConnection) instance.root.getCenter()).cleanup();
         }
 

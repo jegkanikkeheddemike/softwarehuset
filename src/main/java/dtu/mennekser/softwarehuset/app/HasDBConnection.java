@@ -11,7 +11,6 @@ public interface HasDBConnection {
     }
 
     private static void killPane(Pane pane) {
-        String name = pane.getClass().getName();
         for (Object child : pane.getChildren()) {
             if (child instanceof Pane paneChild) {
                 killPane(paneChild);
