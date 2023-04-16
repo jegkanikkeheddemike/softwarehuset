@@ -26,7 +26,7 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
     VBox description;
 
     TextArea descriptionText;
-    String s;
+
     DBSubscriber<Activity> activitySubscriber;
 
     DBSubscriber<ArrayList<Employee>> assignedSubscriber;
@@ -45,10 +45,16 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
             Text descriptionTitle = new Text("Description: ");
             descriptionTitle.setFont(Style.setTitleFont());
 
-            //activity.setDescription(activity.name);
-            s = activity.description;
 
             descriptionText = new TextArea(activity.description);
+            descriptionText.setFont(Style.setTextFont());
+            descriptionText.setBackground(Style.setBackground(4,5));
+            descriptionText.setOnMouseEntered(mouseEvent -> {
+                descriptionText.setBackground(Style.setBackground(0,5));
+            });
+            descriptionText.setOnMouseExited(mouseEvent -> {
+                descriptionText.setBackground(Style.setBackground(4,5));
+            });
 
             Button save = new Button("Save");
             save.setOnAction(actionEvent -> {
@@ -60,7 +66,7 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
             });
 
             description.setPadding(new Insets(5,5,5,5));
-            description.getChildren().addAll(descriptionTitle,descriptionText,save,new Text(s));
+            description.getChildren().addAll(descriptionTitle,descriptionText,save);
 
             setCenter(description);
             setRight(assignedPane);

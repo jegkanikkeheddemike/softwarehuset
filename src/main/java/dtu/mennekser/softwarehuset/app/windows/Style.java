@@ -91,6 +91,8 @@ public class Style {
             return Color.rgb(69,145,107);
         } else if (theme ==3) {
             return Color.LIGHTGREY;
+        } else if (theme == 4){
+            return Color.rgb(244,244,244);
         }
         return Color.RED;
     }
