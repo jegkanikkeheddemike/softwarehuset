@@ -47,7 +47,7 @@ public class LoginPage extends Scene {
                 "-fx-focus-color: transparent;" +
                 "-fx-highlight-fill: rgb(101,204,153);"+
                 "-fx-background-insets: 10;");
-        
+
         usernameField.setBackground(Style.setBackground(0,5));
         usernameField.setFont(Style.setTextFont());
         usernameField.setStyle("-fx-highlight-fill: rgb(101,204,153);");

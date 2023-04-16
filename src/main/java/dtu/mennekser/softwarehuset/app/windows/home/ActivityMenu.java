@@ -7,6 +7,7 @@ import dtu.mennekser.softwarehuset.backend.db.Activity;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -20,7 +21,6 @@ public class ActivityMenu extends BorderPane {
 
     BorderPane assignedPane;
     VBox description;
-
     TextArea descriptionText;
 
     DBSubscriber<Activity> activitySubscriber;
@@ -37,6 +37,7 @@ public class ActivityMenu extends BorderPane {
 
             assignedPane = new BorderPane();
             description = new VBox();
+
 
             Text descriptionTitle = new Text("Description: ");
             descriptionTitle.setFont(Style.setTitleFont());
@@ -84,7 +85,7 @@ public class ActivityMenu extends BorderPane {
 
             description.setPadding(new Insets(5,5,5,5));
             description.getChildren().addAll(descriptionTitle,descriptionText,save);
-
+            
             setCenter(description);
             setRight(assignedPane);
 
