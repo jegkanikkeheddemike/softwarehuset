@@ -22,7 +22,6 @@ public class ActivityMenu extends BorderPane {
     BorderPane assignedPane;
     VBox description;
     BorderPane activityCenter;
-    TextArea descriptionText;
 
     DBSubscriber<Activity> activitySubscriber;
     DBSubscriber<ArrayList<Employee>> assignedSubscriber;
@@ -44,10 +43,13 @@ public class ActivityMenu extends BorderPane {
         setMargin(activityCenter,new Insets(10));
         activityCenter.setBorder(Style.setBorder(1,10,"all"));
 
-        Text descriptionTitle = new Text("Description: ");
-        descriptionTitle.setFont(Style.setTitleFont());
+
 
         activitySubscriber = new DBSubscriber<>(database -> database.projects.get(project.id).activities.get(activityID), activity -> {
+            description.getChildren().clear();
+            Text descriptionTitle = new Text("Description: ");
+            descriptionTitle.setFont(Style.setTitleFont());
+            TextArea descriptionText;
             if(!activity.description.isEmpty()) {
                 descriptionText = new TextArea(activity.description);
             } else {
