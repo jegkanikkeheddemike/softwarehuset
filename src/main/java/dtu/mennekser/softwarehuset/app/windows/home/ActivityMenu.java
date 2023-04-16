@@ -22,7 +22,6 @@ public class ActivityMenu extends BorderPane {
     BorderPane assignedPane;
     VBox description;
     BorderPane activityCenter;
-
     TextArea descriptionText;
 
     DBSubscriber<Activity> activitySubscriber;
@@ -47,6 +46,7 @@ public class ActivityMenu extends BorderPane {
 
             setMargin(activityCenter,new Insets(10));
             activityCenter.setBorder(Style.setBorder(1,10,"all"));
+
 
 
 
