@@ -13,6 +13,22 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class GarbageCollector {
+
+    //Hvorfor mon der er en garbage collector klasse? Svaret er fordi java's indbygget ikke er god nok
+    // så jeg (Thor) lavede vores egen.
+
+    //Der er brug for den fordi der ligger subscribers i nogle javafx elementer, men når de elementer
+    //bliver fjernet, skal der også fjernes alle de subscribers de bruger, hvilket ikke altid bliver
+    //gjort lige godt.
+
+    //Den måde garbage colleteren virker er at den har en liste af alle eksiterende subscribers,
+    //En gang i mellem finder den alle javafx vinduer. Den rekurvist finder så alle javafx elementerne
+    // som er i brug af vinduerne. Når den støder på et element som er et vi har skrevet (fordi
+    // dens klasse starter med "dtu.mennekser") så bliver der ved brug af reflektion loopet over alle
+    // dens variabler (felter), og hvis feltet er en instans af en DBSubscriber bliver den tagget.
+
+    //Når den er færdig med det, dræber den alle de subscribers som ikke blev tagget.
+
     private static final HashMap<Integer,DBSubscriber<?>> subscribers = new HashMap<>();
     private static GarbageCollector instance;
     public static void init() {
