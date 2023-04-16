@@ -83,6 +83,10 @@ public class Subscriber<T extends Serializable> {
     static int customHash(Object object) {
         int sum = Objects.hash(object);
 
+        if (object == null) {
+            return sum;
+        }
+
         for (Field field : object.getClass().getFields()) {
             try {
                 sum += Objects.hash(field.get(object));
