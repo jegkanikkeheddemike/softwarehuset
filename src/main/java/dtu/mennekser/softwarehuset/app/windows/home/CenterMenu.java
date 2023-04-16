@@ -13,6 +13,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class CenterMenu extends BorderPane {
             activitiesPane.setVgap(10);
             activitiesPane.setPadding(new Insets(5,5,5,5));
 
-            assignedPane.setBorder(Style.setBorder(2,0,"left"));
+            assignedPane.setBorder(Style.setBorder(3,0,"left"));
             assignedPane.setPadding(new Insets(5,5,5,5));
             assignedPane.setPrefWidth(120);
 
@@ -56,6 +58,8 @@ public class CenterMenu extends BorderPane {
                         activitiesPane.getChildren().clear();
                         Button newActivity = new Button("+");
                         Style.setActivityButtonStyle(newActivity);
+                        newActivity.setFont(Font.font("Impact", FontWeight.BOLD, 40));
+                        newActivity.setStyle("-fx-text-fill: rgb(60,130,100)");
                         activitiesPane.getChildren().add(newActivity);
                         newActivity.setOnAction(actionEvent -> {
                             NewActivityWindow.tryCreate(project.id);

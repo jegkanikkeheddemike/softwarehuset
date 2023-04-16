@@ -3,6 +3,7 @@ package dtu.mennekser.softwarehuset.app.windows.login;
 import dtu.mennekser.softwarehuset.ProjectApp;
 import dtu.mennekser.softwarehuset.app.networking.DBQuery;
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
+import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.app.windows.home.HomePage;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
@@ -30,12 +31,18 @@ public class LoginPage extends Scene {
         root = (VBox) getRoot();
         root.setAlignment(Pos.CENTER_LEFT);
         root.setPadding(new Insets(20));
-        root.getChildren().add(new Label("Name:"));
+        Label name = new Label("Name:");
+        name.setFont(Style.setTitleFont());
+        name.setStyle("-fx-text-fill: rgb(101,204,153);");
+        root.getChildren().add(name);
         root.getChildren().add(usernameField);
         root.getChildren().add(errorField);
         root.getChildren().add(new Label("Available users:"));
         root.getChildren().add(new ScrollPane(availableField));
 
+        usernameField.setBackground(Style.setBackground(0,5));
+        usernameField.setFont(Style.setTextFont());
+        usernameField.setStyle("-fx-highlight-fill: rgb(101,204,153);");
         usernameField.setOnAction(actionEvent -> attemptLogin());
 
 

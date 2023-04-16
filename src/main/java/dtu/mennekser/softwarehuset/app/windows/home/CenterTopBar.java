@@ -18,7 +18,7 @@ public class CenterTopBar extends BorderPane {
     HBox left;
     HBox right;
     CenterTopBar(Project project) {
-        setBorder(Style.setBorder(2,0,"bottom"));
+        setBorder(Style.setBorder(3,0,"bottom"));
         left = new HBox();
         right = new HBox();
 

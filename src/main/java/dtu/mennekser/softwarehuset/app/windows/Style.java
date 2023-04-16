@@ -88,8 +88,8 @@ public class Style {
         } else if(theme == 1){
             return Color.rgb(101,204,153);
         } else if (theme == 2) {
-            return Color.rgb(69,145,107);
-        } else if (theme ==3) {
+            return Color.rgb(54,174,123);
+        } else if (theme == 3) {
             return Color.LIGHTGREY;
         } else if (theme == 4){
             return Color.rgb(244,244,244);
@@ -99,11 +99,11 @@ public class Style {
 
 
     public static Font setTitleFont(){
-       return Font.font("Verdana", FontWeight.BOLD, 15);
+       return Font.font("Helvetica", FontWeight.BOLD, 18);
     }
 
     public static Font setTextFont(){
-        return Font.font("Verdana", FontWeight.NORMAL, 12);
+        return Font.font("Helvetica", FontWeight.NORMAL, 12);
     }
 
 

@@ -17,7 +17,7 @@ public class ActivityTopBar extends BorderPane {
     HBox left;
     HBox right;
     ActivityTopBar(Project project, Activity activity){
-        setBorder(Style.setBorder(2,0,"bottom"));
+        setBorder(Style.setBorder(3,0,"bottom"));
         left = new HBox();
         right = new HBox();
 

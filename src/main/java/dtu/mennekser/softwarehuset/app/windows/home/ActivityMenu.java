@@ -175,7 +175,7 @@ public class ActivityMenu extends BorderPane {
             );
             //--------------------------------
 
-            assignedPane.setBorder(Style.setBorder(2,0,"left"));
+            assignedPane.setBorder(Style.setBorder(3,0,"left"));
             assignedPane.setPadding(new Insets(5,5,5,5));
             assignedPane.setPrefWidth(120);
 
