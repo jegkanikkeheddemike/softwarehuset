@@ -10,10 +10,12 @@ import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,10 @@ import java.util.List;
 public class ActivityMenu extends BorderPane implements HasDBConnection {
 
     BorderPane assignedPane;
+    VBox description;
+
+    TextArea descriptionText;
+    String s;
     DBSubscriber<Activity> activitySubscriber;
 
     DBSubscriber<ArrayList<Employee>> assignedSubscriber;
@@ -34,7 +40,34 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
         activitySubscriber = new DBSubscriber<>(database -> database.projects.get(project.id).activities.get(activityID), activity -> {
 
             assignedPane = new BorderPane();
+            description = new VBox();
+
+            Text descriptionTitle = new Text("Description: ");
+            descriptionTitle.setFont(Style.setTitleFont());
+
+            //activity.setDescription(activity.name);
+            s = activity.description;
+
+            descriptionText = new TextArea(activity.description);
+
+            Button save = new Button("Save");
+            save.setOnAction(actionEvent -> {
+                String string = descriptionText.getText().trim();
+                DBTask.SubmitTask( database -> {
+                            database.projects.get(project.id).activities.get(activityID).setDescription(string);
+                        }
+                );
+            });
+
+            description.setPadding(new Insets(5,5,5,5));
+            description.getChildren().addAll(descriptionTitle,descriptionText,save,new Text(s));
+
+            setCenter(description);
             setRight(assignedPane);
+
+
+
+
 
             //--------------------------------------
             assignedSubscriber = new DBSubscriber<>(

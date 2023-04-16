@@ -7,6 +7,7 @@ public class Activity implements Serializable {
     public final int id;
     public String name;
     int budgetedTime;
+    public String description = "No description...";
     boolean finished = false;
     public ArrayList<Integer> assigned = new ArrayList<>();
     public ArrayList<TimeRegistration> timeRegistrations = new ArrayList<>();
@@ -32,5 +33,9 @@ public class Activity implements Serializable {
             timeSum += timeRegistration.usedTime;
         }
         return timeSum;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
