@@ -42,6 +42,6 @@ public class HomePage extends Scene implements HasDBConnection {
     }
 
     @Override
-    public void cleanup() {
+    public void killSubscribers() {
     }
 }

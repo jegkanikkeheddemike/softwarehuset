@@ -35,16 +35,8 @@ public class ProjectApp extends Application {
     }
 
     private static void recursiveCleanup(Pane pane) {
-        //Depth first
-        for (Object child : pane.getChildren()) {
-            if (child instanceof Pane) {
-                recursiveCleanup((Pane) child);
-            } else if (child instanceof HasDBConnection) {
-                ((HasDBConnection) child).cleanup();
-            }
-        }
-        if (pane instanceof HasDBConnection) {
-            ((HasDBConnection) pane).cleanup();
+        if (pane instanceof HasDBConnection paneConn) {
+            paneConn.cleanup();
         }
     }
     public static void main(String[] args) {

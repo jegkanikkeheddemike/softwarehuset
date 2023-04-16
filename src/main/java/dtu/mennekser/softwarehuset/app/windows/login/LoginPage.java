@@ -67,7 +67,7 @@ public class LoginPage extends Scene implements HasDBConnection {
     }
 
     @Override
-    public void cleanup() {
+    public void killSubscribers() {
         employeesSubscriber.kill();
     }
 }

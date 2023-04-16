@@ -23,6 +23,7 @@ public class ClientSubscriber<T extends Serializable> {
     private final Consumer<IOException> onError;
 
     private final Thread thread;
+
     public ClientSubscriber(DataQuery<T> query, Consumer<T> callback, Consumer<IOException> onError) {
         this.callback = callback;
         this.query = query;

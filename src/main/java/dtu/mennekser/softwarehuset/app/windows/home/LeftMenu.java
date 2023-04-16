@@ -10,8 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 
@@ -63,7 +61,7 @@ public class LeftMenu extends BorderPane implements HasDBConnection {
     }
 
     @Override
-    public void cleanup() {
+    public void killSubscribers() {
         projectSubscriber.kill();
     }
 }
