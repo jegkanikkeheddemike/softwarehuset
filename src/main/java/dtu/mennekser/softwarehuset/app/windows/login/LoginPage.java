@@ -38,8 +38,16 @@ public class LoginPage extends Scene {
         root.getChildren().add(usernameField);
         root.getChildren().add(errorField);
         root.getChildren().add(new Label("Available users:"));
-        root.getChildren().add(new ScrollPane(availableField));
+        ScrollPane scroll = new ScrollPane(availableField);
+        root.getChildren().add(scroll);
 
+        scroll.setStyle(
+                "-fx-control-inner-background: rgb(244, 244, 244);" +
+                "-fx-faint-focus-color: transparent;" +
+                "-fx-focus-color: transparent;" +
+                "-fx-highlight-fill: rgb(101,204,153);"+
+                "-fx-background-insets: 10;");
+        
         usernameField.setBackground(Style.setBackground(0,5));
         usernameField.setFont(Style.setTextFont());
         usernameField.setStyle("-fx-highlight-fill: rgb(101,204,153);");
