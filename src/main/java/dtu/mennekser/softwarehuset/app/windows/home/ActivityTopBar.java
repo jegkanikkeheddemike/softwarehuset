@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 public class ActivityTopBar extends BorderPane {
     HBox left;
     HBox right;
-    ActivityTopBar(Project project, Activity activity){
+    ActivityTopBar(String projectName, int projectID, Activity activity){
         setBorder(Style.setBorder(3,0,"bottom"));
         left = new HBox();
         right = new HBox();
@@ -29,10 +29,10 @@ public class ActivityTopBar extends BorderPane {
         setRight(right);
 
         Button backbutton = new Button("<");
-        backbutton.setOnAction(actionEvent -> HomePage.setProject(project));
+        backbutton.setOnAction(actionEvent -> HomePage.setProject(projectID));
         left.getChildren().add(backbutton);
 
-        Label title = new Label(project.name +"  ▶  "+ activity.name);
+        Label title = new Label(projectName +"  ▶  "+ activity.name);
         title.setFont(Style.setTitleFont());
         left.getChildren().add(title);
 

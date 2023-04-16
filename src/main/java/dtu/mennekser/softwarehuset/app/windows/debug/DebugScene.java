@@ -29,7 +29,6 @@ public class DebugScene extends Scene {
 
         logSubscriber = new DBSubscriber<>(database -> database.logs,
                 logs -> {
-                    System.out.println("Recieved logs");
                     content.getChildren().clear();
                     scrollPane.setVvalue(1D);
                     for (Log log : logs) {

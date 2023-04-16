@@ -25,10 +25,10 @@ public class HomePage extends Scene {
         root.setCenter(new Label("Select a project to begin"));
     }
 
-    public static void setProject(Project project) {
-        instance.root.setCenter(new CenterMenu(project.id));
+    public static void setProject(int projectID) {
+        instance.root.setCenter(new CenterMenu(projectID));
     }
-    public static void setActivity(Project project, Activity activity) {
-        instance.root.setCenter(new ActivityMenu(project, activity.id));
+    public static void setActivity(String projectName,int projectID, Activity activity) {
+        instance.root.setCenter(new ActivityMenu(projectName,projectID, activity.id));
     }
 }

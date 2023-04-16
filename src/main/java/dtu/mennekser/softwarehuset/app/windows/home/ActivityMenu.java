@@ -32,7 +32,7 @@ public class ActivityMenu extends BorderPane {
     //Men det er vel ok siden man ikke kan ændre på projektnavnet osv.
     //Måske kan det fikses men det er ok som det er indtil videre.
 
-    public ActivityMenu(Project project,int activityID){
+    public ActivityMenu(String projectName, int projectID,int activityID){
         assignedPane = new BorderPane();
         activityCenter = new BorderPane();
         description = new VBox();
@@ -45,7 +45,7 @@ public class ActivityMenu extends BorderPane {
 
 
 
-        activitySubscriber = new DBSubscriber<>(database -> database.projects.get(project.id).activities.get(activityID), activity -> {
+        activitySubscriber = new DBSubscriber<>(database -> database.projects.get(projectID).activities.get(activityID), activity -> {
             description.getChildren().clear();
             Text descriptionTitle = new Text("Description: ");
             descriptionTitle.setFont(Style.setTitleFont());
@@ -86,7 +86,7 @@ public class ActivityMenu extends BorderPane {
             save.setOnAction(actionEvent -> {
                 String string = descriptionText.getText().trim();
                 DBTask.SubmitTask( database -> {
-                            database.projects.get(project.id).activities.get(activityID).setDescription(string);
+                            database.projects.get(projectID).activities.get(activityID).setDescription(string);
                         }
                 );
             });
@@ -94,7 +94,7 @@ public class ActivityMenu extends BorderPane {
             description.setPadding(new Insets(5,5,5,5));
             description.getChildren().addAll(descriptionTitle,descriptionText,save);
 
-            setTop(new ActivityTopBar(project, activity));
+            setTop(new ActivityTopBar(projectName,projectID ,activity));
         });
 
         setCenter(activityCenter);
@@ -106,7 +106,7 @@ public class ActivityMenu extends BorderPane {
         assignedSubscriber = new DBSubscriber<>(
             database -> {
                 ArrayList<Employee> assigned = new ArrayList<>();
-                for (int id : database.projects.get(project.id).activities.get(activityID).assigned) {
+                for (int id : database.projects.get(projectID).activities.get(activityID).assigned) {
                     assigned.add(database.employees.get(id));
                 }
                 return assigned;
@@ -148,7 +148,7 @@ public class ActivityMenu extends BorderPane {
                     ArrayList<Employee> notAssigned = new ArrayList<>();
                     List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
                     for (Employee employee : database.employees) {
-                        if(database.projects.get(project.id).assignedEmployees.contains(employee.id)) {
+                        if(database.projects.get(projectID).assignedEmployees.contains(employee.id)) {
                             if (!allEmployees.contains(employee.id)) {
                                 notAssigned.add(employee);
                             }
@@ -171,7 +171,7 @@ public class ActivityMenu extends BorderPane {
                 bottomMenu.getChildren().add(addEmployee);
                 addEmployee.setOnAction(actionEvent -> {
                     String employeeName = employeeDropdown.getValue();
-                    DBTask.SubmitTask(database -> database.projects.get(project.id).activities.get(activityID).assignEmployee(database.findEmployee(employeeName).id));
+                    DBTask.SubmitTask(database -> database.projects.get(projectID).activities.get(activityID).assignEmployee(database.findEmployee(employeeName).id));
                 });
 
 
@@ -199,7 +199,7 @@ public class ActivityMenu extends BorderPane {
             int minutes =    Integer.parseInt(split[1]);
 
             DBTask.SubmitTask(database -> {
-                database.projects.get(project.id).activities.get(activityID).registerTime(
+                database.projects.get(projectID).activities.get(activityID).registerTime(
                         self.id,
                         hours,
                         minutes
@@ -223,7 +223,7 @@ public class ActivityMenu extends BorderPane {
 
 
         timerSubscriber = new DBSubscriber<>(
-            database -> database.projects.get(project.id).activities.get(activityID).timeRegistrations,
+            database -> database.projects.get(projectID).activities.get(activityID).timeRegistrations,
             timeRegistrations -> {
 
                 timerBox.getChildren().clear();
