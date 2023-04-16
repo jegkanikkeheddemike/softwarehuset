@@ -1,7 +1,6 @@
 package dtu.mennekser.softwarehuset.app.windows.login;
 
 import dtu.mennekser.softwarehuset.ProjectApp;
-import dtu.mennekser.softwarehuset.app.HasDBConnection;
 import dtu.mennekser.softwarehuset.app.networking.DBQuery;
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.app.windows.home.HomePage;
@@ -18,7 +17,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class LoginPage extends Scene implements HasDBConnection {
+public class LoginPage extends Scene {
 
 
     VBox root;
@@ -64,10 +63,5 @@ public class LoginPage extends Scene implements HasDBConnection {
         } else {
             ProjectApp.setScene(new HomePage(employee),"Home");
         }
-    }
-
-    @Override
-    public void killSubscribers() {
-        employeesSubscriber.kill();
     }
 }

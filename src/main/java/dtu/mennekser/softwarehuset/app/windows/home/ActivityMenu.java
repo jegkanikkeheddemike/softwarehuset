@@ -1,6 +1,5 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.app.HasDBConnection;
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.app.networking.DBTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
@@ -20,7 +19,7 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityMenu extends BorderPane implements HasDBConnection {
+public class ActivityMenu extends BorderPane {
 
     BorderPane assignedPane;
     VBox description;
@@ -159,13 +158,6 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
             setTop(new ActivityTopBar(project, activity));
         });
 
-    }
-
-    @Override
-    public void killSubscribers() {
-        activitySubscriber.kill();
-        assignedSubscriber.kill();
-        notAssignedSubscriber.kill();
     }
 }
 
