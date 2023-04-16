@@ -23,6 +23,8 @@ public class ClientSubscriber<T extends Serializable> {
     private final Consumer<IOException> onError;
 
     private final Thread thread;
+
+    private boolean killed = false;
     public ClientSubscriber(DataQuery<T> query, Consumer<T> callback, Consumer<IOException> onError) {
         this.callback = callback;
         this.query = query;
@@ -33,6 +35,7 @@ public class ClientSubscriber<T extends Serializable> {
 
     public void kill() {
         try {
+            killed = true;
             if (socket != null) {
                 socket.close();
             }
@@ -50,6 +53,10 @@ public class ClientSubscriber<T extends Serializable> {
             ConnInterface.send(ConnType.Subscribe, socket);
             ConnInterface.send((Function<Database, T> & Serializable) query, socket);
             while (true) {
+                if (killed) {
+                    System.out.println("Connection killed");
+                    return;
+                }
                 Object data = ConnInterface.receive(socket);
                 if (data instanceof Ping) {
                     continue;
@@ -61,6 +68,7 @@ public class ClientSubscriber<T extends Serializable> {
             if (!e.getMessage().equals("Socket closed")) {
                 onError.accept(e);
             }
+            System.out.println("Connection closed");
         } catch (IOException e) {
             onError.accept(e);
         }

@@ -37,6 +37,11 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
             setRight(assignedPane);
 
             //--------------------------------------
+
+            if (assignedSubscriber != null) {
+                assignedSubscriber.kill();
+            }
+
             assignedSubscriber = new DBSubscriber<>(
                     database -> {
                         ArrayList<Employee> assigned = new ArrayList<>();
@@ -124,7 +129,10 @@ public class ActivityMenu extends BorderPane implements HasDBConnection {
     }
 
     @Override
-    public void cleanup() {
+    public void killSubscribers() {
         activitySubscriber.kill();
+        assignedSubscriber.kill();
+        notAssignedSubscriber.kill();
     }
 }
+

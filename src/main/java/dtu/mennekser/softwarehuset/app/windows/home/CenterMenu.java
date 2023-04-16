@@ -47,6 +47,10 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
             assignedPane.setPadding(new Insets(5,5,5,5));
             assignedPane.setPrefWidth(120);
 
+            if (activitySubscriber != null) {
+                activitySubscriber.kill();
+            }
+
             activitySubscriber = new DBSubscriber<>(
                     database -> database.projects.get(project.id).activities,
                     activities -> {
@@ -67,6 +71,11 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                         }
                     }
             );
+
+            if (assignedSubscriber != null) {
+                assignedSubscriber.kill();
+            }
+
             assignedSubscriber = new DBSubscriber<>(
                     database -> {
                         ArrayList<Employee> assigned = new ArrayList<>();
@@ -105,6 +114,7 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
 
                 employeeDropdown.setPrefSize(80,30);
                 bottomMenu.getChildren().add(employeeDropdown);
+
                 if (notAssignedSubscriber != null) {
                     notAssignedSubscriber.kill();
                 }
@@ -142,10 +152,11 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
         });
     }
 
-
-
     @Override
-    public void cleanup() {
+    public void killSubscribers() {
+        projectSubscriber.kill();
         activitySubscriber.kill();
+        notAssignedSubscriber.kill();
+        assignedSubscriber.kill();
     }
 }
