@@ -49,10 +49,6 @@ public class CenterMenu extends BorderPane {
             assignedPane.setPadding(new Insets(5,5,5,5));
             assignedPane.setPrefWidth(120);
 
-            if (activitySubscriber != null) {
-                activitySubscriber.kill();
-            }
-
             activitySubscriber = new DBSubscriber<>(
                     database -> database.projects.get(project.id).activities,
                     activities -> {
@@ -83,10 +79,6 @@ public class CenterMenu extends BorderPane {
                         }
                     }
             );
-
-            if (assignedSubscriber != null) {
-                assignedSubscriber.kill();
-            }
 
             assignedSubscriber = new DBSubscriber<>(
                     database -> {
@@ -124,12 +116,9 @@ public class CenterMenu extends BorderPane {
                 });
 
 
-                employeeDropdown.setPrefSize(80,30);
+                employeeDropdown.setPrefSize(130,30);
                 bottomMenu.getChildren().add(employeeDropdown);
 
-                if (notAssignedSubscriber != null) {
-                    notAssignedSubscriber.kill();
-                }
                 notAssignedSubscriber = new DBSubscriber<>(database -> {
                     ArrayList<Employee> notAssigned = new ArrayList<>();
                     List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
@@ -149,7 +138,8 @@ public class CenterMenu extends BorderPane {
                 Button addEmployee = new Button("+");
                 addEmployee.setFont(Style.setTextFont());
                 Style.setEmployeeButtonStyle(addEmployee);
-                addEmployee.setPrefSize(30, 30);
+                addEmployee.setMinSize(5,5);
+                addEmployee.setMaxSize(30, 30);
 
                 bottomMenu.getChildren().add(addEmployee);
                 addEmployee.setOnAction(actionEvent -> {

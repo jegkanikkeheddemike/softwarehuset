@@ -94,84 +94,79 @@ public class ActivityMenu extends BorderPane {
 
             //--------------------------------------
 
-            if (assignedSubscriber != null) {
-                assignedSubscriber.kill();
-            }
 
             assignedSubscriber = new DBSubscriber<>(
-                    database -> {
-                        ArrayList<Employee> assigned = new ArrayList<>();
-                        for (int id : database.projects.get(project.id).activities.get(activityID).assigned) {
-                            assigned.add(database.employees.get(id));
-                        }
-                        return assigned;
-                    }, employees -> {
-                VBox assignedList = new VBox();
-                assignedList.setSpacing(5);
+                database -> {
+                    ArrayList<Employee> assigned = new ArrayList<>();
+                    for (int id : database.projects.get(project.id).activities.get(activityID).assigned) {
+                        assigned.add(database.employees.get(id));
+                    }
+                    return assigned;
+                }, employees -> {
+                    VBox assignedList = new VBox();
+                    assignedList.setSpacing(5);
 
-                assignedPane.getChildren().clear();
-                assignedPane.setCenter(assignedList);
+                    assignedPane.getChildren().clear();
+                    assignedPane.setCenter(assignedList);
 
-                //Create the buttons that show assigned employee
-                for (Employee employee: employees) {
-                    Button employeeButton = new Button(employee.name);
-                    Style.setEmployeeButtonStyle(employeeButton);
-                    assignedList.getChildren().add(employeeButton);
-                }
+                    //Create the buttons that show assigned employee
+                    for (Employee employee: employees) {
+                        Button employeeButton = new Button(employee.name);
+                        Style.setEmployeeButtonStyle(employeeButton);
+                        assignedList.getChildren().add(employeeButton);
+                    }
 
-                HBox bottomMenu = new HBox();
-                assignedPane.setBottom(bottomMenu);
+                    HBox bottomMenu = new HBox();
+                    assignedPane.setBottom(bottomMenu);
 
-                //DropDown menu for choosing who to add to an activity
-                ComboBox<String> employeeDropdown = new ComboBox<>();
-                employeeDropdown.setBackground(Style.setBackground(0,5.0));
-                employeeDropdown.setOnMouseEntered(actionEvent -> {
-                    employeeDropdown.setBackground(Style.setBackground(3,5.0));
+                    //DropDown menu for choosing who to add to an activity
+                    ComboBox<String> employeeDropdown = new ComboBox<>();
 
-                });
-                employeeDropdown.setOnMouseExited(actionEvent -> {
                     employeeDropdown.setBackground(Style.setBackground(0,5.0));
+                    employeeDropdown.setOnMouseEntered(actionEvent -> {
+                        employeeDropdown.setBackground(Style.setBackground(3,5.0));
 
-                });
-                employeeDropdown.setPrefSize(80,30);
+                    });
+                    employeeDropdown.setOnMouseExited(actionEvent -> {
+                        employeeDropdown.setBackground(Style.setBackground(0,5.0));
 
-                //set dropdown at bottom of employee overview
-                bottomMenu.getChildren().add(employeeDropdown);
+                    });
+                    employeeDropdown.setPrefSize(130,30);
 
-                if (notAssignedSubscriber != null) {
-                    notAssignedSubscriber.kill();
-                }
-                notAssignedSubscriber = new DBSubscriber<>(database -> {
-                    ArrayList<Employee> notAssigned = new ArrayList<>();
-                    List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
-                    for (Employee employee : database.employees) {
-                        if(database.projects.get(project.id).assignedEmployees.contains(employee.id)) {
-                            if (!allEmployees.contains(employee.id)) {
-                                notAssigned.add(employee);
+                    //set dropdown at bottom of employee overview
+                    bottomMenu.getChildren().add(employeeDropdown);
+
+                    notAssignedSubscriber = new DBSubscriber<>(database -> {
+                        ArrayList<Employee> notAssigned = new ArrayList<>();
+                        List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
+                        for (Employee employee : database.employees) {
+                            if(database.projects.get(project.id).assignedEmployees.contains(employee.id)) {
+                                if (!allEmployees.contains(employee.id)) {
+                                    notAssigned.add(employee);
+                                }
                             }
                         }
-                    }
-                    return notAssigned;
-                }, notAssigned -> {
-                    employeeDropdown.getItems().clear();
-                    for (Employee employee : notAssigned) {
-                        employeeDropdown.getItems().add(employee.name);
-                    }
-                });
+                        return notAssigned;
+                    }, notAssigned -> {
+                        employeeDropdown.getItems().clear();
+                        for (Employee employee : notAssigned) {
+                            employeeDropdown.getItems().add(employee.name);
+                        }
+                    });
 
-                Button addEmployee = new Button("+");
-                addEmployee.setFont(Style.setTextFont());
-                Style.setEmployeeButtonStyle(addEmployee);
-                addEmployee.setPrefSize(30, 30);
+                    Button addEmployee = new Button("+");
+                    addEmployee.setFont(Style.setTextFont());
+                    Style.setEmployeeButtonStyle(addEmployee);
+                    addEmployee.setPrefSize(30, 30);
 
-                bottomMenu.getChildren().add(addEmployee);
-                addEmployee.setOnAction(actionEvent -> {
-                    String employeeName = employeeDropdown.getValue();
-                    DBTask.SubmitTask(database -> database.projects.get(project.id).activities.get(activityID).assignEmployee(database.findEmployee(employeeName).id));
-                });
+                    bottomMenu.getChildren().add(addEmployee);
+                    addEmployee.setOnAction(actionEvent -> {
+                        String employeeName = employeeDropdown.getValue();
+                        DBTask.SubmitTask(database -> database.projects.get(project.id).activities.get(activityID).assignEmployee(database.findEmployee(employeeName).id));
+                    });
 
 
-            }
+                }
             );
             //--------------------------------
 
