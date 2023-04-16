@@ -1,6 +1,7 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.app.HasDBConnection;
+import dtu.mennekser.softwarehuset.backend.db.Activity;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.scene.Parent;
@@ -31,6 +32,13 @@ public class HomePage extends Scene implements HasDBConnection {
         }
 
         instance.root.setCenter(new CenterMenu(project.id));
+    }
+    public static void setActivity(Project project, Activity activity) {
+        if (instance.root.getCenter() != null && instance.root.getCenter() instanceof HasDBConnection) {
+            ((HasDBConnection) instance.root.getCenter()).cleanup();
+        }
+
+        instance.root.setCenter(new ActivityMenu(project, activity.id));
     }
 
     @Override

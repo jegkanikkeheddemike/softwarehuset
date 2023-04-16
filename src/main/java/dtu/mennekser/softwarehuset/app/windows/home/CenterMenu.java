@@ -62,6 +62,7 @@ public class CenterMenu extends BorderPane implements HasDBConnection {
                         for (Activity activity : activities) {
                             Button button = new Button(activity.name);
                             Style.setActivityButtonStyle(button);
+                            button.setOnAction(actionEvent -> HomePage.setActivity(project,activity));
                             activitiesPane.getChildren().add(button);
                         }
                     }
