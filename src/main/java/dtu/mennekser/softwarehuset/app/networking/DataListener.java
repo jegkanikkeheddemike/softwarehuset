@@ -11,12 +11,12 @@ import java.util.function.Consumer;
  *
  * @author Thor
  */
-public class DBSubscriber<T extends Serializable> extends ClientSubscriber<T> {
+public class DataListener<T extends Serializable> extends ClientSubscriber<T> {
 
     final int garbageID;
     boolean garbageTagged = false;
 
-    public DBSubscriber(DataQuery<T> query, Consumer<T> callback) {
+    public DataListener(DataQuery<T> query, Consumer<T> callback) {
         super(
                 query,
                 result -> Platform.runLater(() -> {

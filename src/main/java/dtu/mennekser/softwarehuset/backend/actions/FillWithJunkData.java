@@ -1,7 +1,7 @@
 package dtu.mennekser.softwarehuset.backend.actions;
 
 import dtu.mennekser.softwarehuset.ProjectSettings;
-import dtu.mennekser.softwarehuset.app.networking.DBTask;
+import dtu.mennekser.softwarehuset.app.networking.DataTask;
 
 public class FillWithJunkData {
     public static void main(String[] args) {
@@ -14,7 +14,7 @@ public class FillWithJunkData {
         ProjectSettings.debugMode = false;
         ProjectSettings.init();
 
-        DBTask.SubmitTask(database -> {
+        DataTask.SubmitTask(database -> {
             int thor = database.createEmployee("Thor");
             int frederik = database.createEmployee("Frederik");
             int katinka = database.createEmployee("Katinka");

@@ -1,6 +1,5 @@
 package dtu.mennekser.softwarehuset.app.networking;
 
-import javafx.animation.KeyValue;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -33,7 +32,7 @@ public final class GarbageCollector {
 
     //Når den er færdig med det, dræber den alle de subscribers som ikke blev tagget.
 
-    private static final HashMap<Integer,DBSubscriber<?>> subscribers = new HashMap<>();
+    private static final HashMap<Integer, DataListener<?>> subscribers = new HashMap<>();
     private static GarbageCollector instance;
     public static void init() {
         if (instance == null) {
@@ -46,7 +45,7 @@ public final class GarbageCollector {
 
     static AtomicInteger nextID = new AtomicInteger(0);
 
-    public static int addSubscriber(DBSubscriber<?> subscriber) {
+    public static int addSubscriber(DataListener<?> subscriber) {
         int id = nextID.addAndGet(1);
         synchronized (subscribers) {
             subscribers.put(id,subscriber);
@@ -80,7 +79,7 @@ public final class GarbageCollector {
                             }
                         });
                         for (Integer id : toBeCollected) {
-                            DBSubscriber<?> subscriber = subscribers.remove(id);
+                            DataListener<?> subscriber = subscribers.remove(id);
                             subscriber.kill();
                         }
 
@@ -117,7 +116,7 @@ public final class GarbageCollector {
             try {
                 field.setAccessible(true);
                 Object value = field.get(object);
-                if (value instanceof DBSubscriber<?> subscriber) {
+                if (value instanceof DataListener<?> subscriber) {
                     subscriber.garbageTagged = true;
                 }
             } catch (IllegalAccessException e) {
