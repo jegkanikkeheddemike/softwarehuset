@@ -1,8 +1,8 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
-import dtu.mennekser.softwarehuset.app.networking.DBTask;
+import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.windows.Style;
+import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
 import dtu.mennekser.softwarehuset.backend.db.Activity;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import dtu.mennekser.softwarehuset.backend.db.Project;
@@ -18,25 +18,22 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class CenterMenu extends BorderPane {
 
     FlowPane activitiesPane;
     BorderPane assignedPane;
 
-    DBSubscriber<Project> projectSubscriber;
-    DBSubscriber<ArrayList<Activity>> activitySubscriber;
-    DBSubscriber<ArrayList<Employee>> assignedSubscriber;
-    DBSubscriber<ArrayList<Employee>> notAssignedSubscriber;
+    DataListener<Project> projectListener;
+    DataListener<ArrayList<Activity>> activityListener;
+    DataListener<ArrayList<Employee>> assignedListener;
+    DataListener<ArrayList<Employee>> notAssignedListener;
 
     String projectName;
 
 
     CenterMenu(int projectID) {
-        projectSubscriber = new DBSubscriber<>(database -> database.projects.get(projectID), project -> {
+        projectListener = new DataListener<>(database -> database.projects.get(projectID), project -> {
             projectName = project.name;
             setTop(new CenterTopBar(project));
         });
@@ -56,7 +53,7 @@ public class CenterMenu extends BorderPane {
         assignedPane.setPadding(new Insets(5,5,5,5));
         assignedPane.setPrefWidth(120);
 
-        activitySubscriber = new DBSubscriber<>(
+        activityListener = new DataListener<>(
                 database -> database.projects.get(projectID).activities,
                 activities -> {
                     activitiesPane.getChildren().clear();
@@ -86,19 +83,12 @@ public class CenterMenu extends BorderPane {
                 }
         );
         assignedPane.setMinWidth(180);
-        assignedSubscriber = new DBSubscriber<>(
-                database -> {
-                    ArrayList<Employee> assigned = new ArrayList<>();
-                    for (int id : database.projects.get(projectID).assignedEmployees) {
-                        assigned.add(database.employees.get(id));
-                    }
-                    return assigned;
-                }, employees -> {
+        assignedListener = new DataListener<>(
+            ProjectManager.getAssignedEmployees(projectID), employees -> {
             VBox assignedList = new VBox();
             assignedList.setAlignment(Pos.TOP_CENTER);
             assignedList.setSpacing(5);
 
-            assignedPane.getChildren().clear();
             assignedPane.setCenter(assignedList);
 
             for (Employee employee: employees) {
@@ -106,57 +96,47 @@ public class CenterMenu extends BorderPane {
                 Style.setEmployeeButtonStyle(employeeButton);
                 assignedList.getChildren().add(employeeButton);
             }
+        });
 
-            HBox bottomMenu = new HBox();
-            bottomMenu.setSpacing(5);
-            assignedPane.setBottom(bottomMenu);
+        HBox bottomMenu = new HBox();
+        bottomMenu.setSpacing(5);
+        assignedPane.setBottom(bottomMenu);
 
-            ComboBox<String> employeeDropdown = new ComboBox<>();
+        ComboBox<String> employeeDropdown = new ComboBox<>();
 
+        employeeDropdown.setBackground(Style.setBackground(0,5.0));
+        employeeDropdown.setOnMouseEntered(actionEvent -> {
+            employeeDropdown.setBackground(Style.setBackground(3,5.0));
+
+        });
+        employeeDropdown.setOnMouseExited(actionEvent -> {
             employeeDropdown.setBackground(Style.setBackground(0,5.0));
-            employeeDropdown.setOnMouseEntered(actionEvent -> {
-                employeeDropdown.setBackground(Style.setBackground(3,5.0));
 
-            });
-            employeeDropdown.setOnMouseExited(actionEvent -> {
-                employeeDropdown.setBackground(Style.setBackground(0,5.0));
-
-            });
+        });
 
 
-            employeeDropdown.setPrefSize(130,30);
-            bottomMenu.getChildren().add(employeeDropdown);
+        employeeDropdown.setPrefSize(130,30);
+        bottomMenu.getChildren().add(employeeDropdown);
 
-            notAssignedSubscriber = new DBSubscriber<>(database -> {
-                ArrayList<Employee> notAssigned = new ArrayList<>();
-                List<Integer> allEmployees = employees.stream().map(employee1 -> employee1.id).toList();
-                for (Employee employee : database.employees) {
-                    if (!allEmployees.contains(employee.id)) {
-                        notAssigned.add(employee);
+        notAssignedListener = new DataListener<>(
+                ProjectManager.getNotAssignedEmployees(projectID),
+                notAssigned -> {
+                    employeeDropdown.getItems().clear();
+                    for (Employee employee : notAssigned) {
+                        employeeDropdown.getItems().add(employee.name);
                     }
-                }
-                return notAssigned;
-            }, notAssigned -> {
-                employeeDropdown.getItems().clear();
-                for (Employee employee : notAssigned) {
-                    employeeDropdown.getItems().add(employee.name);
-                }
-            });
+                });
 
-            Button addEmployee = new Button("+");
-            addEmployee.setFont(Style.setTextFont());
-            Style.setEmployeeButtonStyle(addEmployee);
-            addEmployee.setMinSize(30,30);
+        Button addEmployee = new Button("+");
+        addEmployee.setFont(Style.setTextFont());
+        Style.setEmployeeButtonStyle(addEmployee);
+        addEmployee.setMinSize(30,30);
 
-            bottomMenu.getChildren().add(addEmployee);
-            addEmployee.setOnAction(actionEvent -> {
-                String employeeName = employeeDropdown.getValue();
-                DBTask.SubmitTask(database -> database.projects.get(projectID).assignEmployee(database.findEmployee(employeeName).id));
-            });
-
-
-        }
-        );
+        bottomMenu.getChildren().add(addEmployee);
+        addEmployee.setOnAction(actionEvent -> {
+            String employeeName = employeeDropdown.getValue();
+            ProjectManager.addEmployeeToProject(projectID,employeeName);
+        });
 
     }
 }

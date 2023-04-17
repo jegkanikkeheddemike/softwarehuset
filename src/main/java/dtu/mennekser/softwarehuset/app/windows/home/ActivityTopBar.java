@@ -1,11 +1,7 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.app.networking.DBQuery;
-import dtu.mennekser.softwarehuset.app.networking.DBTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.db.Activity;
-import dtu.mennekser.softwarehuset.backend.db.Employee;
-import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

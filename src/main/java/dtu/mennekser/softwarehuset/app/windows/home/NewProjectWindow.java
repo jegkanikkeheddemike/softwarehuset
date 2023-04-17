@@ -1,6 +1,6 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.app.networking.DBTask;
+import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class NewProjectWindow {
     private static boolean exists = false;
 
-    public static void tryCreate(int employeeID) {
+    public static void tryCreate() {
         if (exists) {
             return;
         }
@@ -31,12 +31,7 @@ public class NewProjectWindow {
         root.getChildren().add(create);
 
         create.setOnAction(actionEvent -> {
-            String projectName = nameField.getText();
-            DBTask.SubmitTask(database -> {
-                int projectID = database.createProject(projectName);
-                database.projects.get(projectID).assignEmployee(employeeID);
-
-            });
+            ProjectManager.createProject(nameField.getText().trim());
             exists = false;
             makeProjectWindow.close();
         });

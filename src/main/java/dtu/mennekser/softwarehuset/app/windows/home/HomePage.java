@@ -11,13 +11,11 @@ import javafx.scene.layout.FlowPane;
 
 public class HomePage extends Scene {
     static HomePage instance;
-    static Employee loggedInAs;
 
     BorderPane root;
-    public HomePage(Employee employee) {
+    public HomePage() {
         super(new BorderPane(), 1920*0.5,1080*0.5);
         instance = this;
-        HomePage.loggedInAs = employee;
 
         root = (BorderPane) getRoot();
         root.setTop(new TopBar());
