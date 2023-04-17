@@ -5,6 +5,7 @@ import dtu.mennekser.softwarehuset.app.networking.DBQuery;
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.app.windows.home.HomePage;
+import dtu.mennekser.softwarehuset.backend.Business.EmployeeManager;
 import dtu.mennekser.softwarehuset.backend.Business.LoginManager;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
 import javafx.geometry.Insets;
@@ -56,7 +57,7 @@ public class LoginPage extends Scene {
 
 
         employeesSubscriber = new DBSubscriber<>(
-            database -> database.employees,
+            EmployeeManager.getAllEmployees(),
             employees -> {
                 StringBuilder lines = new StringBuilder();
                 employees.sort(Comparator.comparing(employee -> employee.name));
@@ -70,7 +71,7 @@ public class LoginPage extends Scene {
 
     void attemptLogin() {
         String username = usernameField.getText().trim();
-        Employee employee =  new DBQuery<>(LoginManager.attempLogin(username)).fetch();
+        Employee employee =  new DBQuery<>(LoginManager.attemptLogin(username)).fetch();
 
         if (employee == null) {
             errorField.setText("No such employee: " + username);
