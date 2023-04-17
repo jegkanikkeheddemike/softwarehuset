@@ -4,33 +4,30 @@ import dtu.mennekser.softwarehuset.backend.data.DataTask;
 import dtu.mennekser.softwarehuset.backend.data.Subscriber;
 import dtu.mennekser.softwarehuset.backend.db.Log;
 import dtu.mennekser.softwarehuset.backend.db.Database;
-import dtu.mennekser.softwarehuset.backend.db.Project;
-import dtu.mennekser.softwarehuset.backend.javadb.networking.Ping;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author Thor
  */
 public class JavaDB {
-    private final Database tables;
+    private final Database database;
 
 
     public JavaDB() {
-        tables = new Database();
+        database = new Database();
     }
 
     public JavaDB(String filePath) throws IOException, ClassNotFoundException {
         byte[] bin = Files.readAllBytes(Paths.get(filePath));
         ByteArrayInputStream bis = new ByteArrayInputStream(bin);
         ObjectInputStream ois = new ObjectInputStream(bis);
-        tables = (Database) ois.readObject();
+        database = (Database) ois.readObject();
     }
 
     final private LinkedBlockingQueue<DataTask> tasks = new LinkedBlockingQueue<>();
@@ -46,9 +43,9 @@ public class JavaDB {
     }
 
     public void submitSubscriber(Subscriber<?> subscriber) {
-        synchronized (tables) {
+        synchronized (database) {
             try {
-                subscriber.update(tables);
+                subscriber.update(database);
                 synchronized (subscribers) {
                     subscribers.add(subscriber);
                 }
@@ -78,9 +75,9 @@ public class JavaDB {
                 e.printStackTrace();
                 continue;
             }
-            synchronized (tables) {
+            synchronized (database) {
                 try {
-                    task.accept(tables);
+                    task.accept(database);
                 } catch (Exception e) {
                     submitLog(Log.LogLevel.ERROR, "Failed to execute task: " + e, true);
                 }
@@ -90,7 +87,7 @@ public class JavaDB {
 
                     for (Subscriber<?> subscriber : subscribers) {
                         try {
-                            boolean success = subscriber.update(tables);
+                            boolean success = subscriber.update(database);
                             if (!success) {
                                 System.out.println("Success returned false on update attemp: ");
                                 failed.add(subscriber);
@@ -104,7 +101,7 @@ public class JavaDB {
                     for (Subscriber<?> failedSub : failed) {
                         subscribers.remove(failedSub);
                     }
-                    tables.activeConnections = subscribers.size();
+                    database.activeConnections = subscribers.size();
                 }
             }
             if (tasks.isEmpty()) {
@@ -131,7 +128,7 @@ public class JavaDB {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
-            oos.writeObject(tables);
+            oos.writeObject(database);
             byte[] tablesBin = bos.toByteArray();
 
             Files.write(Path.of( getTablesSavePath()), tablesBin);
@@ -145,7 +142,7 @@ public class JavaDB {
 
     private void submitLog(Log.LogLevel logLevel, String message, boolean forceUpdate) {
         Log log = new Log(logLevel, message);
-        tables.logs.add(log);
+        database.logs.add(log);
         System.out.println(log);
         if (forceUpdate) {
             //If tasks is not empty, then just do it.

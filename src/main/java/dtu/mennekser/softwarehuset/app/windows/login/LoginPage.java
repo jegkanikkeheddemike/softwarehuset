@@ -5,8 +5,8 @@ import dtu.mennekser.softwarehuset.app.networking.DBQuery;
 import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.app.windows.home.HomePage;
+import dtu.mennekser.softwarehuset.backend.Business.LoginManager;
 import dtu.mennekser.softwarehuset.backend.db.Employee;
-import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -70,9 +70,7 @@ public class LoginPage extends Scene {
 
     void attemptLogin() {
         String username = usernameField.getText().trim();
-        Employee employee = new DBQuery<Employee>(
-                database -> database.findEmployee(username)
-        ).fetch();
+        Employee employee =  new DBQuery<>(LoginManager.attempLogin(username)).fetch();
 
         if (employee == null) {
             errorField.setText("No such employee: " + username);

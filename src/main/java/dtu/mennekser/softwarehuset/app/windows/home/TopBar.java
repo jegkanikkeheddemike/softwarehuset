@@ -1,14 +1,19 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.ProjectApp;
+import dtu.mennekser.softwarehuset.app.networking.DBQuery;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.app.windows.login.LoginPage;
+import dtu.mennekser.softwarehuset.backend.db.Database;
+import dtu.mennekser.softwarehuset.backend.db.Employee;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+
+import java.util.function.Function;
 
 public class TopBar extends HBox {
 
@@ -27,4 +32,8 @@ public class TopBar extends HBox {
         });
 
     }
+
+
 }
+
+
