@@ -15,6 +15,9 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * @author Thor
+ */
 public class JavaDB {
     private final Database tables;
 

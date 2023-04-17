@@ -5,5 +5,9 @@ import dtu.mennekser.softwarehuset.backend.db.Database;
 import java.io.Serializable;
 import java.util.function.Function;
 
+/**
+ *
+ * @author Thor
+ */
 public interface DataQuery<T extends Serializable> extends Function<Database, T>,Serializable {
 }

@@ -7,6 +7,10 @@ import javafx.application.Platform;
 import java.io.Serializable;
 import java.util.function.Consumer;
 
+/**
+ *
+ * @author Thor
+ */
 public class DBSubscriber<T extends Serializable> extends ClientSubscriber<T> {
 
     final int garbageID;

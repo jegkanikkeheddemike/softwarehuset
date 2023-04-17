@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * @author Thor
+ */
 public class DebugWindow extends Stage {
     public DebugWindow() {
 

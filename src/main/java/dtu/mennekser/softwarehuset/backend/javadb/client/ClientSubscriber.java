@@ -15,6 +15,10 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ *
+ * @author Thor
+ */
 public class ClientSubscriber<T extends Serializable> {
     public final int port = 7009;
 

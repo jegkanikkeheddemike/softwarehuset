@@ -13,6 +13,11 @@ import java.net.SocketException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+
+/**
+ *
+ * @author Thor
+ */
 public class ClientQuery<T extends Serializable> {
         public final int port = 7009;
         private final Function<Database,T> query;

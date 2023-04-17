@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author Thor
+ */
+
 public final class GarbageCollector {
 
     //Hvorfor mon der er en garbage collector klasse? Svaret er fordi java's indbygget ikke er god nok

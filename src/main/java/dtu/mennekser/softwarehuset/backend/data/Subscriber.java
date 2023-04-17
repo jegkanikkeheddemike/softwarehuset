@@ -13,6 +13,10 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ *
+ * @author Thor
+ */
 public class Subscriber<T extends Serializable> {
     boolean prevDataExists = false;
     int prevHash = 0;

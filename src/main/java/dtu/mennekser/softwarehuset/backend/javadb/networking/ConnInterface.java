@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 
+
+/**
+ * @author Thor
+ */
 public class ConnInterface {
     public static void send(Serializable data, Socket socket) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

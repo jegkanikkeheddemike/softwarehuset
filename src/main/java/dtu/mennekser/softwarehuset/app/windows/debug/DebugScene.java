@@ -12,6 +12,9 @@ import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
+/**
+ * @author Thor
+ */
 public class DebugScene extends Scene {
     DBSubscriber<ArrayList<Log>> logSubscriber;
     DBSubscriber<Integer> activeSubscribersSubscriber;

@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.function.Consumer;
 
+/**
+ * @author Thor
+ */
 public class ClientTask {
     private final int port = 7009;
 

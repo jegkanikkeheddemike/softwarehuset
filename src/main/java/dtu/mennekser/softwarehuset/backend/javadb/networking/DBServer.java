@@ -13,6 +13,9 @@ import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * @author Thor
+ */
 public class DBServer {
     final JavaDB database;
 
