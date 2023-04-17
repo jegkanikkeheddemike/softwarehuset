@@ -12,9 +12,11 @@ public class LoginManager {
     }
 
     public static void attemptLogin(String username) {
-        loggedInEmployee = new OnceQuery<Employee>(database -> database.findEmployee(username)).fetch();
+        assert loggedInEmployee == null;
+        loggedInEmployee = new OnceQuery<>(database -> database.findEmployee(username)).fetch();
     }
     public static void logout() {
+        assert loggedInEmployee != null;
         loggedInEmployee = null;
     }
 }

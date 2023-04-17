@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class EmployeeManager {
     public static DataQuery<ArrayList<Employee>> getAllEmployees() {
+        assert LoginManager.getLoggedInEmployee() != null;
+
         return database -> database.employees;
     }
 }

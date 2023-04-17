@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class TimeRegistrationManager {
     public static void registerTime(String time, int projectID, int activityID) {
+        assert LoginManager.getLoggedInEmployee() != null;
+
 
         String[] split = time.split(":");
         int hours = Integer.parseInt(split[0]);
