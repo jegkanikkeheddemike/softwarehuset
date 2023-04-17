@@ -1,25 +1,17 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.app.networking.DBTask;
-import dtu.mennekser.softwarehuset.backend.db.Log;
-import dtu.mennekser.softwarehuset.backend.db.Project;
-import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
-import javafx.application.Platform;
+import dtu.mennekser.softwarehuset.app.networking.DataTask;
+import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-
 public class NewActivityWindow {
     public static boolean exists = false;
-
 
     public static void tryCreate(int projectId) {
         if (exists) {
@@ -49,17 +41,9 @@ public class NewActivityWindow {
 
         create.setOnAction(actionEvent -> {
             String name = nameField.getText();
-            float time;
-            try {
-                time = Float.parseFloat(timeField.getText());
-            } catch (Exception e) {
-                errorField.setText("Time is not a number");
-                return;
-            }
+            String time = timeField.getText().trim();
+            ProjectManager.createActivity(projectId,name,time);
 
-            DBTask.SubmitTask(database -> {
-                database.projects.get(projectId).createActivity(name,(int) time);
-            });
             exists = false;
             makeActivityWindow.close();
         });

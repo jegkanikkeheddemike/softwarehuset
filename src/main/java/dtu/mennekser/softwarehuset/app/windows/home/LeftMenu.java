@@ -1,8 +1,8 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
+import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.windows.Style;
-import dtu.mennekser.softwarehuset.backend.db.Employee;
+import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
 import dtu.mennekser.softwarehuset.backend.db.Project;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,7 +13,7 @@ import javafx.scene.layout.*;
 import java.util.ArrayList;
 
 public class LeftMenu extends BorderPane {
-    final DBSubscriber<ArrayList<Project>> projectSubscriber;
+    final DataListener<ArrayList<Project>> projectListener;
 
     LeftMenu() {
         VBox projectList = new VBox();
@@ -26,17 +26,9 @@ public class LeftMenu extends BorderPane {
 
         projectList.setSpacing(5);
 
-        Employee employee = HomePage.loggedInAs;
-        projectSubscriber = new DBSubscriber<>(
-                database -> {
-                    ArrayList<Project> assigned = new ArrayList<>();
-                    for (Project project : database.projects) {
-                        if (project.assignedEmployees.contains(employee.id)) {
-                            assigned.add(project);
-                        }
-                    }
-                    return assigned;
-                }, projects -> {
+        projectListener = new DataListener<>(
+                ProjectManager.getProjectsOfEmployee(),
+                projects -> {
                     projectList.getChildren().clear();
                     Label title = new Label("Mine Projekter");
                     title.setFont(Style.setTitleFont());
@@ -56,7 +48,7 @@ public class LeftMenu extends BorderPane {
         Style.setProjectButtonStyle(createProjectButton);
         createProjectButton.setAlignment(Pos.CENTER);
         setBottom(createProjectButton);
-        createProjectButton.setOnAction(actionEvent -> NewProjectWindow.tryCreate(HomePage.loggedInAs.id));
+        createProjectButton.setOnAction(actionEvent -> NewProjectWindow.tryCreate());
 
     }
 }

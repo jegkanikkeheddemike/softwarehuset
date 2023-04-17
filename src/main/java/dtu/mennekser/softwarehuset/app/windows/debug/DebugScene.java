@@ -1,6 +1,6 @@
 package dtu.mennekser.softwarehuset.app.windows.debug;
 
-import dtu.mennekser.softwarehuset.app.networking.DBSubscriber;
+import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.backend.db.Log;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
  * @author Thor
  */
 public class DebugScene extends Scene {
-    DBSubscriber<ArrayList<Log>> logSubscriber;
-    DBSubscriber<Integer> activeSubscribersSubscriber;
+    DataListener<ArrayList<Log>> logListener;
+    DataListener<Integer> activeListenersListener;
 
     public DebugScene(Parent parent) {
         super(parent, 340,500);
@@ -30,7 +30,7 @@ public class DebugScene extends Scene {
         ScrollPane scrollPane = new ScrollPane(content);
         ((BorderPane) getRoot()).setCenter(scrollPane);
 
-        logSubscriber = new DBSubscriber<>(database -> database.logs,
+        logListener = new DataListener<>(database -> database.logs,
                 logs -> {
                     content.getChildren().clear();
                     scrollPane.setVvalue(1D);
@@ -40,7 +40,7 @@ public class DebugScene extends Scene {
                     scrollPane.setVvalue(1D);
                 });
 
-        activeSubscribersSubscriber = new DBSubscriber<>(
+        activeListenersListener = new DataListener<>(
                 database -> database.activeConnections,
                 integer -> activeConnections.setText("Active connections: " + integer)
         );
