@@ -36,6 +36,8 @@ public class Activity implements Serializable {
     }
 
     public void registerTime(int employeeID, int hours, int minuts) {
+        //Fancy math that finds out whether half an hour should be registered.
+
         timeRegistrations.add(new TimeRegistration(employeeID,hours,false));
     }
 
