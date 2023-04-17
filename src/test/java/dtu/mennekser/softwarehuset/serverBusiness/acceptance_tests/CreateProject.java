@@ -1,4 +1,4 @@
-package dtu.mennekser.softwarehuset.backend.acceptance_tests;
+package dtu.mennekser.softwarehuset.serverBusiness.acceptance_tests;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -6,6 +6,9 @@ import io.cucumber.java.en.When;
 
 public class CreateProject {
 
+    public CreateProject() {
+
+    }
 
     @Given("user is logged in")
     public void user_is_logged_in() {
@@ -46,6 +49,4 @@ public class CreateProject {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
-
-
 }
