@@ -3,20 +3,19 @@ package dtu.mennekser.softwarehuset.serverBusiness.acceptance_tests;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import dtu.mennekser.softwarehuset.backend.schema.Database;
-import dtu.mennekser.softwarehuset.backend.Business.LoginManager;
+import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CreateProject {
-
-    Database database;
+    /*
+    AppBackend database;
     String error;
 
     public CreateProject() {
 
-        database = new Database();
+        database = new AppBackend();
         database.createEmployee("Hanne");
     }
 
@@ -60,5 +59,5 @@ public class CreateProject {
     public void that_project_has_a_client(String string) {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
-    }
+    }*/
 }

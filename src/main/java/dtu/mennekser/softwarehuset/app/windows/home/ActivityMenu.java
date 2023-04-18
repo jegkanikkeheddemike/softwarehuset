@@ -1,12 +1,12 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
+import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
-import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
-import dtu.mennekser.softwarehuset.backend.Business.TimeRegistrationManager;
 import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.schema.Employee;
+import dtu.mennekser.softwarehuset.backend.schema.Session;
 import dtu.mennekser.softwarehuset.backend.schema.TimeRegistration;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -43,88 +43,81 @@ public class ActivityMenu extends BorderPane {
         setMargin(activityCenter, new Insets(10));
         activityCenter.setBorder(Style.setBorder(1, 10, "all"));
 
-
-        activityListener = new DataListener<>(database -> database.projects.get(projectID).activities.get(activityID), activity -> {
-            description.getChildren().clear();
-            Text descriptionTitle = new Text("Description: ");
-            descriptionTitle.setFont(Style.setTitleFont());
-            TextArea descriptionText;
-            if (!activity.description.isEmpty()) {
-                descriptionText = new TextArea(activity.description);
-            } else {
-                descriptionText = new TextArea();
-            }
-            descriptionText.setPromptText("Add description...");
-            descriptionText.setFont(Style.setTextFont());
-            descriptionText.setStyle(
-                    "-fx-control-inner-background: rgb(244, 244, 244);" +
-                            "-fx-faint-focus-color: transparent;" +
-                            "-fx-focus-color: transparent;" +
-                            "-fx-highlight-fill: rgb(101,204,153);" +
-                            "-fx-background-insets: 10;");
-
-
-            descriptionText.setOnMouseEntered(mouseEvent -> {
-                descriptionText.setStyle("-fx-control-inner-background: white;" +
-                        "-fx-faint-focus-color: transparent;" +
-                        "-fx-focus-color: transparent;" +
-                        "-fx-highlight-fill: rgb(101,204,153);" +
-                        "-fx-background-insets: 10;");
-            });
-            descriptionText.setOnMouseExited(mouseEvent -> {
+        Session session = LoginManager.getCurrentSession();
+        activityListener = new DataListener<>(
+            appBackend -> appBackend.getActivity(projectID,activityID, session),
+            activity -> {
+                description.getChildren().clear();
+                Text descriptionTitle = new Text("Description: ");
+                descriptionTitle.setFont(Style.setTitleFont());
+                TextArea descriptionText;
+                if (!activity.description.isEmpty()) {
+                    descriptionText = new TextArea(activity.description);
+                } else {
+                    descriptionText = new TextArea();
+                }
+                descriptionText.setPromptText("Add description...");
+                descriptionText.setFont(Style.setTextFont());
                 descriptionText.setStyle(
-                        "-fx-control-inner-background:  rgb(244, 244, 244);" +
+                        "-fx-control-inner-background: rgb(244, 244, 244);" +
                                 "-fx-faint-focus-color: transparent;" +
                                 "-fx-focus-color: transparent;" +
                                 "-fx-highlight-fill: rgb(101,204,153);" +
                                 "-fx-background-insets: 10;");
-            });
 
 
-            Button save = new Button("Save");
-            save.setOnAction(actionEvent -> {
-                String string = descriptionText.getText().trim();
-                DataTask.SubmitTask(database -> {
-                            database.projects.get(projectID).activities.get(activityID).setDescription(string);
-                        }
-                );
-            });
+                descriptionText.setOnMouseEntered(mouseEvent -> {
+                    descriptionText.setStyle("-fx-control-inner-background: white;" +
+                            "-fx-faint-focus-color: transparent;" +
+                            "-fx-focus-color: transparent;" +
+                            "-fx-highlight-fill: rgb(101,204,153);" +
+                            "-fx-background-insets: 10;");
+                });
+                descriptionText.setOnMouseExited(mouseEvent -> {
+                    descriptionText.setStyle(
+                            "-fx-control-inner-background:  rgb(244, 244, 244);" +
+                                    "-fx-faint-focus-color: transparent;" +
+                                    "-fx-focus-color: transparent;" +
+                                    "-fx-highlight-fill: rgb(101,204,153);" +
+                                    "-fx-background-insets: 10;");
+                });
 
-            description.setPadding(new Insets(5, 5, 5, 5));
-            description.getChildren().addAll(descriptionTitle, descriptionText, save);
 
-            setTop(new ActivityTopBar(projectName, projectID, activity));
-        });
+                Button save = new Button("Save");
+                save.setOnAction(actionEvent -> {
+                    String newDescription = descriptionText.getText().trim();
+                    DataTask.SubmitTask(appBackend -> {
+                        appBackend.setDescription(projectID,activityID,newDescription,session);
+                    });
+                });
+
+                description.setPadding(new Insets(5, 5, 5, 5));
+                description.getChildren().addAll(descriptionTitle, descriptionText, save);
+
+                setTop(new ActivityTopBar(projectName, projectID, activity));
+            }
+        );
 
         setCenter(activityCenter);
         setRight(assignedPane);
 
-        //--------------------------------------
-
         assignedPane.setMinWidth(180);
         assignedListener = new DataListener<>(
-                database -> {
-                    ArrayList<Employee> assigned = new ArrayList<>();
-                    for (int id : database.projects.get(projectID).activities.get(activityID).assigned) {
-                        assigned.add(database.employees.get(id));
-                    }
-                    return assigned;
-                }, employees -> {
-            VBox assignedList = new VBox();
-            assignedList.setAlignment(Pos.TOP_CENTER);
-            assignedList.setSpacing(5);
+            appBackend -> appBackend.getAssignedActivityEmployees(projectID,activityID,session),
+            employees -> {
+                VBox assignedList = new VBox();
+                assignedList.setAlignment(Pos.TOP_CENTER);
+                assignedList.setSpacing(5);
 
-            assignedPane.setCenter(assignedList);
+                assignedPane.setCenter(assignedList);
 
-            //Create the buttons that show assigned employee
-            for (Employee employee : employees) {
-                Button employeeButton = new Button(employee.name);
-                Style.setEmployeeButtonStyle(employeeButton);
-                assignedList.getChildren().add(employeeButton);
+                //Create the buttons that show assigned employee
+                for (Employee employee : employees) {
+                    Button employeeButton = new Button(employee.name);
+                    Style.setEmployeeButtonStyle(employeeButton);
+                    assignedList.getChildren().add(employeeButton);
+                }
             }
-
-
-        }
         );
 
         HBox bottomMenu = new HBox();
@@ -149,7 +142,7 @@ public class ActivityMenu extends BorderPane {
         bottomMenu.getChildren().add(employeeDropdown);
 
         notAssignedListener = new DataListener<>(
-            ProjectManager.getEmployeesNotAssignedToActivity(projectID, activityID),
+            appBackend -> appBackend.getEmployeesNotAssignedToActivity(projectID,activityID,session),
             notAssigned -> {
                 employeeDropdown.getItems().clear();
                 for (Employee employee : notAssigned) {
@@ -167,7 +160,7 @@ public class ActivityMenu extends BorderPane {
 
         addEmployee.setOnAction(actionEvent -> {
             String employeeName = employeeDropdown.getValue();
-            ProjectManager.addEmployeeToActivity(projectID,activityID,employeeName);
+            DataTask.SubmitTask(appBackend -> appBackend.addEmployeeToActivity(projectID,activityID, employeeName,session));
         });
 
 
@@ -186,7 +179,7 @@ public class ActivityMenu extends BorderPane {
 
         addTimerButton.setOnAction(actionEvent -> {
             String timeStr = timerField.getText().trim();
-            TimeRegistrationManager.registerTime(timeStr,projectID,activityID);
+            DataTask.SubmitTask(appBackend -> appBackend.registerTime(projectID,activityID,timeStr,session));
         });
 
         VBox timerBox = new VBox();
@@ -203,8 +196,9 @@ public class ActivityMenu extends BorderPane {
         scrollPane.setBorder(new Border(new BorderStroke(Color.rgb(0, 0, 0, 0D), BorderStrokeStyle.NONE, new CornerRadii(10), BorderWidths.DEFAULT)));
 
 
+
         timerListener = new DataListener<>(
-                TimeRegistrationManager.getTimeRegistrations(projectID,activityID),
+                appBackend -> appBackend.getTimeRegistrationsOfActivity(projectID,activityID,session),
                 timeRegistrations -> {
                     timerBox.getChildren().clear();
                     for (TimeRegistration regis : timeRegistrations) {

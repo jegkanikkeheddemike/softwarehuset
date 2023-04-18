@@ -3,7 +3,6 @@ package dtu.mennekser.softwarehuset.backend.streamDB;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.Task;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.ServerListener;
 import dtu.mennekser.softwarehuset.backend.schema.Log;
-import dtu.mennekser.softwarehuset.backend.schema.Database;
 
 import java.io.*;
 import java.nio.file.Files;

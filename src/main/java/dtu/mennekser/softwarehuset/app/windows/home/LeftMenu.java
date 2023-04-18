@@ -1,9 +1,10 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
+import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.windows.Style;
-import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
 import dtu.mennekser.softwarehuset.backend.schema.Project;
+import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -26,8 +27,10 @@ public class LeftMenu extends BorderPane {
 
         projectList.setSpacing(5);
 
+        Session session = LoginManager.getCurrentSession();
+
         projectListener = new DataListener<>(
-                ProjectManager.getProjectsOfEmployee(),
+                appBackend -> appBackend.getProjectsOfSession(session),
                 projects -> {
                     projectList.getChildren().clear();
                     Label title = new Label("Mine Projekter");

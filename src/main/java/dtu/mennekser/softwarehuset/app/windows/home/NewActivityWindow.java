@@ -1,7 +1,8 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
+import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
-import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
+import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -41,8 +42,9 @@ public class NewActivityWindow {
 
         create.setOnAction(actionEvent -> {
             String name = nameField.getText();
-            String time = timeField.getText().trim();
-            ProjectManager.createActivity(projectId,name,time);
+            Session session = LoginManager.getCurrentSession();
+            int time = Integer.parseInt(timeField.getText().trim());
+            DataTask.SubmitTask(appBackend -> appBackend.createActivity(projectId,name,time, session));
 
             exists = false;
             makeActivityWindow.close();

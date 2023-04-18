@@ -1,6 +1,6 @@
 package dtu.mennekser.softwarehuset;
 
-import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.streamDB.SocketLayer;
 
 public class ServerMain {
@@ -13,7 +13,7 @@ public class ServerMain {
 
 
 
-        SocketLayer<Database> server = new SocketLayer<>(true, new Database());
+        SocketLayer<AppBackend> server = new SocketLayer<>(true, new AppBackend());
         server.start();
     }
 }
