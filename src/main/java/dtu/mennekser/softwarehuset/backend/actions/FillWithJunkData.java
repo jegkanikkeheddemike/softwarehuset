@@ -26,14 +26,12 @@ public class FillWithJunkData {
             int tobias = database.createEmployee("Tobias");
             int obama = database.createEmployee("Obama");
 
-            int byg = database.createProject("Byg et tårn");
-            database.projects.get(byg).assignEmployee(thor);
+            int byg = database.createProject("Byg et tårn" , thor);
             database.projects.get(byg).assignEmployee(frederik);
             database.projects.get(byg).assignEmployee(katinka);
             database.projects.get(byg).assignEmployee(obama);
 
-            int kage = database.createProject("Bag en kage");
-            database.projects.get(kage).assignEmployee(katinka);
+            int kage = database.createProject("Bag en kage", katinka);
             database.projects.get(kage).assignEmployee(christan);
             database.projects.get(kage).assignEmployee(thor);
 

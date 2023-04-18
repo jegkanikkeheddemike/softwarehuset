@@ -15,11 +15,7 @@ public class ProjectManager {
         int employeeID = LoginManager.getLoggedInEmployee().id;
         DataTask.SubmitTask(
             database -> {
-                int projectID = database.createProject(projectName);
-
-                //burde dette ikke foregå inde i Database.createCrateProject??
-                //for ellers er der nemlig nogle tests der bryder helt sammen
-                database.projects.get(projectID).assignEmployee(employeeID);
+                int projectID = database.createProject(projectName, employeeID);
             }
         );
     }

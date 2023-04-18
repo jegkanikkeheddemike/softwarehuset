@@ -14,8 +14,11 @@ public class Database extends DataLayer{
 
 
     //Den her synes jeg stadig bruges meeeeget underligt. Se klassediagrammet
-    public int createProject(String name) {
+    public int createProject(String name , int employeeID) {
         projects.add(new Project(name, projects.size()));
+
+        //automatically assigns the Employee that creates the project
+        projects.get(projects.size()-1).assignEmployee(employeeID);
         return projects.size()-1;
     }
     public Employee findEmployee(String name) {

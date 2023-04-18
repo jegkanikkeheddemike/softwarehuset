@@ -29,7 +29,7 @@ public class CreateProject {
     }
     @When("user creates a project")
     public void user_creates_a_project() {
-        database.createProject("Sommerhus infoside");
+        database.createProject("Sommerhus infoside" , database.findEmployee("Hanne").id);
     }
     @Then("a project is created")
     public void a_project_is_created() {
