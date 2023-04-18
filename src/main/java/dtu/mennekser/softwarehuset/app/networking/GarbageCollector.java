@@ -32,7 +32,7 @@ public final class GarbageCollector {
 
     //Når den er færdig med det, dræber den alle de subscribers som ikke blev tagget.
 
-    private static final HashMap<Integer, DataListener<?>> subscribers = new HashMap<>();
+    private static final HashMap<Integer, DataListener<?>> allListeners = new HashMap<>();
     private static GarbageCollector instance;
     public static void init() {
         if (instance == null) {
@@ -47,8 +47,8 @@ public final class GarbageCollector {
 
     public static int addSubscriber(DataListener<?> subscriber) {
         int id = nextID.addAndGet(1);
-        synchronized (subscribers) {
-            subscribers.put(id,subscriber);
+        synchronized (allListeners) {
+            allListeners.put(id,subscriber);
         }
         return id;
     }
@@ -69,21 +69,21 @@ public final class GarbageCollector {
                         recursiveTag(root);
                     }
 
-                    synchronized (subscribers) {
+                    synchronized (allListeners) {
                         ArrayList<Integer> toBeCollected = new ArrayList<>();
 
-                        subscribers.forEach((id,subscriber) -> {
+                        allListeners.forEach((id, subscriber) -> {
                             //System.out.println(id + ": " + subscriber.garbageTagged);
                             if (!subscriber.garbageTagged) {
                                 toBeCollected.add(id);
                             }
                         });
                         for (Integer id : toBeCollected) {
-                            DataListener<?> subscriber = subscribers.remove(id);
+                            DataListener<?> subscriber = allListeners.remove(id);
                             subscriber.kill();
                         }
 
-                        subscribers.forEach((id,subscriber) -> {
+                        allListeners.forEach((id, subscriber) -> {
                             subscriber.garbageTagged = false;
                         });
                     }

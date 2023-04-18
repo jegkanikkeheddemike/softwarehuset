@@ -1,15 +1,14 @@
 package dtu.mennekser.softwarehuset.backend.actions;
 
-import dtu.mennekser.softwarehuset.backend.db.Log;
-import dtu.mennekser.softwarehuset.backend.javadb.client.ClientQuery;
-import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSubscriber;
+import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.schema.Log;
+import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientQuery;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ReadLogs {
     public static void main(String[] args) {
-        ArrayList<Log> logs = new ClientQuery<>(database -> database.logs,Throwable::printStackTrace).fetch();
+        ArrayList<Log> logs = new ClientQuery<Database,ArrayList<Log>>(database -> database.logs,Throwable::printStackTrace).fetch();
         for (Log log : logs) {
             System.out.println(log);
         }

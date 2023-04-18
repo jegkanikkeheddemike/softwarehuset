@@ -1,8 +1,7 @@
 package dtu.mennekser.softwarehuset.backend.Business;
 
 import dtu.mennekser.softwarehuset.app.networking.OnceQuery;
-import dtu.mennekser.softwarehuset.backend.data.DataQuery;
-import dtu.mennekser.softwarehuset.backend.db.Employee;
+import dtu.mennekser.softwarehuset.backend.schema.Employee;
 
 public class LoginManager {
 

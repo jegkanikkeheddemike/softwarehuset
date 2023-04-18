@@ -1,13 +1,9 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.backend.db.Activity;
-import dtu.mennekser.softwarehuset.backend.db.Employee;
-import dtu.mennekser.softwarehuset.backend.db.Project;
-import javafx.scene.Parent;
+import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 
 public class HomePage extends Scene {
     static HomePage instance;
