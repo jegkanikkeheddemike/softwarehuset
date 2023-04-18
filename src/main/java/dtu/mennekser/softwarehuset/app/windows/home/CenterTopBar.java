@@ -1,9 +1,11 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
+import dtu.mennekser.softwarehuset.app.LoginManager;
+import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.networking.OnceQuery;
 import dtu.mennekser.softwarehuset.app.windows.Style;
-import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
 import dtu.mennekser.softwarehuset.backend.schema.Project;
+import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.geometry.Insets;
@@ -31,16 +33,18 @@ public class CenterTopBar extends BorderPane {
         title.setFont(Style.setTitleFont());
         left.getChildren().add(title);
 
+        Session session = LoginManager.getCurrentSession();
+
         if (project.projectLeaderId == -1) {
             Button becomeProjectLeader = new Button("Become Project Leader");
             right.getChildren().add(becomeProjectLeader);
             Style.setBarButtonStyle(becomeProjectLeader,180);
 
             becomeProjectLeader.setOnAction(actionEvent -> {
-                ProjectManager.setProjectLeader(project.id);
+                DataTask.SubmitTask(appBackend -> appBackend.setProjectLeader(project.id, session));
             });
         } else {
-            left.getChildren().add(new Label("(" + new OnceQuery<>(database -> database.employees.get(project.projectLeaderId)).fetch().name + ")"));
+            left.getChildren().add(new Label("(" + new OnceQuery<>(appBackend -> appBackend.getProjectLeader(project.id, session)).fetch().name + ")"));
         }
     }
 }

@@ -34,12 +34,18 @@ public class Project implements Serializable {
     public void assignEmployee(int employeeID) {
         if (!assignedEmployees.contains(employeeID)) {
             assignedEmployees.add(employeeID);
+        } else {
+            throw new RuntimeException("Employee already assigned to project");
         }
     }
     public void setClient(String name){
         client = name;
     }
     public void setProjectLeader(int employeeID) {
+        if (projectLeaderId != -1) {
+            throw new RuntimeException("Project leader already exists");
+        }
+
         projectLeaderId = employeeID;
     }
     public boolean isProjectLeader(int employeeID) {

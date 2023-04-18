@@ -9,11 +9,11 @@ public class Activity implements Serializable {
     int budgetedTime;
     public String description ="";
     boolean finished = false;
-    public ArrayList<Integer> assigned = new ArrayList<>();
+    public ArrayList<Integer> assignedEmployees = new ArrayList<>();
     public ArrayList<TimeRegistration> timeRegistrations = new ArrayList<>();
     public Activity(String name, int budgetedTime, int id) {
         this.name = name;
-        this.budgetedTime = budgetedTime;
+        this.budgetedTime = budgetedTime; //TODO DET HER SKAL GØRES ANDERLEDES
         this.id = id;
     }
 
@@ -22,8 +22,10 @@ public class Activity implements Serializable {
     }
 
     public void assignEmployee(int id) {
-        if (!assigned.contains(id)) {
-            assigned.add(id);
+        if (!assignedEmployees.contains(id)) {
+            assignedEmployees.add(id);
+        } else {
+            throw new RuntimeException("Employee already assigned to activity");
         }
     }
 

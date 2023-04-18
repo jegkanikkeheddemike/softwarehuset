@@ -1,11 +1,11 @@
 package dtu.mennekser.softwarehuset.app.windows.login;
 
 import dtu.mennekser.softwarehuset.AppMain;
+import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.app.windows.home.HomePage;
-import dtu.mennekser.softwarehuset.backend.Business.EmployeeManager;
-import dtu.mennekser.softwarehuset.backend.Business.LoginManager;
+import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -56,7 +56,7 @@ public class LoginPage extends Scene {
 
 
         employeesListener = new DataListener<>(
-            EmployeeManager.getAllEmployees(),
+            AppBackend::getEmployees,
             employees -> {
                 StringBuilder lines = new StringBuilder();
                 employees.sort(Comparator.comparing(employee -> employee.name));
@@ -72,10 +72,11 @@ public class LoginPage extends Scene {
         String username = usernameField.getText().trim();
         LoginManager.attemptLogin(username);
 
-        if (LoginManager.getLoggedInEmployee() == null) {
-            errorField.setText("No such employee: " + username);
-        } else {
+        try {
+            LoginManager.getCurrentSession();
             AppMain.setScene(new HomePage(),"Home");
+        } catch (Exception e) {
+            errorField.setText("No such employee: " + username);
         }
     }
 }

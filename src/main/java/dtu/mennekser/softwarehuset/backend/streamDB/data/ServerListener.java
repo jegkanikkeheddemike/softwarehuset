@@ -2,7 +2,6 @@ package dtu.mennekser.softwarehuset.backend.streamDB.data;
 
 import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.ConnInterface;
-import dtu.mennekser.softwarehuset.backend.schema.Database;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.Ping;
 
 import java.io.IOException;

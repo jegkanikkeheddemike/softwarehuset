@@ -1,12 +1,13 @@
 package dtu.mennekser.softwarehuset.backend.actions;
 
 import dtu.mennekser.softwarehuset.AppSettings;
-import dtu.mennekser.softwarehuset.app.networking.DataTask;
-import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.app.LoginManager;
+import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
+import dtu.mennekser.softwarehuset.backend.schema.Session;
 import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientTask;
 
 public class FillWithJunkData {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
 
         //Yeah det her er lidt scuffed men det bliver man nødt til for at den
@@ -16,28 +17,38 @@ public class FillWithJunkData {
         AppSettings.debugMode = false;
         AppSettings.init();
 
-        new ClientTask<Database>(database -> {
-            int thor = database.createEmployee("Thor");
+        new ClientTask<AppBackend>(appBackend -> appBackend.createEmployee("Thor"),Throwable::printStackTrace);
+
+        Thread.sleep(500);
+        LoginManager.attemptLogin("Thor");
+
+        Session session = LoginManager.getCurrentSession();
+
+        new ClientTask<AppBackend>(database -> {
+
+
             int frederik = database.createEmployee("Frederik");
             int katinka = database.createEmployee("Katinka");
             int jens = database.createEmployee("Jens");
             int karsten = database.createEmployee("Karsten");
-            int christan = database.createEmployee("Christan");
+            int christian = database.createEmployee("Christian");
             int tobias = database.createEmployee("Tobias");
             int obama = database.createEmployee("Obama");
 
-            int byg = database.createProject("Byg et tårn" , thor);
-            database.projects.get(byg).assignEmployee(frederik);
-            database.projects.get(byg).assignEmployee(katinka);
-            database.projects.get(byg).assignEmployee(obama);
+            int byg = database.createProject("Byg et tårn" , session);
+            database.addEmployeeToProject(byg,"Frederik",session);
+            database.addEmployeeToProject(byg,"Katinka",session);
+            database.addEmployeeToProject(byg,"Obama",session);
 
-            int kage = database.createProject("Bag en kage", katinka);
-            database.projects.get(kage).assignEmployee(christan);
-            database.projects.get(kage).assignEmployee(thor);
+            int kage = database.createProject("Bag en kage", session);
+            database.addEmployeeToProject(kage,"Christian",session);
+            database.addEmployeeToProject(kage,"Katinka",session);
 
-            int byggeplads = database.projects.get(byg).createActivity("Find en byggeplads", 30);
-            database.projects.get(byg).activities.get(byggeplads).assignEmployee(thor);
-            database.projects.get(byg).activities.get(byggeplads).assignEmployee(katinka);
+            int find = database.createActivity(byg,"Find en byggeplads", 1,session);
+
+            database.addEmployeeToActivity(byg,find,"Katinka",session);
+            database.addEmployeeToActivity(byg,find,"Thor",session);
+
         },Throwable::printStackTrace);
     }
 }

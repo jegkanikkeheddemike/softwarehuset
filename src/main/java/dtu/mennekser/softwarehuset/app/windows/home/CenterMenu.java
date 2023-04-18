@@ -1,11 +1,13 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
+import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
+import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
-import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
 import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import dtu.mennekser.softwarehuset.backend.schema.Project;
+import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,7 +27,6 @@ public class CenterMenu extends BorderPane {
     BorderPane assignedPane;
 
     DataListener<Project> projectListener;
-    DataListener<ArrayList<Activity>> activityListener;
     DataListener<ArrayList<Employee>> assignedListener;
     DataListener<ArrayList<Employee>> notAssignedListener;
 
@@ -33,9 +34,36 @@ public class CenterMenu extends BorderPane {
 
 
     CenterMenu(int projectID) {
-        projectListener = new DataListener<>(database -> database.projects.get(projectID), project -> {
-            projectName = project.name;
-            setTop(new CenterTopBar(project));
+        Session session = LoginManager.getCurrentSession();
+        projectListener = new DataListener<>(appBackend -> appBackend.getProject(projectID, session),
+            project -> {
+                projectName = project.name;
+                setTop(new CenterTopBar(project));
+
+                activitiesPane.getChildren().clear();
+                Button newActivity = new Button("+");
+                newActivity.setBackground(Style.setBackground(4,5.0));
+                newActivity.setOnMouseEntered(actionEvent -> {
+                    newActivity.setBackground(Style.setBackground(0,5.0));
+                });
+                newActivity.setOnMouseExited(actionEvent -> {
+                    newActivity.setBackground(Style.setBackground(4,5.0));
+                });
+                newActivity.setFont(Font.font("Impact", FontWeight.BOLD, 40));
+                newActivity.setStyle("-fx-text-fill: rgb(60,130,100)");
+                newActivity.setPrefSize(100, 120);
+                activitiesPane.getChildren().add(newActivity);
+                newActivity.setOnAction(actionEvent -> {
+                    NewActivityWindow.tryCreate(projectID);
+                });
+
+
+                for (Activity activity : project.activities) {
+                    Button button = new Button(activity.name);
+                    Style.setActivityButtonStyle(button);
+                    button.setOnAction(actionEvent -> HomePage.setActivity(projectName,projectID,activity));
+                    activitiesPane.getChildren().add(button);
+                }
         });
 
 
@@ -53,50 +81,24 @@ public class CenterMenu extends BorderPane {
         assignedPane.setPadding(new Insets(5,5,5,5));
         assignedPane.setPrefWidth(120);
 
-        activityListener = new DataListener<>(
-                database -> database.projects.get(projectID).activities,
-                activities -> {
-                    activitiesPane.getChildren().clear();
-                    Button newActivity = new Button("+");
-                    newActivity.setBackground(Style.setBackground(4,5.0));
-                    newActivity.setOnMouseEntered(actionEvent -> {
-                        newActivity.setBackground(Style.setBackground(0,5.0));
-                    });
-                    newActivity.setOnMouseExited(actionEvent -> {
-                        newActivity.setBackground(Style.setBackground(4,5.0));
-                    });
-                    newActivity.setFont(Font.font("Impact", FontWeight.BOLD, 40));
-                    newActivity.setStyle("-fx-text-fill: rgb(60,130,100)");
-                    newActivity.setPrefSize(100, 120);
-                    activitiesPane.getChildren().add(newActivity);
-                    newActivity.setOnAction(actionEvent -> {
-                        NewActivityWindow.tryCreate(projectID);
-                    });
 
-
-                    for (Activity activity : activities) {
-                        Button button = new Button(activity.name);
-                        Style.setActivityButtonStyle(button);
-                        button.setOnAction(actionEvent -> HomePage.setActivity(projectName,projectID,activity));
-                        activitiesPane.getChildren().add(button);
-                    }
-                }
-        );
         assignedPane.setMinWidth(180);
         assignedListener = new DataListener<>(
-            ProjectManager.getAssignedEmployees(projectID), employees -> {
-            VBox assignedList = new VBox();
-            assignedList.setAlignment(Pos.TOP_CENTER);
-            assignedList.setSpacing(5);
+            appBackend -> appBackend.getAssignedEmployees(projectID, session),
+            employees -> {
+                VBox assignedList = new VBox();
+                assignedList.setAlignment(Pos.TOP_CENTER);
+                assignedList.setSpacing(5);
 
-            assignedPane.setCenter(assignedList);
+                assignedPane.setCenter(assignedList);
 
-            for (Employee employee: employees) {
-                Button employeeButton = new Button(employee.name);
-                Style.setEmployeeButtonStyle(employeeButton);
-                assignedList.getChildren().add(employeeButton);
+                for (Employee employee: employees) {
+                    Button employeeButton = new Button(employee.name);
+                    Style.setEmployeeButtonStyle(employeeButton);
+                    assignedList.getChildren().add(employeeButton);
+                }
             }
-        });
+        );
 
         HBox bottomMenu = new HBox();
         bottomMenu.setSpacing(5);
@@ -119,13 +121,14 @@ public class CenterMenu extends BorderPane {
         bottomMenu.getChildren().add(employeeDropdown);
 
         notAssignedListener = new DataListener<>(
-                ProjectManager.getNotAssignedEmployees(projectID),
-                notAssigned -> {
-                    employeeDropdown.getItems().clear();
-                    for (Employee employee : notAssigned) {
-                        employeeDropdown.getItems().add(employee.name);
-                    }
-                });
+            appBackend -> appBackend.getNotAssignedEmployees(projectID,session),
+            notAssigned -> {
+                employeeDropdown.getItems().clear();
+                for (Employee employee : notAssigned) {
+                    employeeDropdown.getItems().add(employee.name);
+                }
+            }
+        );
 
         Button addEmployee = new Button("+");
         addEmployee.setFont(Style.setTextFont());
@@ -135,8 +138,7 @@ public class CenterMenu extends BorderPane {
         bottomMenu.getChildren().add(addEmployee);
         addEmployee.setOnAction(actionEvent -> {
             String employeeName = employeeDropdown.getValue();
-            ProjectManager.addEmployeeToProject(projectID,employeeName);
+            DataTask.SubmitTask(appBackend -> appBackend.addEmployeeToProject(projectID, employeeName ,session));
         });
-
     }
 }
