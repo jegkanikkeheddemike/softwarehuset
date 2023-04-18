@@ -3,24 +3,31 @@ package dtu.mennekser.softwarehuset.serverBusiness.acceptance_tests;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import dtu.mennekser.softwarehuset.backend.db.Database;
+
+import static org.junit.Assert.assertTrue;
 
 public class CreateProject {
 
-    public CreateProject() {
+    Database database;
 
+    public CreateProject() {
+        database = new Database();
+        database.createEmployee("Hanne");
     }
 
     @Given("user is logged in")
     public void user_is_logged_in() {
-
+        //log in Hanne
+        //database.findEmployee("Hanne")
     }
     @When("user creates a project")
     public void user_creates_a_project() {
-        throw new io.cucumber.java.PendingException();
+        database.createProject("Sommerhus infoside");
     }
     @Then("a project is created")
     public void a_project_is_created() {
-        throw new io.cucumber.java.PendingException();
+        //assertTrue(//her skal det teste om projektet er oprettet);
     }
     @Then("the project is added to the list of projects")
     public void the_project_is_added_to_the_list_of_projects() {
