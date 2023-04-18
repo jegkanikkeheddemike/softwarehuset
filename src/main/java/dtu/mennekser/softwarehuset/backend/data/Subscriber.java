@@ -93,9 +93,10 @@ public class Subscriber<T extends Serializable> {
 
         for (Field field : object.getClass().getFields()) {
             try {
+                field.setAccessible(true);
                 sum += Objects.hash(field.get(object));
             } catch ( Exception e) {
-                System.out.println("Illegal hash lol.");
+                System.out.println("Illegal hash lol. Failed at: " + object.getClass().getName() + "." + field.getName());
             }
         }
 
