@@ -44,4 +44,8 @@ public class Activity implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public int getBudgetTime() {
+      return budgetedTime;
+    }
 }

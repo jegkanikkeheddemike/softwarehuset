@@ -121,13 +121,13 @@ public class BusinessTests {
 
     @Given("ProjectLeader is logged in")
     public void project_leader_is_logged_in() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        session = appBackend.attemptLogin("Hanne");
+        projectID = appBackend.createProject("Mormor's fødselsdag",session);
+        appBackend.setProjectLeader(projectID,session);
     }
     @Then("the activity {string} has budgeted time of {int} hours")
     public void the_activity_has_budgeted_time_of_hours(String string, Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(int1 == appBackend.getActivity(projectID,activityID,session).getBudgetTime());
     }
 
 }
