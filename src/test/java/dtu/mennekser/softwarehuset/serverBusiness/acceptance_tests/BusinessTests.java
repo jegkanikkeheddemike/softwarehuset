@@ -114,6 +114,15 @@ public class BusinessTests {
     public void the_employee_is_part_of_the_project(String string) {
         assertTrue(appBackend.getAssignedEmployees(projectID,session).contains(appBackend.findEmployee(string)));
     }
+    //----------------------------------------------------------//
+    //                   Assign Project Leader                  //
+    //----------------------------------------------------------//
+
+
+    //----------------------------------------------------------//
+    //                Assign Employee To Activity               //
+    //----------------------------------------------------------//
+
 
     //----------------------------------------------------------//
     //                      Set Budget Time                     //
