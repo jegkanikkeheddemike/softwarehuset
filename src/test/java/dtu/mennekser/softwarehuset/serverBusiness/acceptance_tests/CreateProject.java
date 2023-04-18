@@ -12,14 +12,13 @@ public class CreateProject {
 
     Database database;
     LoginManager loginManager;
+    String error;
 
     public CreateProject() {
 
         database = new Database();
         database.createEmployee("Hanne");
         loginManager = new LoginManager();
-
-        //System.out.println(database.employees.toString());
     }
 
     @Given("user is logged in")
@@ -29,7 +28,11 @@ public class CreateProject {
     }
     @When("user creates a project")
     public void user_creates_a_project() {
-        database.createProject("Sommerhus infoside" , loginManager.getLoggedInEmployee().id);
+            try {
+                database.createProject("Sommerhus infoside" , loginManager.getLoggedInEmployee().id);
+            } catch (Exception e){
+                error = e.getMessage();
+            }
     }
     @Then("a project is created")
     public void a_project_is_created() {
@@ -47,8 +50,7 @@ public class CreateProject {
 
     @Then("error message {string} is given")
     public void error_message_is_given(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(string.equals(error));
     }
     @When("a client {string} is added to the project")
     public void a_client_is_added_to_the_project(String string) {
