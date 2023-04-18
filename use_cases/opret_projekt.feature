@@ -12,7 +12,7 @@ Feature: Create Project
   Scenario: A user that isn't logged in creates a project
     Given user is not logged in
     When user creates a project
-    Then error message "Developer not logged in" is given
+    Then error message "Employee not logged in" is given
 
   Scenario: A user creates a project connected to a client
     Given user is logged in

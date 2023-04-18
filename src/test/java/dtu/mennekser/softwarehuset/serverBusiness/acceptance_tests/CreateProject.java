@@ -52,12 +52,11 @@ public class CreateProject {
     }
     @When("a client {string} is added to the project")
     public void a_client_is_added_to_the_project(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        database.findProject("Sommerhus infoside").setClient(string);
     }
     @Then("that project has a client {string}")
     public void that_project_has_a_client(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
-    }*/
+        assertEquals(database.findProject("Sommerhus infoside").client, string);
+    }
+*/
 }

@@ -7,6 +7,7 @@ public class Project implements Serializable {
 
     public final int id;
     public String name;
+    public String client;
     public ArrayList<Activity> activities = new ArrayList<>();
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
 
@@ -36,6 +37,9 @@ public class Project implements Serializable {
         } else {
             throw new RuntimeException("Employee already assigned to project");
         }
+    }
+    public void setClient(String name){
+        client = name;
     }
     public void setProjectLeader(int employeeID) {
         if (projectLeaderId != -1) {
