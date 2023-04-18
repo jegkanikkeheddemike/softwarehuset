@@ -29,22 +29,20 @@ public class CreateProject {
     }
     @When("user creates a project")
     public void user_creates_a_project() {
-        database.createProject("Sommerhus infoside" , database.findEmployee("Hanne").id);
+        database.createProject("Sommerhus infoside" , loginManager.getLoggedInEmployee().id);
     }
     @Then("a project is created")
     public void a_project_is_created() {
-        //assertTrue(//her skal det teste om projektet er oprettet);
+        assertTrue(database.projects.contains(database.findProject("Sommerhus infoside")));
     }
-    @Then("the project is added to the list of projects")
-    public void the_project_is_added_to_the_list_of_projects() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @Then("the project is added to the list of the users projects")
+    public void the_project_is_added_to_the_list_of_the_users_projects() {
+        assertTrue(database.findProject("Sommerhus infoside").assignedEmployees.contains(database.findEmployee("Hanne").id));
     }
 
     @Given("user is not logged in")
     public void user_is_not_logged_in() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        if(loginManager.getLoggedInEmployee() != null) {loginManager.logout();}
     }
 
     @Then("error message {string} is given")
