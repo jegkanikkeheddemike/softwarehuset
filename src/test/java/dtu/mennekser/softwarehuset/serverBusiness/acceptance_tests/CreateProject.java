@@ -6,30 +6,29 @@ import io.cucumber.java.en.When;
 import dtu.mennekser.softwarehuset.backend.schema.Database;
 import dtu.mennekser.softwarehuset.backend.Business.LoginManager;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CreateProject {
 
     Database database;
-    LoginManager loginManager;
     String error;
 
     public CreateProject() {
 
         database = new Database();
         database.createEmployee("Hanne");
-        loginManager = new LoginManager();
     }
 
     @Given("user is logged in")
     public void user_is_logged_in() {
         //log Hanne in
-        loginManager.setLoggedInEmployee(database.findEmployee("Hanne"));
+        LoginManager.setLoggedInEmployee(database.findEmployee("Hanne"));
     }
     @When("user creates a project")
     public void user_creates_a_project() {
             try {
-                database.createProject("Sommerhus infoside" , loginManager.getLoggedInEmployee().id);
+                database.createProject("Sommerhus infoside" , LoginManager.getLoggedInEmployee().id);
             } catch (Exception e){
                 error = e.getMessage();
             }
@@ -45,12 +44,12 @@ public class CreateProject {
 
     @Given("user is not logged in")
     public void user_is_not_logged_in() {
-        if(loginManager.getLoggedInEmployee() != null) {loginManager.logout();}
+        if(LoginManager.getLoggedInEmployee() != null) {LoginManager.logout();}
     }
 
     @Then("error message {string} is given")
     public void error_message_is_given(String string) {
-        assertTrue(string.equals(error));
+        assertEquals(string, error);
     }
     @When("a client {string} is added to the project")
     public void a_client_is_added_to_the_project(String string) {
