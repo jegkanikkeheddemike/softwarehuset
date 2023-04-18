@@ -14,4 +14,3 @@ Feature: Assign Employee to Project
     And a project is created
     When another Employee "I don't exist" is added to the project
     Then error message "Employee not found" is given
-    
