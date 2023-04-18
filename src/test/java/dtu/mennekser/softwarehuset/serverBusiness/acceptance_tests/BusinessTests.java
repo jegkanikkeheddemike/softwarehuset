@@ -17,10 +17,11 @@ public class BusinessTests {
     Session session;
     int projectID;
     int activityID;
+    int employeeID;
 
     public BusinessTests() {
         appBackend = new AppBackend();
-        appBackend.createEmployee("Hanne");
+        employeeID = appBackend.createEmployee("Hanne");
     }
 
     //----------------------------------------------------------//
@@ -47,7 +48,7 @@ public class BusinessTests {
     }
     @Then("the project is added to the list of the users projects")
     public void the_project_is_added_to_the_list_of_the_users_projects() {
-        assertTrue(appBackend.findProject("Sommerhus infoside").assignedEmployees.contains(appBackend.findEmployee("Hanne").id));
+        assertTrue(appBackend.findProject("Sommerhus infoside").assignedEmployees.contains(employeeID));
     }
 
     @Given("user is not logged in")
@@ -118,6 +119,20 @@ public class BusinessTests {
     //                   Assign Project Leader                  //
     //----------------------------------------------------------//
 
+    @Given("a project {string} exists")
+    public void a_project_exists(String string) {
+        session = appBackend.attemptLogin("Hanne");
+        projectID = appBackend.createProject(string,session);
+    }
+    @When("the user is assigned as project leader")
+    public void the_user_is_assigned_as_project_leader() {
+        appBackend.setProjectLeader(projectID,session);
+    }
+    @Then("the user is the project leader of {string}")
+    public void the_user_is_the_project_leader_of(String string) {
+        throw new io.cucumber.java.PendingException();
+    }
+
 
     //----------------------------------------------------------//
     //                Assign Employee To Activity               //
@@ -135,8 +150,8 @@ public class BusinessTests {
         appBackend.setProjectLeader(projectID,session);
     }
     @Then("the activity {string} has budgeted time of {int} hours")
-    public void the_activity_has_budgeted_time_of_hours(String string, Integer int1) {
-        assertTrue(int1 == appBackend.getActivity(projectID,activityID,session).getBudgetTime());
+    public void the_activity_has_budgeted_time_of_hours(String string, int int1) {
+        assertEquals(int1, appBackend.getActivity(projectID, activityID, session).getBudgetTime());
     }
 
 }
