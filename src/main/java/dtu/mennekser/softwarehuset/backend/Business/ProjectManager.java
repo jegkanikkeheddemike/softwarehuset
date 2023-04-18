@@ -15,8 +15,7 @@ public class ProjectManager {
         int employeeID = LoginManager.getLoggedInEmployee().id;
         DataTask.SubmitTask(
             database -> {
-                int projectID = database.createProject(projectName);
-                database.projects.get(projectID).assignEmployee(employeeID);
+                int projectID = database.createProject(projectName, employeeID);
             }
         );
     }

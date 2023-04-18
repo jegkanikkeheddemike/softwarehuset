@@ -6,7 +6,7 @@ Feature: Create Project
     Given user is logged in
     When user creates a project
     Then a project is created
-    And the project is added to the list of projects
+    And the project is added to the list of the users projects
 
 
   Scenario: A user that isn't logged in creates a project
@@ -20,4 +20,4 @@ Feature: Create Project
     And a client "AP Moeller Maersk" is added to the project
     Then a project is created
     And that project has a client "AP Moeller Maersk"
-    And the project is added to the list of projects
+    And the project is added to the list of the users projects

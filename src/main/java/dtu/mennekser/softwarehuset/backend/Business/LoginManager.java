@@ -6,8 +6,13 @@ import dtu.mennekser.softwarehuset.backend.schema.Employee;
 public class LoginManager {
 
     private static Employee loggedInEmployee;
-    public static Employee getLoggedInEmployee() {
+    public static Employee getLoggedInEmployee(){
+        //probably needs to throw a "No employee logged in" error,
+        //but then 17 problem that will have to be fixed occurs :D
         return loggedInEmployee;
+    }
+    public static void setLoggedInEmployee(Employee employee){
+        loggedInEmployee = employee;
     }
 
     public static void attemptLogin(String username) {
