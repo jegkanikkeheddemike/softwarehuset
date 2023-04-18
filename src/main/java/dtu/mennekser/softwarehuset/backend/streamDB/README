@@ -1,0 +1,19 @@
+streamDB er navnet på denne database.
+
+Det virker ved at når Clienter forbinder til databasen, siger de om de vil:
+1. Lytte til en query (Listener)
+elller
+2. Opdate state i databasen. (Task)
+
+Bemærk at alle Querys er lambdafunktioner som tager databasens state (DataLayer) som argument, og returner den
+værdi som vil findes (Query). Ligende sker alle opdateringer af state (Task) som en lambdafunktion der tager
+state (DataLayer) som arguement, og mutere staten.
+Disse lambdafunktioner sender over en tcpforbindelse.
+
+Hele pointen med denne database er at en Query kan ligge i en længere periode og lytte til en Query, hvor hver
+gang DataLayers state ændres, testes det om Query'en returnere det samme. Hvis Query'en ikke returner det samme
+som sidste gang bliver det nye resultat sendt til clienten.
+
+Clienten har så et callback som beskriver hvad der skal ske hver gang den får data. Ved at gøre dette kan man
+lave en reaktiv GUI som automatisk opdatare når den data den repræsentere ændrer sig.
+

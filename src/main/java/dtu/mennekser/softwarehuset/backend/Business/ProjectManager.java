@@ -1,9 +1,10 @@
 package dtu.mennekser.softwarehuset.backend.Business;
 
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
-import dtu.mennekser.softwarehuset.backend.data.DataQuery;
-import dtu.mennekser.softwarehuset.backend.db.Employee;
-import dtu.mennekser.softwarehuset.backend.db.Project;
+import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.streamDB.data.Query;
+import dtu.mennekser.softwarehuset.backend.schema.Employee;
+import dtu.mennekser.softwarehuset.backend.schema.Project;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class ProjectManager {
             database.projects.get(projectID).createActivity(activityName,Integer.parseInt(time));
         });
     }
-    public static DataQuery<ArrayList<Project>> getProjectsOfEmployee() {
+    public static Query<Database,ArrayList<Project>> getProjectsOfEmployee() {
         assert LoginManager.getLoggedInEmployee() != null;
 
         int employeeID = LoginManager.getLoggedInEmployee().id;
@@ -48,7 +49,7 @@ public class ProjectManager {
             database.projects.get(projectID).projectLeaderId = projectLeaderID;
         });
     }
-    public static DataQuery<ArrayList<Employee>> getAssignedEmployees(int projectID) {
+    public static Query<Database,ArrayList<Employee>> getAssignedEmployees(int projectID) {
         assert LoginManager.getLoggedInEmployee() != null;
 
         return database -> {
@@ -59,7 +60,7 @@ public class ProjectManager {
             return assigned;
         };
     }
-    public static DataQuery<ArrayList<Employee>> getNotAssignedEmployees(int projectID) {
+    public static Query<Database,ArrayList<Employee>> getNotAssignedEmployees(int projectID) {
         assert LoginManager.getLoggedInEmployee() != null;
 
         return database -> {
@@ -78,7 +79,7 @@ public class ProjectManager {
 
         DataTask.SubmitTask(database -> database.projects.get(projectID).assignEmployee(database.findEmployee(employeeName).id));
     }
-    public static DataQuery<ArrayList<Employee>> getEmployeesNotAssignedToActivity(int projectID, int activityID) {
+    public static Query<Database,ArrayList<Employee>> getEmployeesNotAssignedToActivity(int projectID, int activityID) {
         assert LoginManager.getLoggedInEmployee() != null;
 
         return database -> {

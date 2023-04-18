@@ -1,7 +1,9 @@
 package dtu.mennekser.softwarehuset.backend.actions;
 
-import dtu.mennekser.softwarehuset.ProjectSettings;
+import dtu.mennekser.softwarehuset.AppSettings;
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
+import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientTask;
 
 public class FillWithJunkData {
     public static void main(String[] args) {
@@ -11,10 +13,10 @@ public class FillWithJunkData {
         // følger med ProjectSettigns.remoteLocation.
 
 
-        ProjectSettings.debugMode = false;
-        ProjectSettings.init();
+        AppSettings.debugMode = false;
+        AppSettings.init();
 
-        DataTask.SubmitTask(database -> {
+        new ClientTask<Database>(database -> {
             int thor = database.createEmployee("Thor");
             int frederik = database.createEmployee("Frederik");
             int katinka = database.createEmployee("Katinka");

@@ -1,13 +1,14 @@
 package dtu.mennekser.softwarehuset.backend.actions;
 
-import dtu.mennekser.softwarehuset.backend.javadb.client.ClientTask;
+import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientTask;
 
 /**
  * @author Thor
  */
 public class ReloadServer {
     public static void main(String[] args) {
-        ClientTask task = new ClientTask(database -> {
+        new ClientTask<Database>(database -> {
             System.exit(0);
         }, Throwable::printStackTrace);
     }
