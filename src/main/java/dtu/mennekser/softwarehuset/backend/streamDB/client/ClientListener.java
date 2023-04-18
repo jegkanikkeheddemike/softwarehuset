@@ -4,7 +4,7 @@ import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.Query;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.ConnInterface;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.ConnType;
-import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.Ping;
 
 import java.io.IOException;
@@ -62,7 +62,7 @@ public class ClientListener<Schema extends DataLayer,T extends Serializable> {
             socket = new Socket(ClientSettings.remoteLocation, port);
             socket.setKeepAlive(true);
             ConnInterface.send(ConnType.Subscribe, socket);
-            ConnInterface.send((Function<Database, T> & Serializable) query, socket);
+            ConnInterface.send((Function<AppBackend, T> & Serializable) query, socket);
             while (true) {
                 Object data = ConnInterface.receive(socket);
                 if (data instanceof Ping) {

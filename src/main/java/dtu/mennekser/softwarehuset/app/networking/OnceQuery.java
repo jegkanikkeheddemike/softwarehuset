@@ -1,6 +1,6 @@
 package dtu.mennekser.softwarehuset.app.networking;
 
-import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.Query;
 import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientQuery;
 
@@ -12,8 +12,8 @@ import java.io.Serializable;
  *
  * @author Thor
  */
-public class OnceQuery<T extends Serializable> extends ClientQuery<Database,T> {
-    public OnceQuery(Query<Database,T> query) {
+public class OnceQuery<T extends Serializable> extends ClientQuery<AppBackend,T> {
+    public OnceQuery(Query<AppBackend,T> query) {
         super(query, Throwable::printStackTrace);
     }
 }

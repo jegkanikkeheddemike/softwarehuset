@@ -1,6 +1,8 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
+import dtu.mennekser.softwarehuset.app.LoginManager;
+import dtu.mennekser.softwarehuset.app.networking.DataTask;
+import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,8 +32,11 @@ public class NewProjectWindow {
         Button create = new Button("Create");
         root.getChildren().add(create);
 
+
+        Session session = LoginManager.getCurrentSession();
         create.setOnAction(actionEvent -> {
-            ProjectManager.createProject(nameField.getText().trim());
+            String projectName = nameField.getText().trim();
+            DataTask.SubmitTask(appBackend -> appBackend.createProject(projectName,session));
             exists = false;
             makeProjectWindow.close();
         });

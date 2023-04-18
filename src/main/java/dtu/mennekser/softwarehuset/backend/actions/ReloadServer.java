@@ -1,6 +1,6 @@
 package dtu.mennekser.softwarehuset.backend.actions;
 
-import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientTask;
 
 /**
@@ -8,7 +8,7 @@ import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientTask;
  */
 public class ReloadServer {
     public static void main(String[] args) {
-        new ClientTask<Database>(database -> {
+        new ClientTask<AppBackend>(database -> {
             System.exit(0);
         }, Throwable::printStackTrace);
     }
