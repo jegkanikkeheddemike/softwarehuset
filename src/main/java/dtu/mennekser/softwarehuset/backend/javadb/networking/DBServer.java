@@ -2,7 +2,7 @@ package dtu.mennekser.softwarehuset.backend.javadb.networking;
 
 import dtu.mennekser.softwarehuset.backend.data.DataQuery;
 import dtu.mennekser.softwarehuset.backend.data.DataTask;
-import dtu.mennekser.softwarehuset.backend.data.Subscriber;
+import dtu.mennekser.softwarehuset.backend.data.ServerListener;
 import dtu.mennekser.softwarehuset.backend.javadb.JavaDB;
 import dtu.mennekser.softwarehuset.backend.db.Log;
 
@@ -86,7 +86,7 @@ public class DBServer {
                     database.submitTask(task);
                 }  else {
                     DataQuery<?> query = ConnInterface.receive(client);
-                    Subscriber<?> subscriber = new Subscriber<>(query,client);
+                    ServerListener<?> subscriber = new ServerListener<>(query,client);
                     database.submitSubscriber(subscriber);
                     System.out.println("Recieved subscriber");
                 }

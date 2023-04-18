@@ -1,7 +1,7 @@
 package dtu.mennekser.softwarehuset.backend.javadb;
 
 import dtu.mennekser.softwarehuset.backend.data.DataTask;
-import dtu.mennekser.softwarehuset.backend.data.Subscriber;
+import dtu.mennekser.softwarehuset.backend.data.ServerListener;
 import dtu.mennekser.softwarehuset.backend.db.Log;
 import dtu.mennekser.softwarehuset.backend.db.Database;
 
@@ -32,7 +32,7 @@ public class JavaDB {
 
     final private LinkedBlockingQueue<DataTask> tasks = new LinkedBlockingQueue<>();
 
-    final private LinkedList<Subscriber<?>> subscribers = new LinkedList<>();
+    final private LinkedList<ServerListener<?>> subscribers = new LinkedList<>();
 
     public void submitTask(DataTask task) {
         try {
@@ -42,7 +42,7 @@ public class JavaDB {
         }
     }
 
-    public void submitSubscriber(Subscriber<?> subscriber) {
+    public void submitSubscriber(ServerListener<?> subscriber) {
         synchronized (database) {
             try {
                 subscriber.update(database);
@@ -83,9 +83,9 @@ public class JavaDB {
                 }
 
                 synchronized (subscribers) {
-                    LinkedList<Subscriber<?>> failed = new LinkedList<>();
+                    LinkedList<ServerListener<?>> failed = new LinkedList<>();
 
-                    for (Subscriber<?> subscriber : subscribers) {
+                    for (ServerListener<?> subscriber : subscribers) {
                         try {
                             boolean success = subscriber.update(database);
                             if (!success) {
@@ -98,7 +98,7 @@ public class JavaDB {
                         }
 
                     }
-                    for (Subscriber<?> failedSub : failed) {
+                    for (ServerListener<?> failedSub : failed) {
                         subscribers.remove(failedSub);
                     }
                     database.activeConnections = subscribers.size();

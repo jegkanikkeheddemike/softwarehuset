@@ -8,22 +8,20 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Random;
 
 /**
- *
+ * En Serverlistener er serverens  
  * @author Thor
  */
-public class Subscriber<T extends Serializable> {
+public class ServerListener<T extends Serializable> {
     boolean prevDataExists = false;
     int prevHash = 0;
     final DataQuery<T> query;
     final Socket client;
 
-    public Subscriber(DataQuery<T> filter, Socket client) {
+    public ServerListener(DataQuery<T> filter, Socket client) {
         this.query = filter;
         this.client = client;
     }
