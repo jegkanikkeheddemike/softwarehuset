@@ -105,7 +105,7 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
                 field.setAccessible(true);
                 sum += Objects.hash(field.get(object));
             } catch ( Exception e) {
-                System.out.println("Illegal hash lol. Failed at: " + object.getClass().getName() + "." + field.getName());
+                throw new RuntimeException("Illegal hash lol. Failed at: " + object.getClass().getName() + "." + field.getName());
             }
         }
 
