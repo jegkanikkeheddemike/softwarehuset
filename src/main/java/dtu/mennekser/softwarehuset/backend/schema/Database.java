@@ -1,13 +1,15 @@
-package dtu.mennekser.softwarehuset.backend.db;
+package dtu.mennekser.softwarehuset.backend.schema;
+
+import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Database implements Serializable {
-    public int activeConnections = 0;
+public class Database extends DataLayer{
+
     public ArrayList<Employee> employees = new ArrayList<>();
     public ArrayList<Project> projects = new ArrayList<>();
-    public ArrayList<Log> logs = new ArrayList<>();
+
 
 
 

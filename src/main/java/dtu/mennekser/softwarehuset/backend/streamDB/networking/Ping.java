@@ -1,4 +1,4 @@
-package dtu.mennekser.softwarehuset.backend.javadb.networking;
+package dtu.mennekser.softwarehuset.backend.streamDB.networking;
 
 import java.io.Serializable;
 

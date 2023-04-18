@@ -1,6 +1,6 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
-import dtu.mennekser.softwarehuset.ProjectApp;
+import dtu.mennekser.softwarehuset.AppMain;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.app.windows.login.LoginPage;
 import dtu.mennekser.softwarehuset.backend.Business.LoginManager;
@@ -23,7 +23,7 @@ public class TopBar extends HBox {
 
         logoutButton.setOnAction(actionEvent -> {
             LoginManager.logout();
-            ProjectApp.setScene(new LoginPage(), "Login");
+            AppMain.setScene(new LoginPage(), "Login");
         });
 
     }

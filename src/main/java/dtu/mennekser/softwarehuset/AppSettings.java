@@ -1,13 +1,13 @@
 package dtu.mennekser.softwarehuset;
 
 import dtu.mennekser.softwarehuset.app.windows.debug.DebugWindow;
-import dtu.mennekser.softwarehuset.backend.javadb.client.ClientSettings;
+import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientSettings;
 
 
 /**
  * @author Thor
  */
-public class ProjectSettings {
+public class AppSettings {
     private static final String remoteLocation = "koebstoffer.info";
     //private static final String remoteLocation = "localhost";
 

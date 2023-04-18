@@ -1,4 +1,4 @@
-package dtu.mennekser.softwarehuset.backend.db;
+package dtu.mennekser.softwarehuset.backend.schema;
 
 import java.io.Serializable;
 import java.util.Date;

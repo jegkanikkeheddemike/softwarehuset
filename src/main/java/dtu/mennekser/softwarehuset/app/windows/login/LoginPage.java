@@ -1,14 +1,12 @@
 package dtu.mennekser.softwarehuset.app.windows.login;
 
-import dtu.mennekser.softwarehuset.ProjectApp;
-import dtu.mennekser.softwarehuset.app.networking.OnceQuery;
+import dtu.mennekser.softwarehuset.AppMain;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.app.windows.home.HomePage;
 import dtu.mennekser.softwarehuset.backend.Business.EmployeeManager;
 import dtu.mennekser.softwarehuset.backend.Business.LoginManager;
-import dtu.mennekser.softwarehuset.backend.db.Employee;
-import dtu.mennekser.softwarehuset.backend.db.Log;
+import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -77,7 +75,7 @@ public class LoginPage extends Scene {
         if (LoginManager.getLoggedInEmployee() == null) {
             errorField.setText("No such employee: " + username);
         } else {
-            ProjectApp.setScene(new HomePage(),"Home");
+            AppMain.setScene(new HomePage(),"Home");
         }
     }
 }

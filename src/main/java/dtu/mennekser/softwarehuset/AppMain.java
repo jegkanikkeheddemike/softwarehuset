@@ -5,19 +5,18 @@ import dtu.mennekser.softwarehuset.app.windows.login.LoginPage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
  * @author Thor
  */
-public class ProjectApp extends Application {
+public class AppMain extends Application {
 
     static Stage mainStage;
     @Override
     public void start(Stage stage) throws Exception {
 
-        ProjectSettings.init();
+        AppSettings.init();
         mainStage = stage;
 
         Scene scene = new LoginPage();

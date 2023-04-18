@@ -1,8 +1,9 @@
-package dtu.mennekser.softwarehuset.backend.data;
+package dtu.mennekser.softwarehuset.backend.streamDB.data;
 
-import dtu.mennekser.softwarehuset.backend.javadb.networking.ConnInterface;
-import dtu.mennekser.softwarehuset.backend.db.Database;
-import dtu.mennekser.softwarehuset.backend.javadb.networking.Ping;
+import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
+import dtu.mennekser.softwarehuset.backend.streamDB.networking.ConnInterface;
+import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.streamDB.networking.Ping;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -12,16 +13,27 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * En Serverlistener er serverens  
+ * En ServerListener er serverens representation af en listener. Det er den her som har ownership og dens
+ *  specifikke tcp forbindelse.
+ *  En ServerListener har fået en query over forbindelsen (parset og konstructet i SocketLayer), det
+ *  er ServerListenerens ansvar at:
+ *
+ *  1. Tjekke om resultatet af queryen har ændret sig når ExecutorLayer har eksikveret ændriger i DataLayer
+ *  2. Hvis der er ændringer sendes den nye data over tcp forbindelsen.
+ *  3. Hvis tcp forbindelsen er død skal ExecutorLayer notificeres så ServerListener instancen kan blive droppet.
+ *
+ *  Bemærk at ServerListener IKKE har sin egen thread. ExecutorLayer kalder ServerListener::Update(DataLayer),
+ *  når der skal tjekkes om der er nyt resulat af queryen.
+ *
  * @author Thor
  */
-public class ServerListener<T extends Serializable> {
+public class ServerListener<Schema extends DataLayer,T extends Serializable> {
     boolean prevDataExists = false;
     int prevHash = 0;
-    final DataQuery<T> query;
+    final Query<Schema,T> query;
     final Socket client;
 
-    public ServerListener(DataQuery<T> filter, Socket client) {
+    public ServerListener(Query<Schema,T> filter, Socket client) {
         this.query = filter;
         this.client = client;
     }
@@ -31,7 +43,7 @@ public class ServerListener<T extends Serializable> {
      * True is ok status.
      * False means the connection has been severed and the subscriber needs to be killed
      */
-    public boolean update(Database tables) {
+    public boolean update(Schema tables) {
         //Ping to check if still alive
         try {
             ConnInterface.send(new Ping(new Random().nextInt()),client);
@@ -59,9 +71,9 @@ public class ServerListener<T extends Serializable> {
         }
         return true;
     }
-    //Okay wtf. Jeg (Thor) er mega sur
-    //Nu skal du bare høre om hvor mega besværlidt det er at sammenligne to objekter i java.
-    //Okay så, hele pointen med den her klasse er at den skal kunne sammenligne resultatet af en query med
+
+
+    //Hele pointen med den her klasse er at den skal kunne sammenligne resultatet af en query med
     // det tidligere resultat af samme query. Det første man tænker at man kan gøre er man kan bruge
     // Object.equals(). Men det virker ikke fordi resultatet af en query godt kan være en reference til et objekt
     // i databasen. Så hvis den underliggende data i objektet ændres vil den også ændres i den gamle reference,
@@ -71,14 +83,13 @@ public class ServerListener<T extends Serializable> {
     // Min løsning til dette var at brug Objects.hash(...). Det her virkede bedre, men stadig ikke godt nok.
     // For hvem villede havde gætte at hvis man ændre en primitivt felt i et objekt, FORBLIVER DETS HASH DET SAMME.
 
-    // WWWWWWWWTTTTTTTTFFFFFFFF
     // Hele pointen med hashes er at kunne sammenligne to ting, men hvis den siger de er ens selvom de ikke er
     // ødelægger det jo hele pointen.
 
     //Min løsning til det her er at skrive min egen hash funktion, denne hash funktion er lig summen af
     // objektets hash + hashet af elle dens felter, hvilket den gør ved javas reflektions bibliotek.
 
-    //Ikke ok. Jeg tror ikke engang at det er i sig selv er godt nok, for hvad nu hvis et felt i et felt ændrer sig?
+    //Jeg tror ikke engang at det er i sig selv er godt nok, for hvad nu hvis et felt i et felt ændrer sig?
     //Dette kan løses ved at gøre funktionen rekursiv men hvad nu hvis et felt i et objekt i en liste i et objekt
     // ændrer sig. Så aner jeg ikke hvordan man skal kunne fange det.
 

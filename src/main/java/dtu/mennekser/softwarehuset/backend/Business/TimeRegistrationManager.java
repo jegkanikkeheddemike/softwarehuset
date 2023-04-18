@@ -1,8 +1,9 @@
 package dtu.mennekser.softwarehuset.backend.Business;
 
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
-import dtu.mennekser.softwarehuset.backend.data.DataQuery;
-import dtu.mennekser.softwarehuset.backend.db.TimeRegistration;
+import dtu.mennekser.softwarehuset.backend.schema.Database;
+import dtu.mennekser.softwarehuset.backend.streamDB.data.Query;
+import dtu.mennekser.softwarehuset.backend.schema.TimeRegistration;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class TimeRegistrationManager {
             );
         });
     }
-    public static DataQuery<ArrayList<TimeRegistration>> getTimeRegistrations(int projectID, int activityID) {
+    public static Query<Database,ArrayList<TimeRegistration>> getTimeRegistrations(int projectID, int activityID) {
         return database -> database.projects.get(projectID).activities.get(activityID).timeRegistrations;
     }
 }

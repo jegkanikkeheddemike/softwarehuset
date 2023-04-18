@@ -1,11 +1,9 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.app.networking.OnceQuery;
-import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.Business.ProjectManager;
-import dtu.mennekser.softwarehuset.backend.db.Employee;
-import dtu.mennekser.softwarehuset.backend.db.Project;
+import dtu.mennekser.softwarehuset.backend.schema.Project;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.geometry.Insets;

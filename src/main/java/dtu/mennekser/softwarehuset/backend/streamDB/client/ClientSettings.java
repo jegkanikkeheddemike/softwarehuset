@@ -1,4 +1,4 @@
-package dtu.mennekser.softwarehuset.backend.javadb.client;
+package dtu.mennekser.softwarehuset.backend.streamDB.client;
 
 /**
  * @author Thor
