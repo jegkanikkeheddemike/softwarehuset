@@ -60,7 +60,7 @@ public class AppBackend extends DataLayer{
 
     private void assertLoggedIn(Session session) {
         if (session == null) {
-            throw new RuntimeException("Not logged in");
+            throw new RuntimeException("Employee not logged in");
         }
     }
 
