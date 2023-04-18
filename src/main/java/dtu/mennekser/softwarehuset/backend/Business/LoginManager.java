@@ -7,9 +7,6 @@ public class LoginManager {
 
     private static Employee loggedInEmployee;
     public static Employee getLoggedInEmployee(){
-        //probably needs to throw a "No employee logged in" error,
-        //but then 17 problem that will have to be fixed occurs :D
-        //throw new RuntimeException("Not logged in");
         if(loggedInEmployee == null){
             throw new RuntimeException("Developer not logged in");
         }
