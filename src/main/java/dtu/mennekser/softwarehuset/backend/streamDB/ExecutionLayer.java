@@ -93,7 +93,6 @@ public class ExecutionLayer<Schema extends DataLayer> {
                         try {
                             boolean success = subscriber.update(datalayer);
                             if (!success) {
-                                System.out.println("Success returned false on update attemp: ");
                                 failed.add(subscriber);
                             }
                         } catch (Exception e) {
