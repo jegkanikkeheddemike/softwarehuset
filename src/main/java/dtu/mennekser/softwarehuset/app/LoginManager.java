@@ -3,7 +3,7 @@ package dtu.mennekser.softwarehuset.app;
 import dtu.mennekser.softwarehuset.app.networking.OnceQuery;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 
-public final class LoginManager {
+public class LoginManager {
     private static Session currentSession;
 
     public static void attemptLogin(String username) {
