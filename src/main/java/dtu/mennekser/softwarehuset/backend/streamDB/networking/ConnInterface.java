@@ -19,6 +19,7 @@ public class ConnInterface {
         socket.getOutputStream().write(objectBin);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T receive(Socket socket) throws IOException {
 
         try {

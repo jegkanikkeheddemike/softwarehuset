@@ -23,6 +23,7 @@ public class ExecutionLayer<Schema extends DataLayer> {
         this.datalayer = datalayer;
     }
 
+    @SuppressWarnings("unchecked")
     public ExecutionLayer(String filePath) throws IOException, ClassNotFoundException {
         useDisk = true;
         byte[] bin = Files.readAllBytes(Paths.get(filePath));
@@ -31,11 +32,11 @@ public class ExecutionLayer<Schema extends DataLayer> {
         datalayer = (Schema) ois.readObject();
     }
 
-    final private LinkedBlockingQueue<Task> tasks = new LinkedBlockingQueue<>();
+    final private LinkedBlockingQueue<Task<Schema>> tasks = new LinkedBlockingQueue<>();
 
     final private LinkedList<ServerListener<Schema,?>> subscribers = new LinkedList<>();
 
-    public void submitTask(Task task) {
+    public void submitTask(Task<Schema> task) {
         try {
             tasks.put(task);
         } catch (InterruptedException e) {
