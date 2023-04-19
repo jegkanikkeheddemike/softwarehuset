@@ -30,7 +30,7 @@ public class DebugScene extends Scene {
         ScrollPane scrollPane = new ScrollPane(content);
         ((BorderPane) getRoot()).setCenter(scrollPane);
 
-        logListener = new DataListener<>(database -> database.logs,
+        logListener = new DataListener<>(appBackend -> appBackend.logs,
                 logs -> {
                     content.getChildren().clear();
                     scrollPane.setVvalue(1D);
