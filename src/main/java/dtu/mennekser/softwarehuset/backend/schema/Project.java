@@ -13,7 +13,8 @@ public class Project implements Serializable {
 
     public int projectLeaderId = -1;
 
-    public Project(String name, int id) {
+    public Project(String name,String client, int id) {
+        this.client = client;
         this.name = name;
         this.id = id;
     }
