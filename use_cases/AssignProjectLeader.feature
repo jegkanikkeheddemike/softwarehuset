@@ -11,7 +11,7 @@ Feature: Assign Project Leader
     And another Employee "Karsten" exists
     And "Karsten" is project leader
     When the user is assigned as project leader
-    Then error message "Project leader already assigned" is given
+    Then error message "Project leader already exists" is given
     
   Scenario: Employee becomes project leader without being logged in
     Given a project "Planlæg en rejse" exists

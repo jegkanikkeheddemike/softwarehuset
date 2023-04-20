@@ -126,11 +126,21 @@ public class BusinessTests {
     }
     @When("the user is assigned as project leader")
     public void the_user_is_assigned_as_project_leader() {
+        try {
         appBackend.setProjectLeader(projectID,session);
+        } catch (Exception e){
+        error = e.getMessage();
+        }
     }
     @Then("the user is the project leader of {string}")
     public void the_user_is_the_project_leader_of(String string) {
-        throw new io.cucumber.java.PendingException();
+        assertEquals(appBackend.getProjectLeader(projectID, session).id, employeeID);
+    }
+    @Given("{string} is project leader")
+    public void is_project_leader(String string) {
+        session = appBackend.attemptLogin("Karsten");
+        appBackend.setProjectLeader(projectID,session);
+        session = appBackend.attemptLogin("Hanne");
     }
 
 
@@ -155,6 +165,7 @@ public class BusinessTests {
         assertTrue(
                 appBackend.getAssignedActivityEmployees(projectID,activityID,session).stream().map(employee -> employee.id).toList().contains(employeeID));
     }
+
 
 
     //----------------------------------------------------------//
