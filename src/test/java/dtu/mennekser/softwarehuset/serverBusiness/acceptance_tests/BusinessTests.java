@@ -138,6 +138,24 @@ public class BusinessTests {
     //                Assign Employee To Activity               //
     //----------------------------------------------------------//
 
+    @Given("an activity {string} exists")
+    public void an_activity_exists(String string) {
+        activityID = appBackend.createActivity(projectID,string, 100, session);
+    }
+    @When("the user is assigned to {string}")
+    public void the_user_is_assigned_to(String string) {
+        try {
+            appBackend.addEmployeeToActivity(projectID, activityID, "Hanne", session);
+        } catch (Exception e){
+            error = e.getMessage();
+        }
+    }
+    @Then("the user is assigned")
+    public void the_user_is_assigned() {
+        assertTrue(
+                appBackend.getAssignedActivityEmployees(projectID,activityID,session).stream().map(employee -> employee.id).toList().contains(employeeID));
+    }
+
 
     //----------------------------------------------------------//
     //                      Set Budget Time                     //

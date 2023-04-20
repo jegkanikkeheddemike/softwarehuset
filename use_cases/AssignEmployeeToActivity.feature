@@ -16,4 +16,4 @@ Feature: Assign Employee to activity
     And an activity "Køb kuffert" exists
     When the user is assigned to "Køb kuffert"
     When the user is assigned to "Køb kuffert"
-    Then  error message "Employee already assigned" is given
+    Then  error message "Employee already assigned to activity" is given
