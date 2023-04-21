@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class NewProjectWindow {
@@ -27,7 +28,11 @@ public class NewProjectWindow {
 
         root.getChildren().add(new Label("Project name:"));
         TextField nameField = new TextField();
+        TextField clientField = new TextField();
+
         root.getChildren().add(nameField);
+        root.getChildren().add(new Text("Client (optional)"));
+        root.getChildren().add(clientField);
 
         Button create = new Button("Create");
         root.getChildren().add(create);
@@ -36,7 +41,10 @@ public class NewProjectWindow {
         Session session = LoginManager.getCurrentSession();
         create.setOnAction(actionEvent -> {
             String projectName = nameField.getText().trim();
-            DataTask.SubmitTask(appBackend -> appBackend.createProject(projectName,session));
+            String clientName = clientField.getText().trim();
+            DataTask.SubmitTask(appBackend -> appBackend.createProject(projectName,clientName,session));
+
+
             exists = false;
             makeProjectWindow.close();
         });
