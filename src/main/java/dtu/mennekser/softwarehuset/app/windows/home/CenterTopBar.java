@@ -30,8 +30,11 @@ public class CenterTopBar extends BorderPane {
         setRight(right);
 
         Label title = new Label(project.name);
+        Label client = new Label(" : " + project.client);
+        client.setFont(Style.setTitleFont());
         title.setFont(Style.setTitleFont());
         left.getChildren().add(title);
+        left.getChildren().add(client);
 
         Session session = LoginManager.getCurrentSession();
 
