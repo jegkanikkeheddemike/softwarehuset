@@ -8,7 +8,7 @@ import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientSettings;
  * @author Thor
  */
 public class AppSettings {
-    private static final String remoteLocation = "koebstoffer.info";
+    private static final String remoteLocation = "139.144.179.168";
     //private static final String remoteLocation = "localhost";
 
     public static boolean debugMode = true;
