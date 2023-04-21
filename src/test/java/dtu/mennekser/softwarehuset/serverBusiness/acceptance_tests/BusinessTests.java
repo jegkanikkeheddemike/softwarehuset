@@ -122,7 +122,7 @@ public class BusinessTests {
     @Given("a project {string} exists")
     public void a_project_exists(String string) {
         session = appBackend.attemptLogin("Hanne");
-        projectID = appBackend.createProject(string,session);
+        projectID = appBackend.createProject(string,"",session);
     }
     @When("the user is assigned as project leader")
     public void the_user_is_assigned_as_project_leader() {
