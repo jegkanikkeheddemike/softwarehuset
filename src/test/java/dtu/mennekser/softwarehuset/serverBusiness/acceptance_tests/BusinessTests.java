@@ -36,7 +36,7 @@ public class BusinessTests {
     @When("user creates a project")
     public void user_creates_a_project() {
             try {
-                projectID = appBackend.createProject("Sommerhus infoside" , session);
+                projectID = appBackend.createProject("Sommerhus infoside" ,"", session);
             } catch (Exception e){
                 error = e.getMessage();
             }
