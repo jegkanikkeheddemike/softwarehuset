@@ -216,6 +216,19 @@ public class AppBackend extends DataLayer{
         getActivity(projectID,activityID,session).finished = true;
     }
 
+
+    public void setBudgetedTime(int projectID, int activityID, int BudgetedTime, Session session) {
+        assertLoggedIn(session);
+        getActivity(projectID,activityID,session).setBudgetedTime(BudgetedTime);
+    }
+    public int TimeRemainingActivity(int projectID, int activityID, Session session) {
+        assertLoggedIn(session);
+        return getActivity(projectID,activityID,session).timeRemaining();
+    }
+    public int TimeUsedActivity(int projectID, int activityID, Session session) {
+        assertLoggedIn(session);
+        return getProject(projectID, session).timeUsedActivity(activityID, session.employee.id);
+
     public record ActiveActivity(Project project, Activity activity) implements Serializable {}
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
         //Find alle projekter som employee er en del af
@@ -264,5 +277,6 @@ public class AppBackend extends DataLayer{
         });
 
         return new ProjectStat(employeeStats);
+
     }
 }

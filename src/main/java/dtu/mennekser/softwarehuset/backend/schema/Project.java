@@ -69,4 +69,12 @@ public class Project implements Serializable {
     public void setStartWeek(int startWeek){
         this.startWeek = startWeek;
     }
+
+    public int timeUsedActivity(int activityID, int employeeID) {
+        if (employeeID == projectLeaderId) {
+            return activities.get(activityID).getUsedTime();
+        } else {
+            throw new RuntimeException("Employee not project leader");
+        }
+    }
 }
