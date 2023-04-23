@@ -80,13 +80,12 @@ public class SocketLayer<Schema extends DataLayer> {
                 client.setKeepAlive(true);
                 ConnType connType = ConnInterface.receive(client);
                 if (connType == ConnType.Task) {
-                    Task task = ConnInterface.receive(client);
+                    Task<Schema> task = ConnInterface.receive(client);
                     executionLayer.submitTask(task);
                 }  else {
                     Query<Schema,?> query = ConnInterface.receive(client);
                     ServerListener<Schema,?> subscriber = new ServerListener<>(query,client);
                     executionLayer.submitSubscriber(subscriber);
-                    System.out.println("Recieved subscriber");
                 }
             } catch (Exception e) {
 
