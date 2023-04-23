@@ -166,6 +166,21 @@ public class BusinessTests {
                 appBackend.getAssignedActivityEmployees(projectID,activityID,session).stream().map(employee -> employee.id).toList().contains(employeeID));
     }
 
+    @When("{string} is assigned to {string}")
+    public void isAssignedTo(String string, String string2) {
+        try {
+            appBackend.addEmployeeToActivity(projectID, activityID, string, session);
+        } catch (Exception e){
+            error = e.getMessage();
+        }
+    }
+
+    @Then("{string} is assigned")
+    public void isAssigned(String string) {
+        assertTrue(
+                appBackend.getAssignedActivityEmployees(projectID,activityID,session).stream().map(employee -> employee.id).toList().contains(appBackend.findEmployee(string).id));
+    }
+
 
 
     //----------------------------------------------------------//
