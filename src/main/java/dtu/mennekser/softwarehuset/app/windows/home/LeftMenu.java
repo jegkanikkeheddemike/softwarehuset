@@ -33,7 +33,7 @@ public class LeftMenu extends BorderPane {
                 appBackend -> appBackend.getProjectsOfSession(session),
                 projects -> {
                     projectList.getChildren().clear();
-                    Label title = new Label("Mine Projekter");
+                    Label title = new Label("My projects");
                     title.setFont(Style.setTitleFont());
                     projectList.getChildren().add(title);
                     for (Project project : projects) {

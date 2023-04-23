@@ -21,7 +21,7 @@ import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class CenterMenu extends BorderPane {
+public class ProjectMenu extends BorderPane {
 
     FlowPane activitiesPane;
     BorderPane assignedPane;
@@ -35,13 +35,13 @@ public class CenterMenu extends BorderPane {
     static Image checkmark;
 
 
-    CenterMenu(int projectID) {
+    ProjectMenu(int projectID) {
 
         Session session = LoginManager.getCurrentSession();
         projectListener = new DataListener<>(appBackend -> appBackend.getProject(projectID, session),
             project -> {
                 projectName = project.name;
-                setTop(new CenterTopBar(project));
+                setTop(new ProjectTopBar(project));
 
                 activitiesPane.getChildren().clear();
                 Button newActivity = new Button("+");

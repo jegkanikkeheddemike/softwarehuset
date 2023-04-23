@@ -1,9 +1,26 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
+import dtu.mennekser.softwarehuset.app.LoginManager;
+import dtu.mennekser.softwarehuset.app.networking.DataListener;
+import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.schema.Activity;
+import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
+import dtu.mennekser.softwarehuset.backend.schema.Session;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 
 public class HomePage extends Scene {
     static HomePage instance;
@@ -16,13 +33,95 @@ public class HomePage extends Scene {
         root = (BorderPane) getRoot();
         root.setTop(new TopBar());
         root.setLeft(new LeftMenu());
-        root.setCenter(new Label("Select a project to begin"));
+        root.setCenter(new InnerHomePage());
     }
 
     public static void setProject(int projectID) {
-        instance.root.setCenter(new CenterMenu(projectID));
+        instance.root.setCenter(new ProjectMenu(projectID));
     }
+    public static void setProjectStats(int projectID) {
+        instance.root.setCenter(new ProjectStatMenu(projectID));
+    }
+
     public static void setActivity(String projectName,int projectID, Activity activity) {
         instance.root.setCenter(new ActivityMenu(projectName,projectID, activity.id));
+    }
+    public static void setHome() {
+        instance.root.setCenter(new InnerHomePage());
+    }
+}
+
+
+class InnerHomePage extends BorderPane {
+
+    DataListener<ArrayList<AppBackend.ActiveActivity>> activeActivities;
+    InnerHomePage() {
+        Session session = LoginManager.getCurrentSession();
+        VBox rightMenu = new VBox();
+        setMargin(rightMenu,new Insets(30));
+        Label activeActivitesLabel = new Label("Active Activites");
+        activeActivitesLabel.setFont(Style.setTitleFont());
+        rightMenu.getChildren().add(activeActivitesLabel);
+        setRight(rightMenu);
+
+        VBox activeActivitiesBox = new VBox();
+
+        ScrollPane activitiesScroll = new ScrollPane(activeActivitiesBox);
+
+        rightMenu.getChildren().add(activitiesScroll);
+        activeActivities = new DataListener<>(appBackend -> appBackend.getActiveActivities(session),
+            activities -> {
+                activeActivitiesBox.getChildren().clear();
+                if (activities.size() == 0) {
+                    activeActivitiesBox.getChildren().add(new Label("No activites :)"));
+                    return;
+                }
+                activities.sort(Comparator.comparing(activeActivity -> activeActivity.activity().getStartWeek()));
+                activities.sort(Comparator.comparing(activeActivity -> activeActivity.activity().getEndWeek()));
+
+                int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+
+                for (AppBackend.ActiveActivity activity : activities) {
+
+                    Button activityButton = new Button(activity.project().name + " / " + activity.activity().name);
+                    HBox buttonBox = new HBox();
+                    buttonBox.setSpacing(10);
+
+                    activeActivitiesBox.setMargin(buttonBox, new Insets(5));
+                    buttonBox.setAlignment(Pos.CENTER_LEFT);
+
+                    buttonBox.getChildren().add(activityButton);
+                    activityButton.setOnAction(actionEvent -> HomePage.setActivity(activity.project().name,activity.project().id,activity.activity()));
+
+                    Label timeLabel = new Label( "Week " + activity.activity().getStartWeek() + " -> " + activity.activity().getEndWeek());
+                    buttonBox.getChildren().add(timeLabel);
+
+                    if (week > activity.activity().getEndWeek()) {
+                        Label overdue = new Label("OVERDUE");
+                        overdue.setTextFill(Color.RED);
+                        buttonBox.getChildren().add(overdue);
+                    }
+
+                    activeActivitiesBox.getChildren().add(buttonBox);
+                }
+            }
+        );
+
+        VBox leftMenu = new VBox();
+        setMargin(leftMenu,new Insets(30));
+        leftMenu.setSpacing(40);
+        setCenter(leftMenu);
+
+        Button registerTidButton = new Button("Registrer tid");
+        Style.setButtonBig(registerTidButton);
+        leftMenu.getChildren().add(registerTidButton);
+
+        Button meldSygButton = new Button("Meld syg");
+        Style.setButtonBig(meldSygButton);
+        leftMenu.getChildren().add(meldSygButton);
+
+        Button ferieButton = new Button("Ferie");
+        Style.setButtonBig(ferieButton);
+        leftMenu.getChildren().add(ferieButton);
     }
 }

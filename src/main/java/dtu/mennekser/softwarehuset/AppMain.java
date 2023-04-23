@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * @author Thor
@@ -32,6 +33,12 @@ public class AppMain extends Application {
         Platform.runLater(() -> {
             mainStage.setTitle(title);
             mainStage.setScene(newScene);
+            //Center main window
+            for (Window window : Window.getWindows()) {
+                if (window.getScene() == newScene) {
+                    window.centerOnScreen();
+                }
+            }
         });
     }
 }

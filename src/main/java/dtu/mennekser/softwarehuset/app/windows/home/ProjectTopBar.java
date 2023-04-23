@@ -13,11 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-public class CenterTopBar extends BorderPane {
+public class ProjectTopBar extends BorderPane {
 
     HBox left;
     HBox right;
-    CenterTopBar(Project project) {
+    ProjectTopBar(Project project) {
         setBorder(Style.setBorder(3,0,"bottom"));
         left = new HBox();
         right = new HBox();
@@ -42,6 +42,7 @@ public class CenterTopBar extends BorderPane {
         Session session = LoginManager.getCurrentSession();
 
         if (project.projectLeaderId == -1) {
+
             Button becomeProjectLeader = new Button("Become Project Leader");
             right.getChildren().add(becomeProjectLeader);
             Style.setBarButtonStyle(becomeProjectLeader,180);

@@ -22,6 +22,12 @@ public class Project implements Serializable {
         this.startWeek = startWeek;
     }
 
+    public Project(String name, String client, int id) {
+        this.client = client;
+        this.name = name;
+        this.id = id;
+    }
+
     public int getUsedTime() {
         int timeSum = 0;
         for (Activity activity : activities) {
@@ -31,7 +37,11 @@ public class Project implements Serializable {
         return timeSum;
     }
     public int createActivity(String name, int budgetedTime) {
-        activities.add(new Activity(name, budgetedTime,activities.size()));
+        return createActivity(name,budgetedTime,1,52);
+    }
+
+    public int createActivity(String name, int budgetedTime, int startWeek, int endWeek) {
+        activities.add(new Activity(name, budgetedTime,startWeek,endWeek,activities.size()));
         return activities.size()-1;
     }
 
