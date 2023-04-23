@@ -161,7 +161,7 @@ public class AppBackend extends DataLayer {
     public void addEmployeeToActivity(int projectID, int activityID, String employeeName, Session session) {
         assertLoggedIn(session);
         assertNotVacationing(projects.get(projectID).activities.get(activityID).startWeek,
-                projects.get(projectID).activities.get(activityID).endWeek,session);
+                projects.get(projectID).activities.get(activityID).endWeek,findEmployee(employeeName).id);
 
         Employee foundEmployee = findEmployee(employeeName);
 
@@ -171,14 +171,13 @@ public class AppBackend extends DataLayer {
 
     }
 
-    private void assertNotVacationing(int start,int end,Session session) {
-        if(getVacations(session.employee).isEmpty()){
-            return; }
+    private void assertNotVacationing(int start,int end,int employeeID) {
+        if(getVacations(employeeID).isEmpty()){return;}
 
-        for(int vac = 0; vac < getVacations(session.employee).size(); vac++){
-            System.out.println(getVacations(session.employee).get(vac).startWeek +" "+ start);
-            if(getVacations(session.employee).get(vac).startWeek <= start){
-                    //&& getVacations(session.employee).get(vac).endWeek >= end){
+        for(int vac = 0; vac < getVacations(employeeID).size(); vac++){
+            System.out.println(getVacations(employeeID).get(vac).startWeek +" "+ start);
+            if(getVacations(employeeID).get(vac).startWeek <= start
+                    && getVacations(employeeID).get(vac).endWeek >= end){
                 throw new RuntimeException("Employee on vacation");
             }
         }
@@ -272,8 +271,8 @@ public class AppBackend extends DataLayer {
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
     }
 
-    public ArrayList<Vacation> getVacations(Employee employee) {
-        return employee.vacations;
+    public ArrayList<Vacation> getVacations(int employeeID) {
+        return employees.get(employeeID).vacations;
     }
 
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
