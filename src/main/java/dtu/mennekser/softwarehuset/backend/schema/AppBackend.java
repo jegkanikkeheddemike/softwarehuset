@@ -83,7 +83,7 @@ public class AppBackend extends DataLayer {
 
     public void createVacation(String startWeek, String endWeek, Session session) {
         assertLoggedIn(session);
-        session.employee.vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
+        employees.get(session.employee.id).vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
     }
 
     private void assertLoggedIn(Session session) {
@@ -290,7 +290,7 @@ public class AppBackend extends DataLayer {
     }
 
     public record EmployeeStat(Employee employee, ArrayList<Activity> assignedActivities) implements Serializable {}
-    public record ProjectStat(ArrayList<EmployeeStat> employeeStats) implements Serializable{}
+    public record ProjectStat(ArrayList<EmployeeStat> employeeStats, ArrayList<Activity> unassignedActivities) implements Serializable{}
     public ProjectStat getProjectStats(int projectID, Session session) {
         assertLoggedIn(session);
         assertEmployeeInProject(projectID,session.employee.id);
@@ -315,11 +315,15 @@ public class AppBackend extends DataLayer {
         }
         ArrayList<EmployeeStat> employeeStats = new ArrayList<>();
         employeeActivities.forEach((key,value) -> {
+            value.addAll(getVacations(key));
+            System.out.println(getVacations(key).size());
             employeeStats.add(new EmployeeStat(
                     employees.get(key),value
             ));
         });
 
-        return new ProjectStat(employeeStats);
+        ArrayList<Activity> unassignedActivities = new ArrayList<>(project.activities.stream().filter(activity -> activity.assignedEmployees.isEmpty()).toList());
+
+        return new ProjectStat(employeeStats,unassignedActivities);
     }
 }
