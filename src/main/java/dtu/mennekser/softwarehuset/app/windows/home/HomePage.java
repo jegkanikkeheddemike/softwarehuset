@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -75,6 +76,17 @@ class InnerHomePage extends BorderPane {
                 }
             }
         );
+        HBox leftMenu = new HBox();
+        setCenter(leftMenu);
+
+        Button registerTidButton = new Button("Registrer tid");
+        leftMenu.getChildren().add(registerTidButton);
+
+        Button meldSygButton = new Button("Meld syg");
+        leftMenu.getChildren().add(meldSygButton);
+
+        Button ferie = new Button("Ferie");
+        leftMenu.getChildren().add(ferie);
 
 
     }
