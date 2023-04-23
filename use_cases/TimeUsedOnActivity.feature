@@ -5,10 +5,10 @@ Feature: Find time used on activity
   Scenario: a project leader checks time used on activity
     Given ProjectLeader is logged in
     And an activity "new activity" exists
-    And the activity "new activity" has budgeted time of "60" hour
-    When the user registers "0:5" work hours to "new activity"
-    Then time used on project is "5"
-    And there is "55" hours remaining
+    And the activity "new activity" has budgeted time of "1:00" hour
+    When the user registers "0:05" work hours to "new activity"
+    Then time used on project is "0:05"
+    And there is "0:55" hours remaining
 
   Scenario: a user checks time used on activity
     Given user is logged in
