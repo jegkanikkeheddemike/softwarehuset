@@ -11,7 +11,6 @@ public class AppBackend extends DataLayer {
     ArrayList<Employee> employees = new ArrayList<>();
     ArrayList<Project> projects = new ArrayList<>();
 
-
     public Session attemptLogin(String username) {
         try {
             Employee found = findEmployee(username);
@@ -80,6 +79,11 @@ public class AppBackend extends DataLayer {
         projects.get(projectId).updateActivityWeekBounds(activityId, newStartWeek, newEndWeek);
 
 
+    }
+
+    public void createVacation(String startWeek, String endWeek, Session session) {
+        assertLoggedIn(session);
+        session.employee.vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
     }
 
     private void assertLoggedIn(Session session) {
@@ -156,6 +160,8 @@ public class AppBackend extends DataLayer {
 
     public void addEmployeeToActivity(int projectID, int activityID, String employeeName, Session session) {
         assertLoggedIn(session);
+        assertNotVacationing(projects.get(projectID).activities.get(activityID).startWeek,
+                projects.get(projectID).activities.get(activityID).endWeek,findEmployee(employeeName).id);
 
         Employee foundEmployee = findEmployee(employeeName);
 
@@ -165,7 +171,18 @@ public class AppBackend extends DataLayer {
 
     }
 
-    private void assertEmployeeInProject(int projectID, int employeeID) {
+    private void assertNotVacationing(int start,int end,int employeeID) {
+        if(getVacations(employeeID).isEmpty()){return;}
+
+        for(int vac = 0; vac < getVacations(employeeID).size(); vac++){
+            if(getVacations(employeeID).get(vac).startWeek <= start
+                    && getVacations(employeeID).get(vac).endWeek >= end){
+                throw new RuntimeException("Employee on vacation");
+            }
+        }
+    }
+
+    private void assertEmployeeInProject(int projectID,int employeeID) {
         if (!projects.get(projectID).assignedEmployees.contains(employeeID)) {
             throw new RuntimeException("Employee not in project");
         }
@@ -251,6 +268,10 @@ public class AppBackend extends DataLayer {
 
 
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
+    }
+
+    public ArrayList<Vacation> getVacations(int employeeID) {
+        return employees.get(employeeID).vacations;
     }
 
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
