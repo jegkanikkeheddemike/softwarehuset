@@ -61,7 +61,7 @@ public class ActivityMenu extends BorderPane {
                 startEndWeekDisplay.getChildren().addAll(startWeekText,endWeekText);
 
                 //initialise description area
-                description.setPadding(new Insets(5, 5, 5, 5));
+                startEndWeekDisplay.setPadding(new Insets(5, 5, 5, 5));
                 description.getChildren().clear();
                 Text descriptionTitle = new Text("Description: ");
                 descriptionTitle.setFont(Style.setTitleFont());
