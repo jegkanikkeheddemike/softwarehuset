@@ -42,9 +42,6 @@ public class ProjectTopBar extends BorderPane {
         Session session = LoginManager.getCurrentSession();
 
         if (project.projectLeaderId == -1) {
-            Button setStartTime = new Button("Set start week");
-            right.getChildren().add(setStartTime);
-            Style.setBarButtonStyle(setStartTime,100);
 
             Button becomeProjectLeader = new Button("Become Project Leader");
             right.getChildren().add(becomeProjectLeader);
