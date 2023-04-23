@@ -12,19 +12,30 @@ import javafx.scene.layout.*;
 public class TopBar extends HBox {
 
     TopBar() {
-        Button logoutButton = new Button("Logout");
-        getChildren().add(logoutButton);
+
         setAlignment(Pos.TOP_RIGHT);
         setBorder(Style.setBorder(2,0,"bottom"));
         setBackground(Style.setBackground(1,0));
         setPadding(new Insets(5,5,5,5));
 
+        setSpacing(10);
+
+        Button homeButton = new Button("Home");
+        getChildren().add(homeButton);
+        Style.setBarButtonStyle(homeButton, 60);
+
+        homeButton.setOnAction(actionEvent -> HomePage.setHome());
+
+        Button logoutButton = new Button("Logout");
+        getChildren().add(logoutButton);
         Style.setBarButtonStyle(logoutButton, 60);
 
         logoutButton.setOnAction(actionEvent -> {
             LoginManager.logout();
             AppMain.setScene(new LoginPage(), "Login");
         });
+
+
 
     }
 

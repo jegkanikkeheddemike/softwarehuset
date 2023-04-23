@@ -2,6 +2,7 @@ package dtu.mennekser.softwarehuset.backend.schema;
 
 import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AppBackend extends DataLayer{
@@ -196,4 +197,22 @@ public class AppBackend extends DataLayer{
         assertLoggedIn(session);
         getActivity(projectID,activityID,session).finished = true;
     }
+
+    public record ActiveActivity(Project project, Activity activity) implements Serializable {}
+    public ArrayList<ActiveActivity> getActiveActivities(Session session) {
+        //Find alle projekter som employee er en del af
+        ArrayList<Project> projects = getProjectsOfSession(session);
+
+        ArrayList<ActiveActivity> activities = new ArrayList<>();
+        for (Project project : projects) {
+            for (Activity activity : project.activities) {
+                if (!activity.finished && activity.assignedEmployees.contains(session.employee.id)) {
+                    activities.add(new ActiveActivity(project, activity));
+                }
+            }
+        }
+        return activities;
+    }
+
+
 }
