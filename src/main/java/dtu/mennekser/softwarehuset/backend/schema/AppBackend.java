@@ -191,4 +191,9 @@ public class AppBackend extends DataLayer{
         assertLoggedIn(session);
         getActivity(projectID,activityID,session).setDescription(newDescription);
     }
+
+    public void finishActivity(int projectID, int activityID, Session session) {
+        assertLoggedIn(session);
+        getActivity(projectID,activityID,session).finished = true;
+    }
 }
