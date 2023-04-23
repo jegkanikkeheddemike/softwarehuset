@@ -17,7 +17,7 @@ public class BusinessTests {
     static Session session;
     static int projectID;
     static int activityID;
-    int employeeID;
+    static int employeeID;
 
     public BusinessTests() {
         appBackend = new AppBackend();

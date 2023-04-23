@@ -5,30 +5,33 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static org.junit.Assert.assertTrue;
+
 public class TimeUsedOnActivity {
     public TimeUsedOnActivity() {
     }
-
-    @And("the user has registers {string} work hours to {string}")
-    public void theUserHasRegistersWorkHoursTo(String arg0, String arg1) {
-        
-    }
     @Given("the activity {string} has budgeted time of {string} hour")
-    public void the_activity_has_budgeted_time_of_hours(String string, String string2) {
-
-    }
-    @When("user checks time used on activity")
-    public void user_checks_time_used_on_activity() {
-
+    public void the_activity_has_budgeted_time_of_hours(String string, String hours) {
+        BusinessTests.appBackend.getActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).setBudgetedTime(Integer.parseInt(hours));
     }
 
     @Then("time used on project is {string}")
-    public void timeUsedOnProjectIs(String arg0) {
+    public void timeUsedOnProjectIs(String hours) {
+        assertTrue(BusinessTests.appBackend.getProject(BusinessTests.projectID,BusinessTests.session).timeUsedActivity(BusinessTests.employeeID,BusinessTests.activityID) == Integer.parseInt(hours));
     }
 
     @And("there is {string} hours remaining")
-    public void thereIsHoursRemaining(String arg0) {
+    public void thereIsHoursRemaining(String hours) {
+        assertTrue(BusinessTests.appBackend.getActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).timeRemaining() == Integer.parseInt(hours));
     }
 
+    @When("user checks time used on activity")
+    public void userChecksTimeUsedOnActivity() {
+        try {
+            BusinessTests.appBackend.getProject(BusinessTests.projectID,BusinessTests.session).timeUsedActivity(BusinessTests.employeeID,BusinessTests.activityID);
+        } catch (Exception e){
+            BusinessTests.error = e.getMessage();
+        }
 
+    }
 }
