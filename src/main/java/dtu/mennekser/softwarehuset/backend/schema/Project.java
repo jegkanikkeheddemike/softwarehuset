@@ -60,7 +60,7 @@ public class Project implements Serializable {
         this.startWeek = startWeek;
     }
 
-    public int timeUsedActivity(int employeeID, int activityID) {
+    public int timeUsedActivity(int activityID, int employeeID) {
         if (employeeID == projectLeaderId) {
             return activities.get(activityID).getUsedTime();
         } else {
