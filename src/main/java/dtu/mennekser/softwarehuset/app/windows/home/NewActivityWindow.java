@@ -33,6 +33,14 @@ public class NewActivityWindow {
         TextField timeField = new TextField();
         root.getChildren().add(timeField);
 
+        root.getChildren().add(new Label("Start week (optional)"));
+        TextField startWeekField = new TextField();
+        root.getChildren().add(startWeekField);
+
+        root.getChildren().add(new Label("End week (optional)"));
+        TextField endWeekField = new TextField();
+        root.getChildren().add(endWeekField);
+
         Button create = new Button("Create");
         root.getChildren().add(create);
 
@@ -44,7 +52,14 @@ public class NewActivityWindow {
             String name = nameField.getText();
             Session session = LoginManager.getCurrentSession();
             int time = Integer.parseInt(timeField.getText().trim());
-            DataTask.SubmitTask(appBackend -> appBackend.createActivity(projectId,name,time, session));
+
+
+            int startWeek = startWeekField.getText().trim().equals("") ? 1 : Integer.parseInt(startWeekField.getText().trim());
+            int endWeek = endWeekField.getText().trim().equals("") ? 52 : Integer.parseInt(endWeekField.getText().trim());
+            DataTask.SubmitTask(appBackend -> appBackend.createActivity(projectId,name,time,startWeek,endWeek, session));
+
+
+
 
             exists = false;
             makeActivityWindow.close();
