@@ -4,6 +4,7 @@ import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AppBackend extends DataLayer {
 
@@ -47,13 +48,19 @@ public class AppBackend extends DataLayer {
         return employees;
     }
 
-    public int createProject(String projectName, String clientName, Session session, int startWeek) {
+
+    public int createProject(String projectName,String clientName,Session session,String startWeek) {
+
         assertLoggedIn(session);
         if (clientName.isEmpty()) {
             clientName = "SoftwareHusetAS";
         }
-        projects.add(new Project(projectName, clientName, projects.size(), startWeek));
 
+        if(startWeek.isEmpty()){
+            startWeek = "0";
+        }
+
+        projects.add(new Project(projectName,clientName, projects.size(), Integer.parseInt(startWeek)));
         //automatically assigns the Employee that creates the project
         projects.get(projects.size() - 1).assignEmployee(session.employee.id);
         return projects.size() - 1;
@@ -71,6 +78,7 @@ public class AppBackend extends DataLayer {
     public void updateActivityWeekBounds(int projectId, int activityId, int newStartWeek, int newEndWeek, Session session) {
         assertLoggedIn(session);
         projects.get(projectId).updateActivityWeekBounds(activityId, newStartWeek, newEndWeek);
+
 
     }
 
@@ -231,6 +239,21 @@ public class AppBackend extends DataLayer {
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
     }
 
+
+    public void setBudgetedTime(int projectID, int activityID, int BudgetedTime, Session session) {
+        assertLoggedIn(session);
+        getActivity(projectID,activityID,session).setBudgetedTime(BudgetedTime);
+    }
+    public int TimeRemainingActivity(int projectID, int activityID, Session session) {
+        assertLoggedIn(session);
+        return getActivity(projectID,activityID,session).timeRemaining();
+    }
+    public int TimeUsedActivity(int projectID, int activityID, Session session) {
+        assertLoggedIn(session);
+        return getProject(projectID, session).timeUsedActivity(activityID, session.employee.id);
+
+    public record ActiveActivity(Project project, Activity activity) implements Serializable {}
+
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
         //Find alle projekter som employee er en del af
         ArrayList<Project> projects = getProjectsOfSession(session);
@@ -246,5 +269,38 @@ public class AppBackend extends DataLayer {
         return activities;
     }
 
+    public record EmployeeStat(Employee employee, ArrayList<Activity> assignedActivities) implements Serializable {}
+    public record ProjectStat(ArrayList<EmployeeStat> employeeStats) implements Serializable{}
+    public ProjectStat getProjectStats(int projectID, Session session) {
+        assertLoggedIn(session);
+        assertEmployeeInProject(projectID,session.employee.id);
 
+        Project project =projects.get(projectID);
+        if (project.projectLeaderId != session.employee.id) {
+            throw new RuntimeException("Employee is not project leader");
+        }
+        HashMap<Integer, ArrayList<Activity>> employeeActivities = new HashMap<>();
+
+        for (Project cProject : projects) {
+            for (Activity activity : cProject.activities) {
+                for (int employeeID : activity.assignedEmployees) {
+                    if (!project.assignedEmployees.contains(employeeID)) {
+                        continue;
+                    }
+
+                    ArrayList<Activity> assignedActivities = employeeActivities.computeIfAbsent(employeeID, k -> new ArrayList<>());
+                    assignedActivities.add(activity);
+                }
+            }
+        }
+        ArrayList<EmployeeStat> employeeStats = new ArrayList<>();
+        employeeActivities.forEach((key,value) -> {
+            employeeStats.add(new EmployeeStat(
+                    employees.get(key),value
+            ));
+        });
+
+        return new ProjectStat(employeeStats);
+
+    }
 }

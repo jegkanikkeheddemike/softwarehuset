@@ -67,4 +67,8 @@ public class Activity implements Serializable {
     public int getBudgetTime() {
       return budgetedTime;
     }
+
+    public int timeRemaining() {
+         return budgetedTime - getUsedTime();
+    }
 }
