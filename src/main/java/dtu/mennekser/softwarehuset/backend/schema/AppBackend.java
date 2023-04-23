@@ -236,10 +236,6 @@ public class AppBackend extends DataLayer {
         getActivity(projectID, activityID, session).finished = true;
     }
 
-    public record ActiveActivity(Project project, Activity activity) implements Serializable {
-    }
-
-
     public void setBudgetedTime(int projectID, int activityID, int BudgetedTime, Session session) {
         assertLoggedIn(session);
         getActivity(projectID,activityID,session).setBudgetedTime(BudgetedTime);
@@ -253,7 +249,9 @@ public class AppBackend extends DataLayer {
         return getProject(projectID, session).timeUsedActivity(activityID, session.employee.id);
     }
 
-    public record ActiveActivity(Project project, Activity activity) implements Serializable {}
+
+    public record ActiveActivity(Project project, Activity activity) implements Serializable {
+    }
 
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
         //Find alle projekter som employee er en del af
