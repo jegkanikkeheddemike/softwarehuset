@@ -276,8 +276,6 @@ public class AppBackend extends DataLayer {
         return employee.vacations;
     }
 
-
-    public record ActiveActivity(Project project, Activity activity) implements Serializable {}
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
         //Find alle projekter som employee er en del af
         ArrayList<Project> projects = getProjectsOfSession(session);
