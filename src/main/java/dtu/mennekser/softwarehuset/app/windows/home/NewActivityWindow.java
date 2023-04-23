@@ -33,6 +33,10 @@ public class NewActivityWindow {
         TextField timeField = new TextField();
         root.getChildren().add(timeField);
 
+        root.getChildren().add(new Label("Start week (optional)"));
+        TextField startWeekField = new TextField();
+        root.getChildren().add(startWeekField);
+
         Button create = new Button("Create");
         root.getChildren().add(create);
 
