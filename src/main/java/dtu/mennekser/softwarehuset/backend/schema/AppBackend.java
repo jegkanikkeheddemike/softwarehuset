@@ -45,12 +45,12 @@ public class AppBackend extends DataLayer{
         return employees;
     }
 
-    public int createProject(String projectName,String clientName, Session session) {
+    public int createProject(String projectName,String clientName,Session session,int startWeek) {
         assertLoggedIn(session);
         if(clientName.isEmpty()){
             clientName = "SoftwareHusetAS";
         }
-        projects.add(new Project(projectName,clientName, projects.size()));
+        projects.add(new Project(projectName,clientName, projects.size(), startWeek));
 
         //automatically assigns the Employee that creates the project
         projects.get(projects.size()-1).assignEmployee(session.employee.id);
@@ -164,11 +164,11 @@ public class AppBackend extends DataLayer{
         int hours = Integer.parseInt(split[0]);
         int minutes = Integer.parseInt(split[1]);
 
-        projects.get(projectID).activities.get(activityID).registerTime(
+         projects.get(projectID).activities.get(activityID).registerTime(
                 session.employee.id,
                 hours,
                 minutes
-        );
+         );
     }
     public ArrayList<TimeRegistration> getTimeRegistrationsOfActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
@@ -193,6 +193,15 @@ public class AppBackend extends DataLayer{
         getActivity(projectID,activityID,session).setDescription(newDescription);
     }
 
+    public void setStartTime(int projectID, Session session, int startWeek) {
+        assertLoggedIn(session);
+        getProject(projectID,session).setStartWeek(startWeek);
+    }
+
+    public int getStartTime(int projectID, Session session){
+        assertLoggedIn(session);
+        return projects.get(projectID).startWeek;
+    }
     public void finishActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         getActivity(projectID,activityID,session).finished = true;

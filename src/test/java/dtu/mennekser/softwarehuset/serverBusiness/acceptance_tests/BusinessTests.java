@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class BusinessTests {
 
     static AppBackend appBackend;
-    String error;
+    static String error;
     static Session session;
     static int projectID;
     static int activityID;
@@ -36,7 +36,7 @@ public class BusinessTests {
     @When("user creates a project")
     public void user_creates_a_project() {
             try {
-                projectID = appBackend.createProject("Sommerhus infoside" ,"", session);
+                projectID = appBackend.createProject("Sommerhus infoside" ,"", session, 12);
             } catch (Exception e){
                 error = e.getMessage();
             }
@@ -121,7 +121,7 @@ public class BusinessTests {
     @Given("a project {string} exists")
     public void a_project_exists(String string) {
         session = appBackend.attemptLogin("Hanne");
-        projectID = appBackend.createProject(string,"",session);
+        projectID = appBackend.createProject(string,"",session,12);
     }
     @When("the user is assigned as project leader")
     public void the_user_is_assigned_as_project_leader() {
@@ -175,7 +175,7 @@ public class BusinessTests {
     @Given("ProjectLeader is logged in")
     public void project_leader_is_logged_in() {
         session = appBackend.attemptLogin("Hanne");
-        projectID = appBackend.createProject("Mormor's fødselsdag","",session);
+        projectID = appBackend.createProject("Mormor's fødselsdag","",session, 12);
         appBackend.setProjectLeader(projectID,session);
     }
     @Then("the activity {string} has budgeted time of {int} hours")
@@ -183,4 +183,21 @@ public class BusinessTests {
         assertEquals(int1, appBackend.getActivity(projectID, activityID, session).getBudgetTime());
     }
 
+    //----------------------------------------------------------//
+    //                       Set start time                     //
+    //----------------------------------------------------------//
+
+    @When("start time is set to week {int}")
+    public void start_time_is_set(int startWeek) {
+        try {
+            appBackend.setStartTime(projectID, session, startWeek);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+    }
+
+    @Then("the projects start time exist is in week {int}")
+    public void the_projects_start_time_exist_is_in_uge(int int1) {
+        assertEquals(int1, appBackend.getStartTime(projectID,session));
+    }
 }
