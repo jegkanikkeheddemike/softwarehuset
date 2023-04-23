@@ -13,12 +13,13 @@ public class Project implements Serializable {
 
     public int projectLeaderId = -1;
 
-    public int startUge;
+    public int startWeek;
 
-    public Project(String name,String client, int id) {
+    public Project(String name,String client, int id,int startWeek) {
         this.client = client;
         this.name = name;
         this.id = id;
+        this.startWeek = startWeek;
     }
 
     public int getUsedTime() {
@@ -55,7 +56,7 @@ public class Project implements Serializable {
         return projectLeaderId == employeeID;
     }
 
-    public void setStartUge(int startUge){
-        this.startUge = startUge;
+    public void setStartWeek(int startWeek){
+        this.startWeek = startWeek;
     }
 }

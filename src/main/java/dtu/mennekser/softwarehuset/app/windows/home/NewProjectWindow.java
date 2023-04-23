@@ -29,10 +29,13 @@ public class NewProjectWindow {
         root.getChildren().add(new Label("Project name:"));
         TextField nameField = new TextField();
         TextField clientField = new TextField();
+        TextField startField = new TextField();
 
         root.getChildren().add(nameField);
         root.getChildren().add(new Text("Client (optional)"));
         root.getChildren().add(clientField);
+        root.getChildren().add(new Text("Start week (optional)"));
+        root.getChildren().add(startField);
 
         Button create = new Button("Create");
         root.getChildren().add(create);
@@ -42,7 +45,8 @@ public class NewProjectWindow {
         create.setOnAction(actionEvent -> {
             String projectName = nameField.getText().trim();
             String clientName = clientField.getText().trim();
-            DataTask.SubmitTask(appBackend -> appBackend.createProject(projectName,clientName,session));
+            int startWeek = Integer.parseInt(startField.getText());
+            DataTask.SubmitTask(appBackend -> appBackend.createProject(projectName,clientName,session,startWeek));
 
 
             exists = false;

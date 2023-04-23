@@ -35,12 +35,12 @@ public class FillWithJunkData {
             int tobias = database.createEmployee("Tobias");
             int obama = database.createEmployee("Obama");
 
-            int byg = database.createProject("Byg et tårn" ,"", session);
+            int byg = database.createProject("Byg et tårn" ,"",session,12);
             database.addEmployeeToProject(byg,"Frederik",session);
             database.addEmployeeToProject(byg,"Katinka",session);
             database.addEmployeeToProject(byg,"Obama",session);
 
-            int kage = database.createProject("Bag en kage","", session);
+            int kage = database.createProject("Bag en kage","", session, 12);
             database.addEmployeeToProject(kage,"Christian",session);
             database.addEmployeeToProject(kage,"Katinka",session);
 
