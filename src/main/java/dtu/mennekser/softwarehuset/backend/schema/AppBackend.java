@@ -83,7 +83,7 @@ public class AppBackend extends DataLayer {
 
     public void createVacation(String startWeek, String endWeek, Session session) {
         assertLoggedIn(session);
-        session.employee.vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
+        employees.get(session.employee.id).vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
     }
 
     private void assertLoggedIn(Session session) {
@@ -315,6 +315,8 @@ public class AppBackend extends DataLayer {
         }
         ArrayList<EmployeeStat> employeeStats = new ArrayList<>();
         employeeActivities.forEach((key,value) -> {
+            value.addAll(getVacations(key));
+            System.out.println(getVacations(key).size());
             employeeStats.add(new EmployeeStat(
                     employees.get(key),value
             ));

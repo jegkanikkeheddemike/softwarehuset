@@ -49,6 +49,8 @@ public class FillWithJunkData {
             database.addEmployeeToActivity(byg,find,"Katinka",session);
             database.addEmployeeToActivity(byg,find,"Thor",session);
 
+            database.createVacation("8","14",session);
+
         },Throwable::printStackTrace);
     }
 }
