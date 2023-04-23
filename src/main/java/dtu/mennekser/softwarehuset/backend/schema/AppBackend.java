@@ -10,7 +10,6 @@ public class AppBackend extends DataLayer{
     ArrayList<Employee> employees = new ArrayList<>();
     ArrayList<Project> projects = new ArrayList<>();
 
-
     public Session attemptLogin(String username) {
         try {
             Employee found = findEmployee(username);
@@ -64,6 +63,11 @@ public class AppBackend extends DataLayer{
     public int createActivity(int projectID, String activityName, int budgetedTime, int startWeek, int endWeek,Session session) {
         assertLoggedIn(session);
         return projects.get(projectID).createActivity(activityName,budgetedTime);
+    }
+
+    public void createVacation(String startWeek, String endWeek, Session session) {
+        assertLoggedIn(session);
+        session.employee.vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
     }
 
     private void assertLoggedIn(Session session) {
@@ -138,6 +142,7 @@ public class AppBackend extends DataLayer{
     }
     public void addEmployeeToActivity(int projectID, int activityID, String employeeName, Session session) {
         assertLoggedIn(session);
+        assertNotVacationing(session);
 
         Employee foundEmployee = findEmployee(employeeName);
 
@@ -145,6 +150,13 @@ public class AppBackend extends DataLayer{
 
         projects.get(projectID).activities.get(activityID).assignEmployee(foundEmployee.id);
 
+    }
+
+    private void assertNotVacationing(Session session) {
+        if(getVacations(session.employee).isEmpty()) return;
+        for(int i = 0; i < getVacations(session.employee).size(); i++){
+            if(getVacations(session.employee).get(i).startWeek > )
+        }
     }
 
     private void assertEmployeeInProject(int projectID,int employeeID) {
@@ -210,6 +222,11 @@ public class AppBackend extends DataLayer{
         assertLoggedIn(session);
         getActivity(projectID,activityID,session).finished = true;
     }
+
+    public ArrayList<Vacation> getVacations(Employee employee) {
+        return employee.vacations;
+    }
+
 
     public record ActiveActivity(Project project, Activity activity) implements Serializable {}
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
