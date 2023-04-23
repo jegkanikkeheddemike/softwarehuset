@@ -13,6 +13,8 @@ public class Project implements Serializable {
 
     public int projectLeaderId = -1;
 
+    public int startUge;
+
     public Project(String name,String client, int id) {
         this.client = client;
         this.name = name;
@@ -51,5 +53,9 @@ public class Project implements Serializable {
     }
     public boolean isProjectLeader(int employeeID) {
         return projectLeaderId == employeeID;
+    }
+
+    public void setStartUge(int startUge){
+        this.startUge = startUge;
     }
 }
