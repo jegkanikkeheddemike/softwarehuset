@@ -7,6 +7,7 @@ import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -81,7 +82,10 @@ class InnerHomePage extends BorderPane {
                     Button activityButton = new Button(activity.project().name + " / " + activity.activity().name);
                     HBox buttonBox = new HBox();
                     buttonBox.setSpacing(10);
-                    setMargin(buttonBox, new Insets(5));
+
+                    activeActivitiesBox.setMargin(buttonBox, new Insets(5));
+                    buttonBox.setAlignment(Pos.CENTER_LEFT);
+
                     buttonBox.getChildren().add(activityButton);
                     activityButton.setOnAction(actionEvent -> HomePage.setActivity(activity.project().name,activity.project().id,activity.activity()));
 
