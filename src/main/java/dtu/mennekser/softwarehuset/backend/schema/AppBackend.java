@@ -142,7 +142,8 @@ public class AppBackend extends DataLayer{
     }
     public void addEmployeeToActivity(int projectID, int activityID, String employeeName, Session session) {
         assertLoggedIn(session);
-        assertNotVacationing(session);
+        assertNotVacationing(projects.get(projectID).activities.get(activityID).startWeek,
+                projects.get(projectID).activities.get(activityID).endWeek,session);
 
         Employee foundEmployee = findEmployee(employeeName);
 
@@ -152,10 +153,16 @@ public class AppBackend extends DataLayer{
 
     }
 
-    private void assertNotVacationing(Session session) {
-        if(getVacations(session.employee).isEmpty()) return;
-        for(int i = 0; i < getVacations(session.employee).size(); i++){
-            if(getVacations(session.employee).get(i).startWeek > )
+    private void assertNotVacationing(int start,int end,Session session) {
+        if(getVacations(session.employee).isEmpty()){
+            return; }
+
+        for(int vac = 0; vac < getVacations(session.employee).size(); vac++){
+            System.out.println(getVacations(session.employee).get(vac).startWeek +" "+ start);
+            if(getVacations(session.employee).get(vac).startWeek <= start){
+                    //&& getVacations(session.employee).get(vac).endWeek >= end){
+                throw new RuntimeException("Employee on vacation");
+            }
         }
     }
 
