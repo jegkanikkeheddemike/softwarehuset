@@ -44,12 +44,16 @@ public class AppBackend extends DataLayer{
         return employees;
     }
 
-    public int createProject(String projectName,String clientName,Session session,int startWeek) {
+    public int createProject(String projectName,String clientName,Session session,String startWeek) {
         assertLoggedIn(session);
         if(clientName.isEmpty()){
             clientName = "SoftwareHusetAS";
         }
-        projects.add(new Project(projectName,clientName, projects.size(), startWeek));
+        if(startWeek.isEmpty()){
+            startWeek = "0";
+        }
+
+        projects.add(new Project(projectName,clientName, projects.size(), Integer.parseInt(startWeek)));
 
         //automatically assigns the Employee that creates the project
         projects.get(projects.size()-1).assignEmployee(session.employee.id);
