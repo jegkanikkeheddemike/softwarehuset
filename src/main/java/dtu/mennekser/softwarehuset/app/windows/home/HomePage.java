@@ -76,17 +76,23 @@ class InnerHomePage extends BorderPane {
                 }
             }
         );
-        HBox leftMenu = new HBox();
+
+        VBox leftMenu = new VBox();
+        leftMenu.setSpacing(40);
         setCenter(leftMenu);
 
         Button registerTidButton = new Button("Registrer tid");
+        Style.setButtonBig(registerTidButton);
         leftMenu.getChildren().add(registerTidButton);
 
         Button meldSygButton = new Button("Meld syg");
+        Style.setButtonBig(meldSygButton);
         leftMenu.getChildren().add(meldSygButton);
 
-        Button ferie = new Button("Ferie");
-        leftMenu.getChildren().add(ferie);
+        Button ferieButton = new Button("Ferie");
+        Style.setButtonBig(ferieButton);
+        leftMenu.getChildren().add(ferieButton);
+
 
 
     }
