@@ -14,8 +14,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 
 public class HomePage extends Scene {
     static HomePage instance;
@@ -67,12 +71,30 @@ class InnerHomePage extends BorderPane {
                     activeActivitiesBox.getChildren().add(new Label("No activites :)"));
                     return;
                 }
+                activities.sort(Comparator.comparing(activeActivity -> activeActivity.activity().getStartWeek()));
+                activities.sort(Comparator.comparing(activeActivity -> activeActivity.activity().getEndWeek()));
+
+                int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
 
                 for (AppBackend.ActiveActivity activity : activities) {
+
                     Button activityButton = new Button(activity.project().name + " / " + activity.activity().name);
+                    HBox buttonBox = new HBox();
+                    buttonBox.setSpacing(10);
+                    setMargin(buttonBox, new Insets(5));
+                    buttonBox.getChildren().add(activityButton);
                     activityButton.setOnAction(actionEvent -> HomePage.setActivity(activity.project().name,activity.project().id,activity.activity()));
 
-                    activeActivitiesBox.getChildren().add(activityButton);
+                    Label timeLabel = new Label( "Week " + activity.activity().getStartWeek() + " -> " + activity.activity().getEndWeek());
+                    buttonBox.getChildren().add(timeLabel);
+
+                    if (week > activity.activity().getEndWeek()) {
+                        Label overdue = new Label("OVERDUE");
+                        overdue.setTextFill(Color.RED);
+                        buttonBox.getChildren().add(overdue);
+                    }
+
+                    activeActivitiesBox.getChildren().add(buttonBox);
                 }
             }
         );
