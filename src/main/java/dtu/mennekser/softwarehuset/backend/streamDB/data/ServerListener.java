@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.Socket;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Random;
 
@@ -102,14 +103,23 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
         for (Field field : object.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
-                int hash = Objects.hash(field.get(object));
+                Object fieldValue = field.get(object);
+                int hash = Objects.hash(fieldValue);
                 sum += hash;
-                System.out.println(object.getClass().getName() + "." + field.getName() +":" + hash);
+
+                //Make it recursive
+                if (fieldValue instanceof Collection<?> fieldCollection) {
+                    for (Object subObj : fieldCollection) {
+                        sum += customHash(subObj);
+                    }
+                }
             } catch (Exception e) {
+                // there are fields with illegal access on every object. So just ignore them.
+                // for example SerializationID is a field on every serializable object but the access is illegal
+
                 //throw new RuntimeException("Illegal hash lol. Failed at: " + object.getClass().getName() + "." + field.getName());
             }
         }
-        System.out.println(object.getClass().getName() +" : " + sum);
         return sum;
     }
 }

@@ -101,7 +101,6 @@ public class ExecutionLayer<Schema extends DataLayer> {
                             submitLog(Log.LogLevel.ERROR, "Failed to execute query on nonfirst attempt: " + e, true);
                         }
                     }
-                    System.out.println("___");
                     for (ServerListener<Schema,?> failedSub : failed) {
                         subscribers.remove(failedSub);
                     }

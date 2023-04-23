@@ -1,6 +1,7 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.app.LoginManager;
+import dtu.mennekser.softwarehuset.app.TimeManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.schema.Activity;
@@ -79,7 +80,7 @@ class InnerHomePage extends BorderPane {
                 activities.sort(Comparator.comparing(activeActivity -> activeActivity.activity().getStartWeek()));
                 activities.sort(Comparator.comparing(activeActivity -> activeActivity.activity().getEndWeek()));
 
-                int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+                int week = TimeManager.getWeek();
 
                 for (AppBackend.ActiveActivity activity : activities) {
 

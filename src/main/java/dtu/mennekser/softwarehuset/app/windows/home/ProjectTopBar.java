@@ -53,5 +53,12 @@ public class ProjectTopBar extends BorderPane {
         } else {
             left.getChildren().add(new Label("(" + new OnceQuery<>(appBackend -> appBackend.getProjectLeader(project.id, session)).fetch().name + ")"));
         }
+        if (project.projectLeaderId == session.employee.id) {
+            Button statsButton = new Button("Manage project");
+            statsButton.setOnAction(actionEvent -> {
+                HomePage.setProjectStats(project.id);
+            });
+            right.getChildren().add(statsButton);
+        }
     }
 }

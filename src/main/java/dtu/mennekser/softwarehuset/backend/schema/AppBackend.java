@@ -269,7 +269,7 @@ public class AppBackend extends DataLayer {
     }
 
     public record EmployeeStat(Employee employee, ArrayList<Activity> assignedActivities) implements Serializable {}
-    public record ProjectStat(ArrayList<EmployeeStat> employeeStats) implements Serializable{}
+    public record ProjectStat(ArrayList<EmployeeStat> employeeStats, ArrayList<Activity> unassignedActivities) implements Serializable{}
     public ProjectStat getProjectStats(int projectID, Session session) {
         assertLoggedIn(session);
         assertEmployeeInProject(projectID,session.employee.id);
@@ -299,6 +299,8 @@ public class AppBackend extends DataLayer {
             ));
         });
 
-        return new ProjectStat(employeeStats);
+        ArrayList<Activity> unassignedActivities = new ArrayList<>(project.activities.stream().filter(activity -> activity.assignedEmployees.isEmpty()).toList());
+
+        return new ProjectStat(employeeStats,unassignedActivities);
     }
 }
