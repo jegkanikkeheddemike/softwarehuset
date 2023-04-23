@@ -78,6 +78,7 @@ class InnerHomePage extends BorderPane {
         );
 
         VBox leftMenu = new VBox();
+        setMargin(leftMenu,new Insets(30));
         leftMenu.setSpacing(40);
         setCenter(leftMenu);
 
@@ -92,8 +93,5 @@ class InnerHomePage extends BorderPane {
         Button ferieButton = new Button("Ferie");
         Style.setButtonBig(ferieButton);
         leftMenu.getChildren().add(ferieButton);
-
-
-
     }
 }
