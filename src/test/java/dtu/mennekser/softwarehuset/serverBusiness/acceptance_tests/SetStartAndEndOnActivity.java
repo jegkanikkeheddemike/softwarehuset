@@ -9,8 +9,5 @@ public class SetStartAndEndOnActivity {
     }
 
 
-    @When("a user sets the start time to week {int} and the end time to week {int}")
-    public void aUserSetsTheStartTimeToWeekAndTheEndTimeToWeek(int arg0, int arg1) {
-        throw new io.cucumber.java.PendingException();
-    }
+
 }

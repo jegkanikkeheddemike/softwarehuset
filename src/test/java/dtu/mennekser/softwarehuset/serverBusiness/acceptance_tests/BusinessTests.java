@@ -238,4 +238,13 @@ public class BusinessTests {
     public void the_projects_start_time_exist_is_in_uge(int int1) {
         assertEquals(int1, appBackend.getStartTime(projectID,session));
     }
+
+    //----------------------------------------------------------//
+    //          Set start and end week on activity              //
+    //----------------------------------------------------------//
+
+    @When("a user sets the start time to week {int} and the end time to week {int}")
+    public void aUserSetsTheStartTimeToWeekAndTheEndTimeToWeek(int startWeek, int endWeek) {
+        appBackend.updateActivityWeekBounds(projectID,activityID,startWeek,endWeek,session);
+    }
 }
