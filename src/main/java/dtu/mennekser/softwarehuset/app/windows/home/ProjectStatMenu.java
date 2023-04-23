@@ -80,7 +80,7 @@ public class ProjectStatMenu extends BorderPane {
 
         //Move down until it finds empty space
         while (true) {
-            Node blocking = getItemAtInterval(gridPane, minEmployeeHeight, minWeekCol, minWeekCol + colSpan);
+            Node blocking = getItemAtInterval(gridPane, minEmployeeHeight, minWeekCol, maxWeekCol);
             if (blocking == null) {
                 break;
             }
@@ -180,7 +180,7 @@ class ActivityEditor extends BorderPane {
             optionsBox.getChildren().add(startWeek);
 
             startWeek.getChildren().add(new Label("Start week:"));
-            TextField startWeekField = new TextField(activity.getStartWeek() + " ");
+            TextField startWeekField = new TextField(Integer.toString(activity.getStartWeek()));
             startWeek.getChildren().add(startWeekField);
 
             HBox endWeek = new HBox();
@@ -188,7 +188,7 @@ class ActivityEditor extends BorderPane {
             optionsBox.getChildren().add(endWeek);
 
             endWeek.getChildren().add(new Label("End week:"));
-            TextField endWeekField = new TextField(activity.getEndWeek() + " ");
+            TextField endWeekField = new TextField(Integer.toString(activity.getEndWeek()));
             endWeek.getChildren().add(endWeekField);
 
             Button updateOptionsButton = new Button("Update");
