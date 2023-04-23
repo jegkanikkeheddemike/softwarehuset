@@ -45,7 +45,7 @@ public class NewProjectWindow {
         create.setOnAction(actionEvent -> {
             String projectName = nameField.getText().trim();
             String clientName = clientField.getText().trim();
-            int startWeek = Integer.parseInt(startField.getText());
+            String startWeek = startField.getText().trim();
             DataTask.SubmitTask(appBackend -> appBackend.createProject(projectName,clientName,session,startWeek));
 
 
