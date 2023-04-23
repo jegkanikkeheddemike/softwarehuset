@@ -1,6 +1,6 @@
 Feature: Register Sickness
-  description: if an employee becomes sick, they will be able to register that they are sick
-  actors: user
+  Description: if an employee becomes sick, they will be able to register that they are sick
+  Actors: user
 
   Scenario: the User registers that they are sick
     Given user is logged in

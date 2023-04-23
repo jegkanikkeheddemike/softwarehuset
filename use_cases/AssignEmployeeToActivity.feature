@@ -18,7 +18,7 @@ Feature: Assign Employee to activity
     When the user is assigned to "Køb kuffert"
     Then  error message "Employee already assigned to activity" is given
 
-    
+
   Scenario: Assign another employee to an activity
     Given user is logged in
     And another Employee "Karsten" exists

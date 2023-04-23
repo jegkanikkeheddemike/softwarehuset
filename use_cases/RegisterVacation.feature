@@ -1,6 +1,6 @@
-Feature Register Vacation
-  description: the user can registers a vacation, with start and end date
-  actors: user
+Feature: Register Vacation
+  Description: the user can registers a vacation, with start and end date
+  Actors: user
 
   Scenario: the User registers an upcoming Vacation
     Given user is logged in
