@@ -4,8 +4,8 @@ Feature: Employee registers work hours on project
     Given user is logged in
     And a project "Hold 80's års fødselsdag for Karsten" exists
     And an activity "Køb ind til lagkage" exists
-    When the user registers 10 work hours to "Køb ind til lagkage"
-    Then the 10 work hours are registered to "Køb ind til lagkage"
+    When the user registers "10:25" work hours to "Køb ind til lagkage"
+    Then the "10:25" work hours are registered to "Køb ind til lagkage"
     
     
     
@@ -13,5 +13,5 @@ Feature: Employee registers work hours on project
     Given user is not logged in
     And a project "Hold 80's års fødselsdag for Karsten" exists
     And an activity "Køb ind til lagkage" exists
-    When the user registers 10 work hours to "Køb ind til lagkage"
+    When the user registers "10:25" work hours to "Køb ind til lagkage"
     Then error message "Employee not logged in" is given

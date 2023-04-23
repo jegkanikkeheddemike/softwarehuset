@@ -12,14 +12,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class CenterMenu extends BorderPane {
 
@@ -32,8 +32,11 @@ public class CenterMenu extends BorderPane {
 
     String projectName;
 
+    static Image checkmark;
+
 
     CenterMenu(int projectID) {
+
         Session session = LoginManager.getCurrentSession();
         projectListener = new DataListener<>(appBackend -> appBackend.getProject(projectID, session),
             project -> {
@@ -57,14 +60,33 @@ public class CenterMenu extends BorderPane {
                     NewActivityWindow.tryCreate(projectID);
                 });
 
+                //Sort activities to display unfinished first
+                ArrayList<Activity> sortedActivities = new ArrayList<>(project.activities);
+                sortedActivities.sort(Comparator.comparingInt(self -> (self.finished ? 1 : 0)));
 
-                for (Activity activity : project.activities) {
+
+                for (Activity activity : sortedActivities) {
+                    StackPane buttonStack = new StackPane();
+                    buttonStack.setAlignment(Pos.BOTTOM_RIGHT);
                     Button button = new Button(activity.name);
+                    buttonStack.getChildren().add(button);
+                    if (activity.finished) {
+                        if (checkmark == null) {
+                             checkmark = new Image("/checkmark.png");
+                        }
+
+                        ImageView imgview = new ImageView(checkmark);
+                        imgview.setFitWidth(20);
+                        imgview.setFitHeight(20);
+                        buttonStack.getChildren().add(imgview);
+                    }
+
                     Style.setActivityButtonStyle(button);
                     button.setOnAction(actionEvent -> HomePage.setActivity(projectName,projectID,activity));
-                    activitiesPane.getChildren().add(button);
+                    activitiesPane.getChildren().add(buttonStack);
                 }
-        });
+            }
+        );
 
 
         activitiesPane = new FlowPane();
