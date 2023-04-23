@@ -50,6 +50,10 @@ public class Activity implements Serializable {
     public int getEndWeek() {
         return this.endWeek;
     }
+
+    public void setStartWeek(int startWeek) { this.startWeek = startWeek; }
+
+    public void setEndWeek(int endWeek) { this.endWeek = endWeek; }
     public void registerTime(int employeeID, int hours, int minutes) {
         int time = hours*60 + minutes;
         timeRegistrations.add(new TimeRegistration(employeeID,time));

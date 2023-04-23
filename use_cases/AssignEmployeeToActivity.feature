@@ -17,3 +17,12 @@ Feature: Assign Employee to activity
     When the user is assigned to "Køb kuffert"
     When the user is assigned to "Køb kuffert"
     Then  error message "Employee already assigned to activity" is given
+
+
+  Scenario: Assign another employee to an activity
+    Given user is logged in
+    And another Employee "Karsten" exists
+    And a project "Planlæg en rejse" exists
+    And an activity "Køb kuffert" exists
+    When "Karsten" is assigned to "Køb kuffert"
+    Then "Karsten" is assigned

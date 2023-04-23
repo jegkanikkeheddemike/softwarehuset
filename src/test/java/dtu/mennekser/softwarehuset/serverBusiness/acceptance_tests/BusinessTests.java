@@ -82,7 +82,30 @@ public class BusinessTests {
             error = e.getMessage();
         }
     }
-    @Then("an activity {string} is crated")
+
+    @When("a user creates an activity {string} with {int} hours, from week {int} to week {int}")
+    public void aUserCreatesAnActivityWithHoursFromWeekToWeek(String name, int budgetedTime, int startWeek, int endWeek) {
+        try {
+            activityID = appBackend.createActivity(projectID,name,budgetedTime,startWeek,endWeek,session);
+        } catch (Exception e){
+            error = e.getMessage();
+        }
+    }
+
+    @Then("start time for activity is set to week {int}")
+    public void startTimeForActivityIsSetToWeek(int startWeek) {
+        // Write code here that turns the phrase above into concrete actions
+        assertEquals(startWeek, appBackend.getActivity(projectID, activityID, session).getStartWeek());
+
+
+    }
+    @Then("end time for activity is set to week {int}")
+    public void endTimeForActivityIsSetToWeek(int endWeek) {
+        // Write code here that turns the phrase above into concrete actions
+        assertEquals(endWeek, appBackend.getActivity(projectID, activityID, session).getEndWeek());
+    }
+
+    @Then("an activity {string} is created")
     public void an_activity_is_crated(String string) {
 
         //Hmm måske er den her test ikke rigtig god nok
@@ -166,6 +189,21 @@ public class BusinessTests {
                 appBackend.getAssignedActivityEmployees(projectID,activityID,session).stream().map(employee -> employee.id).toList().contains(employeeID));
     }
 
+    @When("{string} is assigned to {string}")
+    public void isAssignedTo(String string, String string2) {
+        try {
+            appBackend.addEmployeeToActivity(projectID, activityID, string, session);
+        } catch (Exception e){
+            error = e.getMessage();
+        }
+    }
+
+    @Then("{string} is assigned")
+    public void isAssigned(String string) {
+        assertTrue(
+                appBackend.getAssignedActivityEmployees(projectID,activityID,session).stream().map(employee -> employee.id).toList().contains(appBackend.findEmployee(string).id));
+    }
+
 
 
     //----------------------------------------------------------//
@@ -199,5 +237,14 @@ public class BusinessTests {
     @Then("the projects start time exist is in week {int}")
     public void the_projects_start_time_exist_is_in_uge(int int1) {
         assertEquals(int1, appBackend.getStartTime(projectID,session));
+    }
+
+    //----------------------------------------------------------//
+    //          Set start and end week on activity              //
+    //----------------------------------------------------------//
+
+    @When("a user sets the start time to week {int} and the end time to week {int}")
+    public void aUserSetsTheStartTimeToWeekAndTheEndTimeToWeek(int startWeek, int endWeek) {
+        appBackend.updateActivityWeekBounds(projectID,activityID,startWeek,endWeek,session);
     }
 }
