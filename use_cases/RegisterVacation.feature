@@ -14,9 +14,8 @@ Feature: Register Vacation
 
   Scenario: the User registers an upcoming Vacation
     Given user is logged in
-    And the user has a vacation from week 16 to week "19"
+    And the user has a vacation from week "16" to week "19"
     And a project "Farfars fødselsdag" exists
-    And an activity "Sig hej til farfar" exists
-    And the activity "Sig hej til farfar" is in week "17"
+    And an activity "Sig hej til farfar" with start week "17" and end week "18" exists
     When the user is assigned to "Sig hej til farfar"
     Then error message "Employee on vacation" is given
