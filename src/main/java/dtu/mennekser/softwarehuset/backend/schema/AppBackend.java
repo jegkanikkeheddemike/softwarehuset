@@ -57,7 +57,11 @@ public class AppBackend extends DataLayer{
         return projects.size()-1;
     }
 
-    public int createActivity(int projectID, String activityName, int budgetedTime ,Session session) {
+    public int createActivity(int projectID, String activityName, int budgetedTime,Session session) {
+        return createActivity(projectID,activityName,budgetedTime,1,52,session);
+    }
+
+    public int createActivity(int projectID, String activityName, int budgetedTime, int startWeek, int endWeek,Session session) {
         assertLoggedIn(session);
         return projects.get(projectID).createActivity(activityName,budgetedTime);
     }
