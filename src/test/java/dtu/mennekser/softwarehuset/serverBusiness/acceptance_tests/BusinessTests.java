@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
 
 public class BusinessTests {
 
-    AppBackend appBackend;
+    static AppBackend appBackend;
     String error;
-    Session session;
-    int projectID;
-    int activityID;
+    static Session session;
+    static int projectID;
+    static int activityID;
     int employeeID;
 
     public BusinessTests() {
