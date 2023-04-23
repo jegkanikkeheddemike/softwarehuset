@@ -251,6 +251,7 @@ public class AppBackend extends DataLayer {
     public int TimeUsedActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         return getProject(projectID, session).timeUsedActivity(activityID, session.employee.id);
+    }
 
     public record ActiveActivity(Project project, Activity activity) implements Serializable {}
 
@@ -301,6 +302,5 @@ public class AppBackend extends DataLayer {
         });
 
         return new ProjectStat(employeeStats);
-
     }
 }
