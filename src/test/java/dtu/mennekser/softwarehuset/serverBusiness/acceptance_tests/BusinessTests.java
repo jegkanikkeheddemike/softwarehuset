@@ -8,8 +8,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 
-import java.sql.SQLOutput;
-
 import static org.junit.Assert.*;
 
 public class BusinessTests {
