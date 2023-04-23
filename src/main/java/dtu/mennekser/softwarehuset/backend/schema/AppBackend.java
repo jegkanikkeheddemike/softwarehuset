@@ -68,7 +68,7 @@ public class AppBackend extends DataLayer{
 
     public int createActivity(int projectID, String activityName, int budgetedTime, int startWeek, int endWeek,Session session) {
         assertLoggedIn(session);
-        return projects.get(projectID).createActivity(activityName,budgetedTime);
+        return projects.get(projectID).createActivity(activityName,budgetedTime,startWeek,endWeek);
     }
 
     private void assertLoggedIn(Session session) {
