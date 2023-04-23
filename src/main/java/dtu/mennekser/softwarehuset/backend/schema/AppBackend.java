@@ -175,7 +175,6 @@ public class AppBackend extends DataLayer {
         if(getVacations(employeeID).isEmpty()){return;}
 
         for(int vac = 0; vac < getVacations(employeeID).size(); vac++){
-            System.out.println(getVacations(employeeID).get(vac).startWeek +" "+ start);
             if(getVacations(employeeID).get(vac).startWeek <= start
                     && getVacations(employeeID).get(vac).endWeek >= end){
                 throw new RuntimeException("Employee on vacation");
