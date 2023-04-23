@@ -107,7 +107,8 @@ public class Style {
     }
 
 
-
-
-
+    public static void setButtonBig(Button button) {
+        button.setMinSize(300,120);
+        button.setFont(setTitleFont());
+    }
 }

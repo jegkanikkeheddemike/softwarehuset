@@ -13,11 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-public class CenterTopBar extends BorderPane {
+public class ProjectTopBar extends BorderPane {
 
     HBox left;
     HBox right;
-    CenterTopBar(Project project) {
+    ProjectTopBar(Project project) {
         setBorder(Style.setBorder(3,0,"bottom"));
         left = new HBox();
         right = new HBox();
@@ -31,10 +31,13 @@ public class CenterTopBar extends BorderPane {
 
         Label title = new Label(project.name);
         Label client = new Label(" : " + project.client);
+        Label startWeek = new Label(" - uge " + project.startWeek);
         client.setFont(Style.setTitleFont());
         title.setFont(Style.setTitleFont());
+        startWeek.setFont(Style.setTextFont());
         left.getChildren().add(title);
         left.getChildren().add(client);
+        left.getChildren().add(startWeek);
 
         Session session = LoginManager.getCurrentSession();
 

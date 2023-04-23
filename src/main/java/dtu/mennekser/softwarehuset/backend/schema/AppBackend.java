@@ -2,6 +2,7 @@ package dtu.mennekser.softwarehuset.backend.schema;
 
 import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AppBackend extends DataLayer{
@@ -44,12 +45,12 @@ public class AppBackend extends DataLayer{
         return employees;
     }
 
-    public int createProject(String projectName,String clientName, Session session) {
+    public int createProject(String projectName,String clientName,Session session,int startWeek) {
         assertLoggedIn(session);
         if(clientName.isEmpty()){
             clientName = "SoftwareHusetAS";
         }
-        projects.add(new Project(projectName,clientName, projects.size()));
+        projects.add(new Project(projectName,clientName, projects.size(), startWeek));
 
         //automatically assigns the Employee that creates the project
         projects.get(projects.size()-1).assignEmployee(session.employee.id);
@@ -192,17 +193,35 @@ public class AppBackend extends DataLayer{
         getActivity(projectID,activityID,session).setDescription(newDescription);
     }
 
-    public void setStartTime(int projectID, Session session, int startUge) {
+    public void setStartTime(int projectID, Session session, int startWeek) {
         assertLoggedIn(session);
-        getProject(projectID,session).setStartUge(startUge);
+        getProject(projectID,session).setStartWeek(startWeek);
     }
 
     public int getStartTime(int projectID, Session session){
         assertLoggedIn(session);
-        return projects.get(projectID).startUge;
+        return projects.get(projectID).startWeek;
     }
     public void finishActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         getActivity(projectID,activityID,session).finished = true;
     }
+
+    public record ActiveActivity(Project project, Activity activity) implements Serializable {}
+    public ArrayList<ActiveActivity> getActiveActivities(Session session) {
+        //Find alle projekter som employee er en del af
+        ArrayList<Project> projects = getProjectsOfSession(session);
+
+        ArrayList<ActiveActivity> activities = new ArrayList<>();
+        for (Project project : projects) {
+            for (Activity activity : project.activities) {
+                if (!activity.finished && activity.assignedEmployees.contains(session.employee.id)) {
+                    activities.add(new ActiveActivity(project, activity));
+                }
+            }
+        }
+        return activities;
+    }
+
+
 }
