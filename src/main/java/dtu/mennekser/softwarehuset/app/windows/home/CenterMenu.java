@@ -32,10 +32,11 @@ public class CenterMenu extends BorderPane {
 
     String projectName;
 
-    static Image checkmark = new Image("/checkmark.png");
+    static Image checkmark;
 
 
     CenterMenu(int projectID) {
+
         Session session = LoginManager.getCurrentSession();
         projectListener = new DataListener<>(appBackend -> appBackend.getProject(projectID, session),
             project -> {
@@ -70,6 +71,10 @@ public class CenterMenu extends BorderPane {
                     Button button = new Button(activity.name);
                     buttonStack.getChildren().add(button);
                     if (activity.finished) {
+                        if (checkmark == null) {
+                             checkmark = new Image("/checkmark.png");
+                        }
+
                         ImageView imgview = new ImageView(checkmark);
                         imgview.setFitWidth(20);
                         imgview.setFitHeight(20);
