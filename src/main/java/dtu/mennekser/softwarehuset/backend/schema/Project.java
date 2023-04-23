@@ -15,10 +15,11 @@ public class Project implements Serializable {
 
     public int startWeek;
 
-    public Project(String name,String client, int id) {
+    public Project(String name,String client, int id,int startWeek) {
         this.client = client;
         this.name = name;
         this.id = id;
+        this.startWeek = startWeek;
     }
 
     public int getUsedTime() {

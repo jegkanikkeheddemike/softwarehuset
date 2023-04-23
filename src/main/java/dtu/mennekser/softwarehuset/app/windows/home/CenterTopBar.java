@@ -31,10 +31,13 @@ public class CenterTopBar extends BorderPane {
 
         Label title = new Label(project.name);
         Label client = new Label(" : " + project.client);
+        Label startWeek = new Label(" - uge " + project.startWeek);
         client.setFont(Style.setTitleFont());
         title.setFont(Style.setTitleFont());
+        startWeek.setFont(Style.setTextFont());
         left.getChildren().add(title);
         left.getChildren().add(client);
+        left.getChildren().add(startWeek);
 
         Session session = LoginManager.getCurrentSession();
 

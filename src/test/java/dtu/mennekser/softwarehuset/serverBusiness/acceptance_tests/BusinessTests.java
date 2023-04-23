@@ -36,7 +36,7 @@ public class BusinessTests {
     @When("user creates a project")
     public void user_creates_a_project() {
             try {
-                projectID = appBackend.createProject("Sommerhus infoside" ,"", session);
+                projectID = appBackend.createProject("Sommerhus infoside" ,"", session, 12);
             } catch (Exception e){
                 error = e.getMessage();
             }
@@ -121,7 +121,7 @@ public class BusinessTests {
     @Given("a project {string} exists")
     public void a_project_exists(String string) {
         session = appBackend.attemptLogin("Hanne");
-        projectID = appBackend.createProject(string,"",session);
+        projectID = appBackend.createProject(string,"",session,12);
     }
     @When("the user is assigned as project leader")
     public void the_user_is_assigned_as_project_leader() {
@@ -175,7 +175,7 @@ public class BusinessTests {
     @Given("ProjectLeader is logged in")
     public void project_leader_is_logged_in() {
         session = appBackend.attemptLogin("Hanne");
-        projectID = appBackend.createProject("Mormor's fødselsdag","",session);
+        projectID = appBackend.createProject("Mormor's fødselsdag","",session, 12);
         appBackend.setProjectLeader(projectID,session);
     }
     @Then("the activity {string} has budgeted time of {int} hours")
