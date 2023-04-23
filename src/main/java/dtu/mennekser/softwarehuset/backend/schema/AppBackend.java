@@ -163,11 +163,11 @@ public class AppBackend extends DataLayer{
         int hours = Integer.parseInt(split[0]);
         int minutes = Integer.parseInt(split[1]);
 
-        projects.get(projectID).activities.get(activityID).registerTime(
+         projects.get(projectID).activities.get(activityID).registerTime(
                 session.employee.id,
                 hours,
                 minutes
-        );
+         );
     }
     public ArrayList<TimeRegistration> getTimeRegistrationsOfActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);

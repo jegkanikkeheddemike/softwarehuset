@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class BusinessTests {
 
     static AppBackend appBackend;
-    String error;
+    static String error;
     static Session session;
     static int projectID;
     static int activityID;
