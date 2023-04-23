@@ -52,8 +52,10 @@ public class NewActivityWindow {
             String name = nameField.getText();
             Session session = LoginManager.getCurrentSession();
             int time = Integer.parseInt(timeField.getText().trim());
-            int startWeek = Integer.parseInt(startWeekField.getText().trim());
-            int endWeek = Integer.parseInt(endWeekField.getText().trim());
+
+
+            int startWeek = startWeekField.getText().trim().equals("") ? 1 : Integer.parseInt(startWeekField.getText().trim());
+            int endWeek = endWeekField.getText().trim().equals("") ? 52 : Integer.parseInt(endWeekField.getText().trim());
             DataTask.SubmitTask(appBackend -> appBackend.createActivity(projectId,name,time,startWeek,endWeek, session));
 
 

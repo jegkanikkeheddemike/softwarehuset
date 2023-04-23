@@ -9,6 +9,8 @@ public class Activity implements Serializable {
     public final int id;
     public String name;
     int budgetedTime;
+    int startWeek;
+    int endWeek;
     public String description ="";
     public boolean finished = false;
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
