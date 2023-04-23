@@ -11,16 +11,7 @@ public class SetStartAndEndOnActivity {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
-    @Then("start time for activity is set to week {int}")
-    public void startTimeForActivityIsSetToWeek(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
-    }
-    @Then("end time for activity is set to week {int}")
-    public void endTimeForActivityIsSetToWeek(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
-    }
+
 
 
 }

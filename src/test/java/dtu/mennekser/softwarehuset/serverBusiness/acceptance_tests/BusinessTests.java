@@ -82,7 +82,30 @@ public class BusinessTests {
             error = e.getMessage();
         }
     }
-    @Then("an activity {string} is crated")
+
+    @When("a user creates an activity {string} with {int} hours, from week {int} to week {int}")
+    public void aUserCreatesAnActivityWithHoursFromWeekToWeek(String name, int budgetedTime, int startWeek, int endWeek) {
+        try {
+            activityID = appBackend.createActivity(projectID,name,budgetedTime,startWeek,endWeek,session);
+        } catch (Exception e){
+            error = e.getMessage();
+        }
+    }
+
+    @Then("start time for activity is set to week {int}")
+    public void startTimeForActivityIsSetToWeek(int startWeek) {
+        // Write code here that turns the phrase above into concrete actions
+        assertEquals(startWeek, appBackend.getActivity(projectID, activityID, session).getStartWeek());
+
+
+    }
+    @Then("end time for activity is set to week {int}")
+    public void endTimeForActivityIsSetToWeek(int endWeek) {
+        // Write code here that turns the phrase above into concrete actions
+        assertEquals(endWeek, appBackend.getActivity(projectID, activityID, session).getEndWeek());
+    }
+
+    @Then("an activity {string} is created")
     public void an_activity_is_crated(String string) {
 
         //Hmm måske er den her test ikke rigtig god nok
