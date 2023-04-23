@@ -43,10 +43,11 @@ public class ProjectTopBar extends BorderPane {
 
         if (project.projectLeaderId == -1) {
             Button setStartTime = new Button("Set start week");
-            Button becomeProjectLeader = new Button("Become Project Leader");
             right.getChildren().add(setStartTime);
-            right.getChildren().add(becomeProjectLeader);
             Style.setBarButtonStyle(setStartTime,100);
+
+            Button becomeProjectLeader = new Button("Become Project Leader");
+            right.getChildren().add(becomeProjectLeader);
             Style.setBarButtonStyle(becomeProjectLeader,180);
 
             becomeProjectLeader.setOnAction(actionEvent -> {
