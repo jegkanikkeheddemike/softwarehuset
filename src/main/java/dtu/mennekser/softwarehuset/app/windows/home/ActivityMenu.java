@@ -60,6 +60,11 @@ public class ActivityMenu extends BorderPane {
                 endWeekText.setFont(Style.setTitleFont());
                 startEndWeekDisplay.getChildren().addAll(startWeekText,endWeekText);
 
+                Button changeWeekBounds = new Button("Change Start and End Time");
+                changeWeekBounds.setOnAction(actionEvent -> {
+
+                });
+
                 //initialise description area
                 startEndWeekDisplay.setPadding(new Insets(5, 5, 5, 5));
                 description.getChildren().clear();
