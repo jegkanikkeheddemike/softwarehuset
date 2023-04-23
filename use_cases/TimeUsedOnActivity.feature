@@ -8,7 +8,7 @@ Feature: Find time used on activity
     And the user is assigned as project leader
     And an activity "new activity" exists
     And the user registers "60" work hours to "new activity"
-    And the activity "new activity" has budgeted time of "5" hours
+    And the activity "new activity" has budgeted time of "5" hour
     When user checks time used on activity
     Then time used on project is "5"
     And there is "55" hours remaining
