@@ -185,4 +185,19 @@ public class BusinessTests {
         assertEquals(int1, appBackend.getActivity(projectID, activityID, session).getBudgetTime());
     }
 
+    //----------------------------------------------------------//
+    //                       Set start time                     //
+    //----------------------------------------------------------//
+
+    @When("start time is set to week {int}")
+    public void start_time_is_set(int startuge) {
+        session = appBackend.attemptLogin("Hanne");
+        projectID = appBackend.createProject("Mormor's fødselsdag","",session);
+        appBackend.setStartTime(projectID,session,startuge);
+    }
+
+    @Then("the projects start time exist is in week {int}")
+    public void the_projects_start_time_exist_is_in_uge(int int1) {
+        assertEquals(int1, appBackend.getStartTime(projectID,session));
+    }
 }
