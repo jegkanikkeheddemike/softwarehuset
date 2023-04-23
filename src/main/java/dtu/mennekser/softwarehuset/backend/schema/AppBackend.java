@@ -155,7 +155,7 @@ public class AppBackend extends DataLayer{
         }
     }
 
-    public TimeRegistration registerTime(int projectID, int activityID, String time, Session session) {
+    public void registerTime(int projectID, int activityID, String time, Session session) {
         assertLoggedIn(session);
 
 
@@ -163,11 +163,11 @@ public class AppBackend extends DataLayer{
         int hours = Integer.parseInt(split[0]);
         int minutes = Integer.parseInt(split[1]);
 
-        return projects.get(projectID).activities.get(activityID).registerTime(
+         projects.get(projectID).activities.get(activityID).registerTime(
                 session.employee.id,
                 hours,
                 minutes
-        );
+         );
     }
     public ArrayList<TimeRegistration> getTimeRegistrationsOfActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
