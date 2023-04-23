@@ -58,12 +58,16 @@ public class ActivityMenu extends BorderPane {
                 Text endWeekText = new Text("End Week: " + activity.getEndWeek());
                 startWeekText.setFont(Style.setTitleFont());
                 endWeekText.setFont(Style.setTitleFont());
-                startEndWeekDisplay.getChildren().addAll(startWeekText,endWeekText);
 
                 Button changeWeekBounds = new Button("Change Start and End Time");
                 changeWeekBounds.setOnAction(actionEvent -> {
-
+                    ChangeWeekBoundsWindow.tryCreate(projectID,activityID);
                 });
+
+
+                startEndWeekDisplay.getChildren().addAll(startWeekText,endWeekText,changeWeekBounds);
+
+
 
                 //initialise description area
                 startEndWeekDisplay.setPadding(new Insets(5, 5, 5, 5));

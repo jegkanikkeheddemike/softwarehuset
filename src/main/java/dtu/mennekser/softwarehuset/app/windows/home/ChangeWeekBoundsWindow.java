@@ -46,6 +46,13 @@ public class ChangeWeekBoundsWindow {
             int newStartWeek = Integer.parseInt(startWeekField.getText().trim());
             int newEndWeek = Integer.parseInt(endWeekField.getText().trim());
             DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectId,activityId,newStartWeek,newEndWeek,session));
+
+            exists = false;
+            changeWeekBoundsWindow.close();
         });
+
+        changeWeekBoundsWindow.show();
+
+        changeWeekBoundsWindow.setOnCloseRequest(windowEvent -> exists = false);
     }
 }
