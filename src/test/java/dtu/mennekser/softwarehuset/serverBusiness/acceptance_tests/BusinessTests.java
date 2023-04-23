@@ -175,7 +175,7 @@ public class BusinessTests {
     @Given("ProjectLeader is logged in")
     public void project_leader_is_logged_in() {
         session = appBackend.attemptLogin("Hanne");
-        projectID = appBackend.createProject("Mormor's fødselsdag",session);
+        projectID = appBackend.createProject("Mormor's fødselsdag","",session);
         appBackend.setProjectLeader(projectID,session);
     }
     @Then("the activity {string} has budgeted time of {int} hours")
