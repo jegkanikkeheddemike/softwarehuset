@@ -8,7 +8,7 @@ public class Activity implements Serializable {
     public String name;
     int budgetedTime;
     public String description ="";
-    boolean finished = false;
+    public boolean finished = false;
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
     public ArrayList<TimeRegistration> timeRegistrations = new ArrayList<>();
     public Activity(String name, int budgetedTime, int id) {
