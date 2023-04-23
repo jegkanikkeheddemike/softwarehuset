@@ -3,11 +3,9 @@ Feature: Find time used on activity
   Actors: user
 
   Scenario: a project leader checks time used on activity
-    Given user is logged in
-    And a project "new project" exists
-    And the user is assigned as project leader
+    Given ProjectLeader is logged in
     And an activity "new activity" exists
-    And the user registers "60" work hours to "new activity"
+    And the user has registers "60" work hours to "new activity"
     And the activity "new activity" has budgeted time of "5" hour
     When user checks time used on activity
     Then time used on project is "5"

@@ -9,6 +9,10 @@ public class TimeUsedOnActivity {
     public TimeUsedOnActivity() {
     }
 
+    @And("the user has registers {string} work hours to {string}")
+    public void theUserHasRegistersWorkHoursTo(String arg0, String arg1) {
+        
+    }
     @Given("the activity {string} has budgeted time of {string} hour")
     public void the_activity_has_budgeted_time_of_hours(String string, String string2) {
 
@@ -18,7 +22,6 @@ public class TimeUsedOnActivity {
 
     }
 
-
     @Then("time used on project is {string}")
     public void timeUsedOnProjectIs(String arg0) {
     }
@@ -26,4 +29,6 @@ public class TimeUsedOnActivity {
     @And("there is {string} hours remaining")
     public void thereIsHoursRemaining(String arg0) {
     }
+
+
 }
