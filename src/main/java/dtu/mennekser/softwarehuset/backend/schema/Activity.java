@@ -15,9 +15,11 @@ public class Activity implements Serializable {
     public boolean finished = false;
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
     public ArrayList<TimeRegistration> timeRegistrations = new ArrayList<>();
-    public Activity(String name, int budgetedTime, int id) {
+    public Activity(String name, int budgetedTime, int startWeek, int endWeek, int id) {
         this.name = name;
         this.budgetedTime = budgetedTime; //TODO DET HER SKAL GØRES ANDERLEDES
+        this.startWeek = startWeek;
+        this.endWeek = endWeek;
         this.id = id;
     }
 
@@ -39,6 +41,14 @@ public class Activity implements Serializable {
             timeSum += timeRegistration.usedTime;
         }
         return timeSum;
+    }
+
+    public int getStartWeek() {
+        return this.startWeek;
+    }
+
+    public int getEndWeek() {
+        return this.endWeek;
     }
     public void registerTime(int employeeID, int hours, int minutes) {
         int time = hours*60 + minutes;

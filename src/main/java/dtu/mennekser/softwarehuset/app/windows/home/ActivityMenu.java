@@ -20,7 +20,10 @@ import java.util.ArrayList;
 public class ActivityMenu extends BorderPane {
 
     BorderPane assignedPane;
+    VBox startEndWeekDisplay;
     VBox description;
+
+    VBox center;
     BorderPane activityCenter;
 
     DataListener<Activity> activityListener;
@@ -36,7 +39,9 @@ public class ActivityMenu extends BorderPane {
         assignedPane = new BorderPane();
         activityCenter = new BorderPane();
         description = new VBox();
-        activityCenter.setCenter(description);
+        startEndWeekDisplay = new VBox();
+        center = new VBox();
+        activityCenter.setCenter(center);
         BorderPane timerPane = new BorderPane();
         activityCenter.setRight(timerPane);
 
@@ -47,6 +52,16 @@ public class ActivityMenu extends BorderPane {
         activityListener = new DataListener<>(
             appBackend -> appBackend.getActivity(projectID,activityID, session),
             activity -> {
+                //initialise display for start and end week
+                startEndWeekDisplay.getChildren().clear();
+                Text startWeekText = new Text("Start Week: " + activity.getStartWeek());
+                Text endWeekText = new Text("End Week: " + activity.getEndWeek());
+                startWeekText.setFont(Style.setTitleFont());
+                endWeekText.setFont(Style.setTitleFont());
+                startEndWeekDisplay.getChildren().addAll(startWeekText,endWeekText);
+
+                //initialise description area
+                description.setPadding(new Insets(5, 5, 5, 5));
                 description.getChildren().clear();
                 Text descriptionTitle = new Text("Description: ");
                 descriptionTitle.setFont(Style.setTitleFont());
@@ -97,7 +112,7 @@ public class ActivityMenu extends BorderPane {
                 setTop(new ActivityTopBar(projectName, projectID, activity));
             }
         );
-
+        center.getChildren().addAll(startEndWeekDisplay,description);
         setCenter(activityCenter);
         setRight(assignedPane);
 

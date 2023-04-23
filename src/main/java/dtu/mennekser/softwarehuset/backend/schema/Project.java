@@ -30,7 +30,11 @@ public class Project implements Serializable {
         return timeSum;
     }
     public int createActivity(String name, int budgetedTime) {
-        activities.add(new Activity(name, budgetedTime,activities.size()));
+        return createActivity(name,budgetedTime,1,52);
+    }
+
+    public int createActivity(String name, int budgetedTime, int startWeek, int endWeek) {
+        activities.add(new Activity(name, budgetedTime,startWeek,endWeek,activities.size()));
         return activities.size()-1;
     }
 
