@@ -22,6 +22,12 @@ public class Project implements Serializable {
         this.startWeek = startWeek;
     }
 
+    public Project(String name, String client, int id) {
+        this.client = client;
+        this.name = name;
+        this.id = id;
+    }
+
     public int getUsedTime() {
         int timeSum = 0;
         for (Activity activity : activities) {
@@ -37,6 +43,24 @@ public class Project implements Serializable {
     public int createActivity(String name, int budgetedTime, int startWeek, int endWeek) {
         activities.add(new Activity(name, budgetedTime,startWeek,endWeek,activities.size()));
         return activities.size()-1;
+    }
+
+    public void updateActivityWeekBounds(int activityId, int newStartWeek, int newEndWeek) {
+        Activity activity = findActivity(activityId);
+        if(activity == null) {
+            return;
+        }
+        activity.setStartWeek(newStartWeek);
+        activity.setEndWeek(newEndWeek);
+    }
+
+    public Activity findActivity(int activityId) {
+        for(Activity activity : activities) {
+            if(activity.id == activityId) {
+                return activity;
+            }
+        }
+        return null;
     }
 
     public void assignEmployee(int employeeID) {
@@ -62,5 +86,13 @@ public class Project implements Serializable {
 
     public void setStartWeek(int startWeek){
         this.startWeek = startWeek;
+    }
+
+    public int timeUsedActivity(int activityID, int employeeID) {
+        if (employeeID == projectLeaderId) {
+            return activities.get(activityID).getUsedTime();
+        } else {
+            throw new RuntimeException("Employee not project leader");
+        }
     }
 }
