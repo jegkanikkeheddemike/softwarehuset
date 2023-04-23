@@ -8,8 +8,8 @@ public class TimeUsedOnActivity {
     public TimeUsedOnActivity() {
     }
 
-    @Given("activity has registered time")
-    public void activity_has_registered_time() {
+    @Given("the activity {string} has budgeted time of {string} hours")
+    public void the_activity_has_budgeted_time_of_hours(String string, String string2) {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
@@ -23,4 +23,6 @@ public class TimeUsedOnActivity {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
+
+
 }
