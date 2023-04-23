@@ -192,14 +192,14 @@ public class AppBackend extends DataLayer{
         getActivity(projectID,activityID,session).setDescription(newDescription);
     }
 
-    public void setStartTime(int projectID, Session session, int startUge) {
+    public void setStartTime(int projectID, Session session, int startWeek) {
         assertLoggedIn(session);
-        getProject(projectID,session).setStartUge(startUge);
+        getProject(projectID,session).setStartWeek(startWeek);
     }
 
     public int getStartTime(int projectID, Session session){
         assertLoggedIn(session);
-        return projects.get(projectID).startUge;
+        return projects.get(projectID).startWeek;
     }
     public void finishActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);

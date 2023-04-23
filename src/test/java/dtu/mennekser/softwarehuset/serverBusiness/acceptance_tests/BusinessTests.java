@@ -188,10 +188,12 @@ public class BusinessTests {
     //----------------------------------------------------------//
 
     @When("start time is set to week {int}")
-    public void start_time_is_set(int startuge) {
-        session = appBackend.attemptLogin("Hanne");
-        projectID = appBackend.createProject("Mormor's fødselsdag","",session);
-        appBackend.setStartTime(projectID,session,startuge);
+    public void start_time_is_set(int startWeek) {
+        try {
+            appBackend.setStartTime(projectID, session, startWeek);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
     }
 
     @Then("the projects start time exist is in week {int}")
