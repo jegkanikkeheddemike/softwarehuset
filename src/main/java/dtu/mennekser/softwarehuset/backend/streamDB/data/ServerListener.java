@@ -92,22 +92,24 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
     //Dette kan løses ved at gøre funktionen rekursiv men hvad nu hvis et felt i et objekt i en liste i et objekt
     // ændrer sig. Så aner jeg ikke hvordan man skal kunne fange det.
 
-    static int customHash(Object object) {
+    public static int customHash(Object object) {
         int sum = Objects.hash(object);
 
         if (object == null) {
             return sum;
         }
 
-        for (Field field : object.getClass().getFields()) {
+        for (Field field : object.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
-                sum += Objects.hash(field.get(object));
-            } catch ( Exception e) {
-                throw new RuntimeException("Illegal hash lol. Failed at: " + object.getClass().getName() + "." + field.getName());
+                int hash = Objects.hash(field.get(object));
+                sum += hash;
+                System.out.println(object.getClass().getName() + "." + field.getName() +":" + hash);
+            } catch (Exception e) {
+                //throw new RuntimeException("Illegal hash lol. Failed at: " + object.getClass().getName() + "." + field.getName());
             }
         }
-
+        System.out.println(object.getClass().getName() +" : " + sum);
         return sum;
     }
 }
