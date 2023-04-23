@@ -8,6 +8,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 
+import java.sql.SQLOutput;
+
 import static org.junit.Assert.*;
 
 public class BusinessTests {
@@ -53,8 +55,7 @@ public class BusinessTests {
 
     @Given("user is not logged in")
     public void user_is_not_logged_in() {
-        if(session != null) {
-            LoginManager.logout();}
+        session = null;
     }
 
     @Then("error message {string} is given")
@@ -126,6 +127,7 @@ public class BusinessTests {
     }
     @When("the user is assigned as project leader")
     public void the_user_is_assigned_as_project_leader() {
+
         try {
         appBackend.setProjectLeader(projectID,session);
         } catch (Exception e){
