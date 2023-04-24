@@ -56,15 +56,16 @@ class InnerHomePage extends BorderPane {
     DataListener<ArrayList<AppBackend.ActiveActivity>> activeActivities;
     InnerHomePage() {
         Session session = LoginManager.getCurrentSession();
+        //----------------- Personal Menu ----------------
         VBox rightMenu = new VBox();
         setMargin(rightMenu,new Insets(30));
+
         Label activeActivitesLabel = new Label("Active Activites");
         activeActivitesLabel.setFont(Style.setTitleFont());
         rightMenu.getChildren().add(activeActivitesLabel);
         setRight(rightMenu);
 
         VBox activeActivitiesBox = new VBox();
-
         ScrollPane activitiesScroll = new ScrollPane(activeActivitiesBox);
 
         rightMenu.getChildren().add(activitiesScroll);

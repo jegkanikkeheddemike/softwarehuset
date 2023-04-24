@@ -2,12 +2,15 @@ package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
+import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -21,26 +24,47 @@ public class NewVacationWindow {
         exists = true;
         Stage makeVacationWindow = new Stage();
         VBox root = new VBox();
+        root.setSpacing(5);
         root.setPadding(new Insets(10));
         Scene newActivityScene = new Scene(root,300,400);
         makeVacationWindow.setScene(newActivityScene);
 
-        root.getChildren().add(new Label("Vacation:"));
+        //-------------- Title ----------------------
+        Label title = new Label("Vacation:");
+        title.setFont(Style.setTitleFont());
+        title.setStyle("-fx-text-fill: rgb(54,174,123);");
+        root.getChildren().add(title);
 
+        //-------------- Start week -----------------------
         root.getChildren().add(new Label("Start week"));
         TextField startWeekField = new TextField();
+        startWeekField.setBackground(Style.setBackground(0, 5.0));
+        startWeekField.setFont(Style.setTextFont());
+        startWeekField.setStyle("-fx-highlight-fill: rgb(101,204,153);");
+        startWeekField.setPrefSize(300, 30);
         root.getChildren().add(startWeekField);
 
+        //----------------- End Week ----------------------
         root.getChildren().add(new Label("End week"));
         TextField endWeekField = new TextField();
+        endWeekField.setBackground(Style.setBackground(0, 5.0));
+        endWeekField.setFont(Style.setTextFont());
+        endWeekField.setStyle("-fx-highlight-fill: rgb(101,204,153);");
+        endWeekField.setPrefSize(300, 30);
         root.getChildren().add(endWeekField);
 
+        //--------------- Create Button ------------------
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER);
+
         Button create = new Button("Create");
-        root.getChildren().add(create);
+        Style.setActivityButtonStyle(create);
+        create.setPrefSize(120,30);
+        hBox.getChildren().add(create);
+        root.getChildren().add(hBox);
 
         Label errorField = new Label("");
         root.getChildren().add(errorField);
-
 
         create.setOnAction(actionEvent -> {
             Session session = LoginManager.getCurrentSession();
