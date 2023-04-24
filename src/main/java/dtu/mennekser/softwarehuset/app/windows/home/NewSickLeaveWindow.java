@@ -9,6 +9,7 @@ import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -21,16 +22,16 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class NewSickLeaveWindow {
+public class NewSickLeaveWindow extends VBox {
     public static boolean exists = false;
-    static DataListener<ArrayList<Employee>> allEmployeeListener;
+    DataListener<ArrayList<Employee>> allEmployeeListener;
     public static void tryCreate() {
         if (exists) {
             return;
         }
         exists = true;
         Stage makeSickLeaveWindow = new Stage();
-        VBox root = new VBox();
+        NewSickLeaveWindow root = new NewSickLeaveWindow();
         root.setSpacing(5);
         root.setPadding(new Insets(10));
         Scene newActivityScene = new Scene(root,300,400);
@@ -81,7 +82,7 @@ public class NewSickLeaveWindow {
         });
         employeeNameBox.setPrefSize(300, 30);
 
-        allEmployeeListener = new DataListener<>(
+        root.allEmployeeListener = new DataListener<>(
                 AppBackend::getEmployees,
                 employees -> {
                     employeeNameBox.getItems().clear();
