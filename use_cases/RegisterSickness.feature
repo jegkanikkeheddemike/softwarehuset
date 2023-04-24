@@ -6,4 +6,3 @@ Feature: Register Sickness
     Given user is logged in
     When the user registers that they are sick in week "17"
     Then the user is registered as sick in week "17"
-    
