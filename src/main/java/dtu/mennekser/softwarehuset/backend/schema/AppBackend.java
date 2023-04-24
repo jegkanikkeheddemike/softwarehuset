@@ -296,6 +296,10 @@ public class AppBackend extends DataLayer {
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
     }
 
+    public record TimeRegisActivity(String projectName, String activityName,
+                                    TimeRegistration timeRegistration) implements Serializable {
+    }
+
     public ArrayList<Vacation> getVacations(int employeeID) {
         return employees.get(employeeID).vacations;
     }
@@ -317,6 +321,22 @@ public class AppBackend extends DataLayer {
             }
         }
         return activities;
+    }
+
+    public ArrayList<TimeRegisActivity> getTimeRegisActivity(Session session) {
+        //Find alle projekter som employee er en del af
+
+        ArrayList<TimeRegisActivity> timeRegisActivities = new ArrayList<>();
+        for (Project project : projects) {
+            for (Activity activity : project.activities) {
+                for (TimeRegistration time : activity.timeRegistrations) {
+                    if (time.employeeID == session.employee.id) {
+                        timeRegisActivities.add(new TimeRegisActivity(project.name, activity.name, time));
+                    }
+                }
+            }
+        }
+        return timeRegisActivities;
     }
 
     public record EmployeeStat(Employee employee, ArrayList<Activity> assignedActivities) implements Serializable {

@@ -54,6 +54,7 @@ public class HomePage extends Scene {
 class InnerHomePage extends BorderPane {
 
     DataListener<ArrayList<AppBackend.ActiveActivity>> activeActivities;
+    DataListener<ArrayList<AppBackend.TimeRegisActivity>> registeredActivities;
     InnerHomePage() {
         Session session = LoginManager.getCurrentSession();
         //----------------- Personal Menu ----------------
@@ -122,17 +123,41 @@ class InnerHomePage extends BorderPane {
                     }
 
                     activeActivitiesBox.getChildren().add(buttonBox);
+
                 }
             }
         );
 
-        Label today = new Label("Today's Time Registrations: ");
-        today.setFont(Style.setTitleFont());
-        today.setBorder(Style.setBorder(1,0,"top"));
-        rightMenu.getChildren().add(today);
+        Label week = new Label("This week's Time Registrations: ");
+        week.setFont(Style.setTitleFont());
+        week.setBorder(Style.setBorder(1,0,"top"));
+        rightMenu.getChildren().add(week);
 
+        VBox regisActivitiesBox = new VBox();
+        ScrollPane regisActivitiesScroll = new ScrollPane(regisActivitiesBox);
 
-        //---------------- General Menu --------------
+        rightMenu.getChildren().add(regisActivitiesScroll);
+        registeredActivities = new DataListener<>(appBackend -> appBackend.getTimeRegisActivity(session), timeRegisActivities -> {
+            regisActivitiesBox.getChildren().clear();
+            if (timeRegisActivities.size() == 0) {
+                regisActivitiesBox.getChildren().add(new Label("No time registrations :)"));
+                return;
+            }
+
+            for (AppBackend.TimeRegisActivity regisActivity : timeRegisActivities) {
+                HBox timeBox  = new HBox();
+                timeBox.setSpacing(10);
+
+                Label timeLabel = new Label(regisActivity.projectName() + " / " + regisActivity.activityName() + " -> " + regisActivity.timeRegistration().usedTime/60 + "h. " + regisActivity.timeRegistration().usedTime%60 + "m. ");
+                timeBox.getChildren().add(timeLabel);
+
+                regisActivitiesBox.getChildren().add(timeBox);
+            }
+
+        }
+        );
+
+            //---------------- General Menu --------------
         VBox leftMenu = new VBox();
         setMargin(leftMenu,new Insets(30));
         leftMenu.setSpacing(40);
