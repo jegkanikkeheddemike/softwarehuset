@@ -34,7 +34,7 @@ public class AppBackend extends DataLayer {
                 name += temp[0].charAt(i);
             }
         }
-        employees.add(new Employee(name, realName, employees.size()));
+        employees.add(new Employee(name.toLowerCase(), realName, employees.size()));
         return employees.size() - 1;
     }
 

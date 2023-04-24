@@ -22,11 +22,6 @@ public class Project implements Serializable {
         this.startWeek = startWeek;
     }
 
-    public Project(String name, String client, int id) {
-        this.client = client;
-        this.name = name;
-        this.id = id;
-    }
 
     public int getUsedTime() {
         int timeSum = 0;
