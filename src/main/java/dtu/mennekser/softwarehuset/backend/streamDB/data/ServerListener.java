@@ -108,11 +108,11 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
             return sum;
         }
         String className =object.getClass().getName();
-        Random random = new Random(Objects.hash(className));
         if (className.startsWith("java.lang.")) {
-            return sum * random.nextInt();
+            return sum;
         }
 
+        Random random = new Random(Objects.hash(className));
 
         for (Field field : object.getClass().getDeclaredFields()) {
             try {
