@@ -48,10 +48,7 @@ public class NewSickLeaveWindow extends VBox {
         root.getChildren().add(startWeekText);
 
         TextField startWeekField = new TextField();
-        startWeekField.setBackground(Style.setBackground(0, 5.0));
-        startWeekField.setFont(Style.setTextFont());
-        startWeekField.setStyle("-fx-highlight-fill: rgb(101,204,153);");
-        startWeekField.setPrefSize(300, 30);
+        Style.setTextField(startWeekField,300);
         root.getChildren().add(startWeekField);
 
         //----------------- TextField to Enter end week -----------------
@@ -60,12 +57,8 @@ public class NewSickLeaveWindow extends VBox {
         root.getChildren().add(endWeekText);
 
         TextField endWeekField = new TextField();
-        endWeekField.setBackground(Style.setBackground(0, 5.0));
-        endWeekField.setFont(Style.setTextFont());
-        endWeekField.setStyle("-fx-highlight-fill: rgb(101,204,153);");
-        endWeekField.setPrefSize(300, 30);
+        Style.setTextField(endWeekField,300);
         root.getChildren().add(endWeekField);
-
 
         //------------------ ComboBox to choose an employee (optional) ---------------------
 
