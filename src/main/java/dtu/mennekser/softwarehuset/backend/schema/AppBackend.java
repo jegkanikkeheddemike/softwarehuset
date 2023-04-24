@@ -235,11 +235,18 @@ public class AppBackend extends DataLayer {
         );
     }
 
-    public ArrayList<TimeRegistration> getTimeRegistrationsOfActivity(int projectID, int activityID, Session session) {
+    public record RegistrationJoinEmployee(String employeeName, TimeRegistration timeRegistration) implements Serializable {}
+
+    public ArrayList<RegistrationJoinEmployee> getTimeRegistrationsOfActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         assertEmployeeInProject(projectID, session.employee.id);
 
-        return projects.get(projectID).activities.get(activityID).timeRegistrations;
+        ArrayList<RegistrationJoinEmployee> timeRegistrations = new ArrayList<>();
+
+        for (var time : projects.get(projectID).activities.get(activityID).timeRegistrations) {
+            timeRegistrations.add(new RegistrationJoinEmployee(employees.get(time.employeeID).name,time));
+        }
+        return timeRegistrations;
     }
 
     public Employee getProjectLeader(int projectID, Session session) {
@@ -318,6 +325,7 @@ public class AppBackend extends DataLayer {
         }
         return activities;
     }
+
 
     public record EmployeeStat(Employee employee, ArrayList<Activity> assignedActivities) implements Serializable {
     }
