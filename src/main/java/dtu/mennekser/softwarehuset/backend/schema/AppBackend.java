@@ -398,9 +398,7 @@ public class AppBackend extends DataLayer {
                     if (!project.assignedEmployees.contains(employeeID)) {
                         continue;
                     }
-
-                    ArrayList<ActivityStat> assignedActivities = employeeActivities.get(employeeID);
-                    assignedActivities.add(new ActivityStat(cProject.id, cProject.name, activity));
+                    employeeActivities.get(employeeID).add(new ActivityStat(cProject.id, cProject.name, activity));
                 }
             }
         }

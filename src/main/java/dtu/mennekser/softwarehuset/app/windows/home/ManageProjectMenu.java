@@ -59,7 +59,8 @@ public class ManageProjectMenu extends BorderPane {
                     //Tjek om plades er omtaget
                     currentMaxHeight = Math.max(currentMaxHeight, insertAtOptimal(gridPane, activity, minEmployeeHeight, projectID));
                 }
-                minEmployeeHeight = currentMaxHeight + 1;
+                currentMaxHeight += 1;
+                minEmployeeHeight = currentMaxHeight;
             }
             if (!projectStat.unassignedActivities().isEmpty()) {
                 gridPane.add(new Label("Unassigned:"), 0, minEmployeeHeight);
