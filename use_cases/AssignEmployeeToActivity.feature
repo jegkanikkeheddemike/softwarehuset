@@ -24,5 +24,5 @@ Feature: Assign Employee to activity
     And another Employee "Karsten" exists
     And a project "Planlæg en rejse" exists
     And an activity "Køb kuffert" exists
-    When "Karsten" is assigned to "Køb kuffert"
-    Then "Karsten" is assigned
+    When "kars" is assigned to "Køb kuffert"
+    Then "kars" is assigned

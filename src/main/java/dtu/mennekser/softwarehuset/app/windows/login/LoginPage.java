@@ -10,6 +10,7 @@ import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -34,12 +35,16 @@ public class LoginPage extends Scene {
         Label name = new Label("Name:");
         name.setFont(Style.setTitleFont());
         name.setStyle("-fx-text-fill: rgb(54,174,123);");
+
         root.getChildren().add(name);
         root.getChildren().add(usernameField);
         root.getChildren().add(errorField);
         root.getChildren().add(new Label("Available users:"));
         ScrollPane scroll = new ScrollPane(availableField);
         root.getChildren().add(scroll);
+
+
+
 
         scroll.setStyle(
                 "-fx-control-inner-background: rgb(244, 244, 244);" +

@@ -21,7 +21,7 @@ public class BusinessTests {
 
     public BusinessTests() {
         appBackend = new AppBackend();
-        employeeID = appBackend.createEmployee("Hanne");
+        employeeID = appBackend.createEmployee("hann");
     }
 
     //----------------------------------------------------------//
@@ -31,7 +31,7 @@ public class BusinessTests {
     @Given("user is logged in")
     public void user_is_logged_in() {
         //logIn Hanne and get the session
-        session = appBackend.attemptLogin("Hanne");
+        session = appBackend.attemptLogin("hann");
     }
     @When("user creates a project")
     public void user_creates_a_project() {
@@ -143,7 +143,7 @@ public class BusinessTests {
 
     @Given("a project {string} exists")
     public void a_project_exists(String string) {
-        session = appBackend.attemptLogin("Hanne");
+        session = appBackend.attemptLogin("hann");
         projectID = appBackend.createProject(string,"",session,"");
     }
     @When("the user is assigned as project leader")
@@ -161,9 +161,9 @@ public class BusinessTests {
     }
     @Given("{string} is project leader")
     public void is_project_leader(String string) {
-        session = appBackend.attemptLogin("Karsten");
+        session = appBackend.attemptLogin("kars");
         appBackend.setProjectLeader(projectID,session);
-        session = appBackend.attemptLogin("Hanne");
+        session = appBackend.attemptLogin("hann");
     }
 
 
@@ -178,7 +178,7 @@ public class BusinessTests {
     @When("the user is assigned to {string}")
     public void the_user_is_assigned_to(String string) {
         try {
-            appBackend.addEmployeeToActivity(projectID, activityID, "Hanne", session);
+            appBackend.addEmployeeToActivity(projectID, activityID, "hann", session);
         } catch (Exception e){
             error = e.getMessage();
         }
@@ -212,7 +212,7 @@ public class BusinessTests {
 
     @Given("ProjectLeader is logged in")
     public void project_leader_is_logged_in() {
-        session = appBackend.attemptLogin("Hanne");
+        session = appBackend.attemptLogin("hann");
         projectID = appBackend.createProject("Mormor's fødselsdag","",session, "");
         appBackend.setProjectLeader(projectID,session);
     }
