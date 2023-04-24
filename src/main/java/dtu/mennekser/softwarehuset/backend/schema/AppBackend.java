@@ -86,6 +86,15 @@ public class AppBackend extends DataLayer {
         employees.get(session.employee.id).vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
     }
 
+    public void createSickLeave(String employeeName, String startWeek, String endWeek, Session session) {
+        assertLoggedIn(session);
+        if(endWeek.isEmpty()){
+            endWeek = startWeek;
+        }
+        int employeeID = findEmployee(employeeName).id;
+        employees.get(employeeID).sickLeave.add(new SickLeave(Integer.parseInt(startWeek),Integer.parseInt(endWeek),employees.get(employeeID).sickLeave.size()));
+    }
+
     private void assertLoggedIn(Session session) {
         if (session == null) {
             throw new RuntimeException("Employee not logged in");
@@ -267,11 +276,16 @@ public class AppBackend extends DataLayer {
     }
 
 
+
+
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
     }
 
     public ArrayList<Vacation> getVacations(int employeeID) {
         return employees.get(employeeID).vacations;
+    }
+    public ArrayList<SickLeave> getSickLeaves(int employeeID) {
+        return employees.get(employeeID).sickLeave;
     }
 
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
@@ -315,12 +329,16 @@ public class AppBackend extends DataLayer {
         }
         ArrayList<EmployeeStat> employeeStats = new ArrayList<>();
         employeeActivities.forEach((key,value) -> {
+            //get vacations of Employee
             value.addAll(getVacations(key));
-            System.out.println(getVacations(key).size());
+            //get Sick Leaves of Employee
+            value.addAll(getSickLeaves(key));
             employeeStats.add(new EmployeeStat(
                     employees.get(key),value
             ));
         });
+
+
 
         ArrayList<Activity> unassignedActivities = new ArrayList<>(project.activities.stream().filter(activity -> activity.assignedEmployees.isEmpty()).toList());
 

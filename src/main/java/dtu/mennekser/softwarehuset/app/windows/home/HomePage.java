@@ -17,10 +17,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 
 public class HomePage extends Scene {
@@ -117,12 +115,18 @@ class InnerHomePage extends BorderPane {
         Style.setButtonBig(registerTidButton);
         leftMenu.getChildren().add(registerTidButton);
 
-        Button meldSygButton = new Button("Meld syg");
-        Style.setButtonBig(meldSygButton);
-        leftMenu.getChildren().add(meldSygButton);
+        Button sickLeaveButton = new Button("Sick Leave");
+        Style.setButtonBig(sickLeaveButton);
+        sickLeaveButton.setOnAction(actionEvent -> {
+            NewSickLeaveWindow.tryCreate();
+        });
+        leftMenu.getChildren().add(sickLeaveButton);
 
-        Button ferieButton = new Button("Ferie");
-        Style.setButtonBig(ferieButton);
-        leftMenu.getChildren().add(ferieButton);
+        Button vacationButton = new Button("Vacation");
+        Style.setButtonBig(vacationButton);
+        vacationButton.setOnAction(actionEvent -> {
+            NewVacationWindow.tryCreate();
+        });
+        leftMenu.getChildren().add(vacationButton);
     }
 }
