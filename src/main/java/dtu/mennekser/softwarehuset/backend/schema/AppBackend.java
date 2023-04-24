@@ -20,8 +20,21 @@ public class AppBackend extends DataLayer {
         }
     }
 
-    public int createEmployee(String name) {
-        employees.add(new Employee(name, employees.size()));
+    public int createEmployee(String realName) {
+        String[] temp = realName.split(" ");
+        String name = "";
+        if (temp.length >= 2) {
+            for (int j = 0; j < 2; j++) {
+                for (int i = 0; i < 2; i++) {
+                    name += temp[j].charAt(i);
+                }
+            }
+        } else {
+            for (int i = 0; i < 4; i++) {
+                name += temp[0].charAt(i);
+            }
+        }
+        employees.add(new Employee(name.toLowerCase(), realName, employees.size()));
         return employees.size() - 1;
     }
 
@@ -153,7 +166,9 @@ public class AppBackend extends DataLayer {
         projects.get(projectID).assignEmployee(findEmployee(employeeName).id);
     }
 
-    public record EmployeeNotAssignedToActivity(boolean occupied,Employee employee) implements Serializable {}
+    public record EmployeeNotAssignedToActivity(boolean occupied, Employee employee) implements Serializable {
+    }
+
     public ArrayList<EmployeeNotAssignedToActivity> getEmployeesNotAssignedToActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         ArrayList<EmployeeNotAssignedToActivity> notAssigned = new ArrayList<>();
@@ -161,7 +176,7 @@ public class AppBackend extends DataLayer {
         for (Employee employee : employees) {
             if (projects.get(projectID).assignedEmployees.contains(employee.id)) {
                 if (!projects.get(projectID).activities.get(activityID).assignedEmployees.contains(employee.id)) {
-                    notAssigned.add(new EmployeeNotAssignedToActivity(checkVacationing(projectID,activityID,employee.name),employee));
+                    notAssigned.add(new EmployeeNotAssignedToActivity(checkVacationing(projectID, activityID, employee.name), employee));
                 }
             }
         }
@@ -180,6 +195,7 @@ public class AppBackend extends DataLayer {
         projects.get(projectID).activities.get(activityID).assignEmployee(foundEmployee.id);
 
     }
+
     private boolean checkVacationing(int projectID, int activityID, String employeeName) {
         try {
             assertNotVacationing(projects.get(projectID).activities.get(activityID).startWeek,
@@ -232,11 +248,20 @@ public class AppBackend extends DataLayer {
         );
     }
 
-    public ArrayList<TimeRegistration> getTimeRegistrationsOfActivity(int projectID, int activityID, Session session) {
+    public record RegistrationJoinEmployee(String employeeName,
+                                           TimeRegistration timeRegistration) implements Serializable {
+    }
+
+    public ArrayList<RegistrationJoinEmployee> getTimeRegistrationsOfActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         assertEmployeeInProject(projectID, session.employee.id);
 
-        return projects.get(projectID).activities.get(activityID).timeRegistrations;
+        ArrayList<RegistrationJoinEmployee> timeRegistrations = new ArrayList<>();
+
+        for (var time : projects.get(projectID).activities.get(activityID).timeRegistrations) {
+            timeRegistrations.add(new RegistrationJoinEmployee(employees.get(time.employeeID).name, time));
+        }
+        return timeRegistrations;
     }
 
     public Employee getProjectLeader(int projectID, Session session) {
@@ -293,6 +318,10 @@ public class AppBackend extends DataLayer {
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
     }
 
+    public record TimeRegisActivity(String projectName, String activityName,
+                                    TimeRegistration timeRegistration) implements Serializable {
+    }
+
     public ArrayList<Vacation> getVacations(int employeeID) {
         return employees.get(employeeID).vacations;
     }
@@ -316,11 +345,28 @@ public class AppBackend extends DataLayer {
         return activities;
     }
 
+    public ArrayList<TimeRegisActivity> getTimeRegisActivity(Session session) {
+        //Find alle projekter som employee er en del af
+
+        ArrayList<TimeRegisActivity> timeRegisActivities = new ArrayList<>();
+        for (Project project : projects) {
+            for (Activity activity : project.activities) {
+                for (TimeRegistration time : activity.timeRegistrations) {
+                    if (time.employeeID == session.employee.id) {
+                        timeRegisActivities.add(new TimeRegisActivity(project.name, activity.name, time));
+                    }
+                }
+            }
+        }
+        return timeRegisActivities;
+    }
+
     public record ActivityStat(int projectID, String projectName, Activity activity) implements Serializable {
     }
 
     public record EmployeeStat(Employee employee, ArrayList<ActivityStat> assignedActivities) implements Serializable {
     }
+
 
     public record ProjectStat(ArrayList<EmployeeStat> employeeStats,
                               ArrayList<Activity> unassignedActivities) implements Serializable {
@@ -339,11 +385,11 @@ public class AppBackend extends DataLayer {
         for (int employeeId : project.assignedEmployees) {
             ArrayList<ActivityStat> vacationsAndSick = new ArrayList<>();
             //get vacations of Employee
-            vacationsAndSick.addAll(getVacations(employeeId).stream().map(vacation -> new ActivityStat(-1,"Vacation",vacation)).toList());
+            vacationsAndSick.addAll(getVacations(employeeId).stream().map(vacation -> new ActivityStat(-1, "Vacation", vacation)).toList());
             //get Sick Leaves of Employee
-            vacationsAndSick.addAll(getSickLeaves(employeeId).stream().map(vacation -> new ActivityStat(-2,"Sick leave",vacation)).toList());
+            vacationsAndSick.addAll(getSickLeaves(employeeId).stream().map(vacation -> new ActivityStat(-2, "Sick leave", vacation)).toList());
 
-            employeeActivities.put(employeeId,vacationsAndSick);
+            employeeActivities.put(employeeId, vacationsAndSick);
         }
 
         for (Project cProject : projects) {
@@ -378,6 +424,5 @@ public class AppBackend extends DataLayer {
         }
 
         activity.assignedEmployees.removeIf(integer -> integer == employeeID);
-
     }
 }

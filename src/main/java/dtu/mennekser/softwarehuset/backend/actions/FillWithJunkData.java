@@ -20,37 +20,37 @@ public class FillWithJunkData {
         new ClientTask<AppBackend>(appBackend -> appBackend.createEmployee("Thor"),Throwable::printStackTrace);
 
         Thread.sleep(500);
-        LoginManager.attemptLogin("Thor");
+        LoginManager.attemptLogin("thor");
 
         Session session = LoginManager.getCurrentSession();
 
         new ClientTask<AppBackend>(database -> {
 
 
-            int frederik = database.createEmployee("Frederik");
-            int katinka = database.createEmployee("Katinka");
-            int jens = database.createEmployee("Jens");
-            int karsten = database.createEmployee("Karsten");
-            int christian = database.createEmployee("Christian");
+            int frederik = database.createEmployee("Frederik Udby");
+            int katinka = database.createEmployee("Katinka Spangtoft");
+            int jens = database.createEmployee("Jens DinMor");
+            int karsten = database.createEmployee("Karsten DinFar");
+            int christian = database.createEmployee("Christian Vedel");
             int tobias = database.createEmployee("Tobias");
             int obama = database.createEmployee("Obama");
 
             int byg = database.createProject("Byg et tårn" ,"",session,"");
-            database.addEmployeeToProject(byg,"Frederik",session);
-            database.addEmployeeToProject(byg,"Katinka",session);
-            database.addEmployeeToProject(byg,"Obama",session);
+            database.addEmployeeToProject(byg,"frud",session);
+            database.addEmployeeToProject(byg,"kasp",session);
+            database.addEmployeeToProject(byg,"obam",session);
 
             int kage = database.createProject("Bag en kage","", session, "");
-            database.addEmployeeToProject(kage,"Christian",session);
-            database.addEmployeeToProject(kage,"Katinka",session);
+            database.addEmployeeToProject(kage,"chve",session);
+            database.addEmployeeToProject(kage,"kasp",session);
 
             int find = database.createActivity(byg,"Find en byggeplads", 1,session);
 
-            database.addEmployeeToActivity(byg,find,"Katinka",session);
-            database.addEmployeeToActivity(byg,find,"Thor",session);
+            database.addEmployeeToActivity(byg,find,"kasp",session);
+            database.addEmployeeToActivity(byg,find,"thor",session);
 
             database.createVacation("8","14",session);
-            database.createSickLeave("Katinka","2","",session);
+            database.createSickLeave("kasp","2","",session);
 
         },Throwable::printStackTrace);
     }

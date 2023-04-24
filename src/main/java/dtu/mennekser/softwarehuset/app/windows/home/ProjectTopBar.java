@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -17,13 +18,14 @@ public class ProjectTopBar extends BorderPane {
 
     HBox left;
     HBox right;
+
     ProjectTopBar(Project project) {
-        setBorder(Style.setBorder(3,0,"bottom"));
+        setBorder(Style.setBorder(3, 0, "bottom"));
         left = new HBox();
         right = new HBox();
 
         setPrefHeight(35);
-        setPadding(new Insets(0,5,0,5));
+        setPadding(new Insets(0, 5, 0, 5));
         left.setAlignment(Pos.CENTER_LEFT);
         right.setAlignment(Pos.CENTER_RIGHT);
         setLeft(left);
@@ -41,11 +43,23 @@ public class ProjectTopBar extends BorderPane {
 
         Session session = LoginManager.getCurrentSession();
 
+        Button setStart = new Button("Set start week");
+
+        Style.setBarButtonStyle(setStart,100);
+        TextField startField = new TextField();
+        right.getChildren().add(startField);
+        right.getChildren().add(setStart);
+
+        setStart.setOnAction(ActionEvent -> {
+            String newStartWeek = startField.getText().trim();
+            DataTask.SubmitTask(appBackend -> appBackend.setStartTime(project.id,session,Integer.parseInt(newStartWeek)));
+        });
+
         if (project.projectLeaderId == -1) {
 
             Button becomeProjectLeader = new Button("Become Project Leader");
             right.getChildren().add(becomeProjectLeader);
-            Style.setBarButtonStyle(becomeProjectLeader,165);
+            Style.setBarButtonStyle(becomeProjectLeader, 165);
 
             becomeProjectLeader.setOnAction(actionEvent -> {
                 DataTask.SubmitTask(appBackend -> appBackend.setProjectLeader(project.id, session));

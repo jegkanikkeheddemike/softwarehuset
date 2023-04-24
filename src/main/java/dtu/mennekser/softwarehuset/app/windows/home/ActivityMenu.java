@@ -27,7 +27,8 @@ public class ActivityMenu extends BorderPane {
     DataListener<Activity> activityListener;
     DataListener<ArrayList<Employee>> assignedListener;
     DataListener<ArrayList<AppBackend.EmployeeNotAssignedToActivity>> notAssignedListener;
-    DataListener<ArrayList<TimeRegistration>> timerListener;
+
+    DataListener<ArrayList<AppBackend.RegistrationJoinEmployee>> timerListener;
 
     //Det her gør at hvis der kommer ændringer på projektet mens den er åben bliver det ikke reflekteret.
     //Men det er vel ok siden man ikke kan ændre på projektnavnet osv.
@@ -234,8 +235,8 @@ public class ActivityMenu extends BorderPane {
                 appBackend -> appBackend.getTimeRegistrationsOfActivity(projectID,activityID,session),
                 timeRegistrations -> {
                     timerBox.getChildren().clear();
-                    for (TimeRegistration regis : timeRegistrations) {
-                        timerBox.getChildren().add(new Label(regis.employeeID + " : " +regis.usedTime/60 +" h. "+ regis.usedTime%60 + " m."));
+                    for (AppBackend.RegistrationJoinEmployee regis : timeRegistrations) {
+                        timerBox.getChildren().add(new Label(regis.employeeName() + " : " +regis.timeRegistration().usedTime/60 +" h. "+ regis.timeRegistration().usedTime%60 + " m."));
                     }
                 }
         );

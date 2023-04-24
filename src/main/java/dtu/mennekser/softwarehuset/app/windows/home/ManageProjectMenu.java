@@ -216,7 +216,11 @@ class ActivityEditor extends BorderPane {
             updateOptionsButton.setOnAction(actionEvent -> {
                 int startWeekVal = Integer.parseInt(startWeekField.getText().trim());
                 int endWeekVal = Integer.parseInt(endWeekField.getText().trim());
-                DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectID, activityID, startWeekVal, endWeekVal, session));
+
+                if(startWeekVal < 1 || startWeekVal > 52 || endWeekVal < 0 || endWeekVal > 52) {
+                    throw new RuntimeException("Invalid week bounds. Can't be less than 1 or greater than 52.");
+                }
+                DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectID,activityID,startWeekVal,endWeekVal,session));
             });
         });
         assignedListener = new DataListener<>(appBackend -> appBackend.getAssignedActivityEmployees(projectID, activityID, session), employees -> {
