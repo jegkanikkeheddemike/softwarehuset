@@ -28,7 +28,7 @@ public class EmployeeRegistersWorkHours {
     public void the_work_hours_are_registered_to(String hours, String string) {
         String[] hoursMinutes = hours.split(":");
         int time = Integer.parseInt(hoursMinutes[0])*60 +  Integer.parseInt(hoursMinutes[1]);
-        assertTrue(BusinessTests.appBackend.getTimeRegistrationsOfActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).get(BusinessTests.appBackend.getTimeRegistrationsOfActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).size()-1).usedTime == time);
+        assertTrue(BusinessTests.appBackend.getTimeRegistrationsOfActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).get(BusinessTests.appBackend.getTimeRegistrationsOfActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).size()-1).timeRegistration().usedTime == time);
     }
 
 }
