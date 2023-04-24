@@ -41,19 +41,13 @@ public class Project implements Serializable {
     }
 
     public int createActivity(String name, int budgetedTime, int startWeek, int endWeek) {
-        if(startWeek < 1 || startWeek > 52 || endWeek < 0 || endWeek > 52) {
-            throw new RuntimeException("Invalid week bounds. Can't be less than 1 or greater than 52.");
-        }
-        assert (startWeek >= 1 && startWeek <= 52);
+        assert (startWeek >= 1 && startWeek <= 52 && endWeek >=1 && endWeek <= 52);
         activities.add(new Activity(name, budgetedTime,startWeek,endWeek,activities.size()));
         return activities.size()-1;
     }
 
     public void updateActivityWeekBounds(int activityId, int newStartWeek, int newEndWeek) {
-        if(newStartWeek < 1 || newStartWeek > 52 || newEndWeek < 0 || newEndWeek > 52) {
-            throw new RuntimeException("Invalid week bounds. Can't be less than 1 or greater than 52.");
-        }
-        assert (newStartWeek >= 1 && newStartWeek <= 52);
+        assert (newStartWeek >= 1 && newStartWeek <= 52 && newEndWeek >=1 && newEndWeek <= 52);
         Activity activity = findActivity(activityId);
         if(activity == null) {
             return;

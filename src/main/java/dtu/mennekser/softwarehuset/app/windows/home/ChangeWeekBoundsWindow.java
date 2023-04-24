@@ -45,6 +45,9 @@ public class ChangeWeekBoundsWindow {
             Session session = LoginManager.getCurrentSession();
             int newStartWeek = Integer.parseInt(startWeekField.getText().trim());
             int newEndWeek = Integer.parseInt(endWeekField.getText().trim());
+            if(newStartWeek < 1 || newStartWeek > 52 || newEndWeek < 0 || newEndWeek > 52) {
+                throw new RuntimeException("Invalid week bounds. Can't be less than 1 or greater than 52.");
+            }
             DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectId,activityId,newStartWeek,newEndWeek,session));
 
             exists = false;
