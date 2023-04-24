@@ -23,6 +23,7 @@ public class ActivityTopBar extends BorderPane {
 
         setPrefHeight(35);
         left.setAlignment(Pos.CENTER_LEFT);
+        left.setSpacing(5);
         right.setAlignment(Pos.CENTER_RIGHT);
         setPadding(new Insets(0, 5, 0, 5));
         setLeft(left);
@@ -38,6 +39,7 @@ public class ActivityTopBar extends BorderPane {
 
         if (!activity.finished) {
             Button finishButton = new Button("Set finished");
+            Style.setBarButtonStyle(finishButton, 80);
             setMargin(finishButton, new Insets(20));
             left.getChildren().add(finishButton);
             finishButton.setOnAction(actionEvent -> {
@@ -45,7 +47,9 @@ public class ActivityTopBar extends BorderPane {
                 DataTask.SubmitTask(appBackend -> appBackend.finishActivity(projectID, activity.id, session));
             });
         } else {
-            Label finished = new Label("Finished");
+            Label finished = new Label(" Finished ");
+            finished.setFont(Style.setTitleFont());
+            finished.setStyle("-fx-text-fill: rgb(54,174,123);");
             setMargin(finished,new Insets(20));
             left.getChildren().add(finished);
         }

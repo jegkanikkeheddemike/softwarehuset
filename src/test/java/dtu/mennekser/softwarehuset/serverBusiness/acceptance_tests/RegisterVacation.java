@@ -20,8 +20,8 @@ public class RegisterVacation {
     }
     @Then("a vacation from week {string} to week {string} is registered for that user")
     public void aVacationFromWeekToWeekIsRegisteredForThatUser(String string, String string2) {
-        assertTrue(BusinessTests.appBackend.getVacations(BusinessTests.appBackend.findEmployee("Hanne").id).get(0).startWeek == Integer.parseInt(string));
-        assertTrue(BusinessTests.appBackend.getVacations(BusinessTests.appBackend.findEmployee("Hanne").id).get(0).endWeek == Integer.parseInt(string2));
+        assertTrue(BusinessTests.appBackend.getVacations(BusinessTests.appBackend.findEmployee("Hanne").id).get(0).getStartWeek() == Integer.parseInt(string));
+        assertTrue(BusinessTests.appBackend.getVacations(BusinessTests.appBackend.findEmployee("Hanne").id).get(0).getEndWeek() == Integer.parseInt(string2));
     }
 
     @Given("the user has a vacation from week {string} to week {string}")
