@@ -26,7 +26,8 @@ public class ActivityMenu extends BorderPane {
 
     DataListener<Activity> activityListener;
     DataListener<ArrayList<Employee>> assignedListener;
-    DataListener<ArrayList<Employee>> notAssignedListener;
+    DataListener<ArrayList<AppBackend.EmployeeNotAssignedToActivity>> notAssignedListener;
+
     DataListener<ArrayList<AppBackend.RegistrationJoinEmployee>> timerListener;
 
     //Det her gør at hvis der kommer ændringer på projektet mens den er åben bliver det ikke reflekteret.
@@ -172,8 +173,8 @@ public class ActivityMenu extends BorderPane {
             appBackend -> appBackend.getEmployeesNotAssignedToActivity(projectID,activityID,session),
             notAssigned -> {
                 employeeDropdown.getItems().clear();
-                for (Employee employee : notAssigned) {
-                    employeeDropdown.getItems().add(employee.name);
+                for (AppBackend.EmployeeNotAssignedToActivity employee : notAssigned) {
+                    employeeDropdown.getItems().add(employee.employee().name);
                 }
             }
         );

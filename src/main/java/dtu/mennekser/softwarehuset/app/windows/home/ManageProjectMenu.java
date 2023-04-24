@@ -7,6 +7,7 @@ import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
+import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,14 +19,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-public class ProjectStatMenu extends BorderPane {
+public class ManageProjectMenu extends BorderPane {
 
     DataListener<AppBackend.ProjectStat> projectStatListener;
 
-    public ProjectStatMenu(int projectID) {
+    public ManageProjectMenu(int projectID) {
         GridPane gridPane = new GridPane();
         ScrollPane gridScroll = new ScrollPane(gridPane);
         setMargin(gridScroll, new Insets(20));
@@ -53,16 +55,17 @@ public class ProjectStatMenu extends BorderPane {
             for (AppBackend.EmployeeStat stat : projectStat.employeeStats()) {
                 gridPane.add(new Label(stat.employee().name), 0, minEmployeeHeight);
 
-                for (Activity activity : stat.assignedActivities()) {
+                for (AppBackend.ActivityStat activity : stat.assignedActivities()) {
                     //Tjek om plades er omtaget
                     currentMaxHeight = Math.max(currentMaxHeight, insertAtOptimal(gridPane, activity, minEmployeeHeight, projectID));
                 }
-                minEmployeeHeight = currentMaxHeight + 1;
+                currentMaxHeight += 1;
+                minEmployeeHeight = currentMaxHeight;
             }
             if (!projectStat.unassignedActivities().isEmpty()) {
                 gridPane.add(new Label("Unassigned:"), 0, minEmployeeHeight);
                 for (Activity activity : projectStat.unassignedActivities()) {
-                    insertAtOptimal(gridPane, activity, minEmployeeHeight, projectID);
+                    insertAtOptimal(gridPane, new AppBackend.ActivityStat(projectID, "This value is ignored", activity), minEmployeeHeight, projectID);
                 }
             }
         });
@@ -71,10 +74,10 @@ public class ProjectStatMenu extends BorderPane {
 
     }
 
-    private int insertAtOptimal(GridPane gridPane, Activity activity, int minEmployeeHeight, int projectID) {
+    private int insertAtOptimal(GridPane gridPane, AppBackend.ActivityStat activity, int minEmployeeHeight, int projectID) {
         //Tjek om der er plads ved employeeHeight
-        int minWeekCol = activity.getStartWeek();
-        int maxWeekCol = activity.getEndWeek();
+        int minWeekCol = activity.activity().getStartWeek();
+        int maxWeekCol = activity.activity().getEndWeek();
 
         int colSpan = maxWeekCol - minWeekCol + 1;
 
@@ -87,9 +90,16 @@ public class ProjectStatMenu extends BorderPane {
             minEmployeeHeight += 1;
         }
 
-        Button activityButton = new Button(activity.name);
+        String buttonName;
+        if (projectID == activity.projectID() || (activity.projectID() < 0)) {
+            buttonName = activity.activity().name;
+        } else {
+            buttonName = activity.projectName() + " / " + activity.activity().name;
+        }
 
-        Background buttonBackground = new Background(new BackgroundFill(calcColor(activity.name), CornerRadii.EMPTY, new Insets(0)));
+        Button activityButton = new Button(buttonName);
+
+        Background buttonBackground = new Background(new BackgroundFill(calcColor(activity.activity().name), CornerRadii.EMPTY, new Insets(0)));
 
         activityButton.setBackground(buttonBackground);
         activityButton.setMaxWidth(Double.MAX_VALUE);
@@ -102,8 +112,13 @@ public class ProjectStatMenu extends BorderPane {
                 activityButton.setBackground(buttonBackground);
             }
         });
-        activityButton.setOnAction(actionEvent -> setBottomMenu(new ActivityEditor(projectID, activity.id)));
-
+        if (activity.projectID() == projectID) {
+            activityButton.setOnAction(actionEvent -> setBottomMenu(new ActivityEditor(projectID, activity.activity().id)));
+        } else if (activity.projectID() >= 0) {
+            activityButton.setOnAction(actionEvent -> setBottomMenu(new Label("Cannot edit activity from other project")));
+        } else {
+            activityButton.setOnAction(actionEvent -> setBottomMenu(new Label("Cannot edit vacation / sick leave")));
+        }
         return minEmployeeHeight;
     }
 
@@ -120,7 +135,7 @@ public class ProjectStatMenu extends BorderPane {
             Integer childSpan = GridPane.getColumnSpan(child);
             int childEndCol = childCol;
             if (childSpan != null) {
-                childEndCol += childSpan;
+                childEndCol += childSpan - 1;
             }
 
 
@@ -163,6 +178,8 @@ public class ProjectStatMenu extends BorderPane {
 class ActivityEditor extends BorderPane {
 
     DataListener<Activity> activityListener;
+    DataListener<ArrayList<Employee>> assignedListener;
+    DataListener<ArrayList<AppBackend.EmployeeNotAssignedToActivity>> notAssignedListener;
 
     ActivityEditor(int projectID, int activityID) {
         Session session = LoginManager.getCurrentSession();
@@ -173,7 +190,10 @@ class ActivityEditor extends BorderPane {
             setTop(titleLabel);
 
             VBox optionsBox = new VBox();
-            setCenter(optionsBox);
+            Label optionsTitle = new Label("Time options");
+            optionsTitle.setFont(Style.setTextFont());
+            optionsBox.getChildren().add(optionsTitle);
+            setLeft(optionsBox);
 
             HBox startWeek = new HBox();
             startWeek.setAlignment(Pos.CENTER_LEFT);
@@ -197,12 +217,77 @@ class ActivityEditor extends BorderPane {
             updateOptionsButton.setOnAction(actionEvent -> {
                 int startWeekVal = Integer.parseInt(startWeekField.getText().trim());
                 int endWeekVal = Integer.parseInt(endWeekField.getText().trim());
+
                 if(startWeekVal < 1 || startWeekVal > 52 || endWeekVal < 0 || endWeekVal > 52) {
                     throw new RuntimeException("Invalid week bounds. Can't be less than 1 or greater than 52.");
                 }
                 DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectID,activityID,startWeekVal,endWeekVal,session));
             });
+        });
+        assignedListener = new DataListener<>(appBackend -> appBackend.getAssignedActivityEmployees(projectID, activityID, session), employees -> {
+            VBox assignedEmployeesBox = new VBox();
+            setMargin(assignedEmployeesBox, new Insets(0, 20, 20, 20));
+            setCenter(assignedEmployeesBox);
 
+            Label title = new Label("Assigned employees");
+            title.setFont(Style.setTextFont());
+            assignedEmployeesBox.getChildren().add(title);
+
+            VBox innerBox = new VBox();
+            ScrollPane boxPane = new ScrollPane(innerBox);
+            boxPane.setMaxWidth(300);
+            assignedEmployeesBox.getChildren().add(boxPane);
+
+            for (Employee employee : employees) {
+                HBox employeeBox = new HBox();
+                employeeBox.setSpacing(10);
+
+                employeeBox.setAlignment(Pos.CENTER_LEFT);
+                employeeBox.getChildren().add(new Label(employee.name));
+
+                Button removeButton = new Button("Remove");
+                removeButton.setOnAction(actionEvent -> DataTask.SubmitTask(appBackend -> appBackend.removeEmployeeFromActivity(projectID, activityID, employee.name, session)));
+
+                employeeBox.getChildren().add(removeButton);
+
+                innerBox.getChildren().add(employeeBox);
+            }
+        });
+
+        notAssignedListener = new DataListener<>(appBackend -> appBackend.getEmployeesNotAssignedToActivity(projectID, activityID, session), employees -> {
+            VBox notAssignedEmployeesBox = new VBox();
+            setMargin(notAssignedEmployeesBox, new Insets(0, 20, 20, 20));
+            setRight(notAssignedEmployeesBox);
+
+            Label title = new Label("Assign employees");
+            title.setFont(Style.setTextFont());
+            notAssignedEmployeesBox.getChildren().add(title);
+
+            VBox innerBox = new VBox();
+            ScrollPane boxPane = new ScrollPane(innerBox);
+            boxPane.setMaxWidth(300);
+            notAssignedEmployeesBox.getChildren().add(boxPane);
+
+            for (var employee : employees) {
+                HBox employeeBox = new HBox();
+                employeeBox.setSpacing(10);
+
+                employeeBox.setAlignment(Pos.CENTER_LEFT);
+                employeeBox.getChildren().add(new Label(employee.employee().name));
+                if (employee.occupied()) {
+                    Label occupiedLabel = new Label("Occupied");
+                    occupiedLabel.setTextFill(Color.RED);
+                    employeeBox.getChildren().add(occupiedLabel);
+                } else {
+                    Button removeButton = new Button("Assign");
+                    removeButton.setOnAction(actionEvent -> DataTask.SubmitTask(appBackend -> appBackend.addEmployeeToActivity(projectID,activityID,employee.employee().name,session)));
+
+                    employeeBox.getChildren().add(removeButton);
+                }
+
+
+                innerBox.getChildren().add(employeeBox);
+            }
         });
     }
 }

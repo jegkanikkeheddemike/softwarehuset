@@ -2,7 +2,6 @@ package dtu.mennekser.softwarehuset;
 
 import dtu.mennekser.softwarehuset.app.windows.debug.DebugWindow;
 import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientSettings;
-import dtu.mennekser.softwarehuset.backend.streamDB.data.ServerListener;
 
 
 /**
