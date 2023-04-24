@@ -7,6 +7,7 @@ import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
+import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -62,7 +64,7 @@ public class ManageProjectMenu extends BorderPane {
             if (!projectStat.unassignedActivities().isEmpty()) {
                 gridPane.add(new Label("Unassigned:"), 0, minEmployeeHeight);
                 for (Activity activity : projectStat.unassignedActivities()) {
-                    insertAtOptimal(gridPane, new AppBackend.ActivityStat(projectID,"This value is ignored",activity) , minEmployeeHeight, projectID);
+                    insertAtOptimal(gridPane, new AppBackend.ActivityStat(projectID, "This value is ignored", activity), minEmployeeHeight, projectID);
                 }
             }
         });
@@ -132,7 +134,7 @@ public class ManageProjectMenu extends BorderPane {
             Integer childSpan = GridPane.getColumnSpan(child);
             int childEndCol = childCol;
             if (childSpan != null) {
-                childEndCol += childSpan;
+                childEndCol += childSpan - 1;
             }
 
 
@@ -175,6 +177,8 @@ public class ManageProjectMenu extends BorderPane {
 class ActivityEditor extends BorderPane {
 
     DataListener<Activity> activityListener;
+    DataListener<ArrayList<Employee>> assignedListener;
+    DataListener<ArrayList<AppBackend.EmployeeNotAssignedToActivity>> notAssignedListener;
 
     ActivityEditor(int projectID, int activityID) {
         Session session = LoginManager.getCurrentSession();
@@ -185,7 +189,10 @@ class ActivityEditor extends BorderPane {
             setTop(titleLabel);
 
             VBox optionsBox = new VBox();
-            setCenter(optionsBox);
+            Label optionsTitle = new Label("Time options");
+            optionsTitle.setFont(Style.setTextFont());
+            optionsBox.getChildren().add(optionsTitle);
+            setLeft(optionsBox);
 
             HBox startWeek = new HBox();
             startWeek.setAlignment(Pos.CENTER_LEFT);
@@ -209,9 +216,73 @@ class ActivityEditor extends BorderPane {
             updateOptionsButton.setOnAction(actionEvent -> {
                 int startWeekVal = Integer.parseInt(startWeekField.getText().trim());
                 int endWeekVal = Integer.parseInt(endWeekField.getText().trim());
-                DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectID,activityID,startWeekVal,endWeekVal,session));
+                DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectID, activityID, startWeekVal, endWeekVal, session));
             });
+        });
+        assignedListener = new DataListener<>(appBackend -> appBackend.getAssignedActivityEmployees(projectID, activityID, session), employees -> {
+            VBox assignedEmployeesBox = new VBox();
+            setMargin(assignedEmployeesBox, new Insets(0, 20, 20, 20));
+            setCenter(assignedEmployeesBox);
 
+            Label title = new Label("Assigned employees");
+            title.setFont(Style.setTextFont());
+            assignedEmployeesBox.getChildren().add(title);
+
+            VBox innerBox = new VBox();
+            ScrollPane boxPane = new ScrollPane(innerBox);
+            boxPane.setMaxWidth(300);
+            assignedEmployeesBox.getChildren().add(boxPane);
+
+            for (Employee employee : employees) {
+                HBox employeeBox = new HBox();
+                employeeBox.setSpacing(10);
+
+                employeeBox.setAlignment(Pos.CENTER_LEFT);
+                employeeBox.getChildren().add(new Label(employee.name));
+
+                Button removeButton = new Button("Remove");
+                removeButton.setOnAction(actionEvent -> DataTask.SubmitTask(appBackend -> appBackend.removeEmployeeFromActivity(projectID, activityID, employee.name, session)));
+
+                employeeBox.getChildren().add(removeButton);
+
+                innerBox.getChildren().add(employeeBox);
+            }
+        });
+
+        notAssignedListener = new DataListener<>(appBackend -> appBackend.getEmployeesNotAssignedToActivity(projectID, activityID, session), employees -> {
+            VBox notAssignedEmployeesBox = new VBox();
+            setMargin(notAssignedEmployeesBox, new Insets(0, 20, 20, 20));
+            setRight(notAssignedEmployeesBox);
+
+            Label title = new Label("Assign employees");
+            title.setFont(Style.setTextFont());
+            notAssignedEmployeesBox.getChildren().add(title);
+
+            VBox innerBox = new VBox();
+            ScrollPane boxPane = new ScrollPane(innerBox);
+            boxPane.setMaxWidth(300);
+            notAssignedEmployeesBox.getChildren().add(boxPane);
+
+            for (var employee : employees) {
+                HBox employeeBox = new HBox();
+                employeeBox.setSpacing(10);
+
+                employeeBox.setAlignment(Pos.CENTER_LEFT);
+                employeeBox.getChildren().add(new Label(employee.employee().name));
+                if (employee.occupied()) {
+                    Label occupiedLabel = new Label("Occupied");
+                    occupiedLabel.setTextFill(Color.RED);
+                    employeeBox.getChildren().add(occupiedLabel);
+                } else {
+                    Button removeButton = new Button("Assign");
+                    removeButton.setOnAction(actionEvent -> DataTask.SubmitTask(appBackend -> appBackend.addEmployeeToActivity(projectID,activityID,employee.employee().name,session)));
+
+                    employeeBox.getChildren().add(removeButton);
+                }
+
+
+                innerBox.getChildren().add(employeeBox);
+            }
         });
     }
 }

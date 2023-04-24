@@ -4,10 +4,7 @@ import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
-import dtu.mennekser.softwarehuset.backend.schema.Activity;
-import dtu.mennekser.softwarehuset.backend.schema.Employee;
-import dtu.mennekser.softwarehuset.backend.schema.Session;
-import dtu.mennekser.softwarehuset.backend.schema.TimeRegistration;
+import dtu.mennekser.softwarehuset.backend.schema.*;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.ServerListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,7 +26,7 @@ public class ActivityMenu extends BorderPane {
 
     DataListener<Activity> activityListener;
     DataListener<ArrayList<Employee>> assignedListener;
-    DataListener<ArrayList<Employee>> notAssignedListener;
+    DataListener<ArrayList<AppBackend.EmployeeNotAssignedToActivity>> notAssignedListener;
     DataListener<ArrayList<TimeRegistration>> timerListener;
 
     //Det her gør at hvis der kommer ændringer på projektet mens den er åben bliver det ikke reflekteret.
@@ -175,8 +172,8 @@ public class ActivityMenu extends BorderPane {
             appBackend -> appBackend.getEmployeesNotAssignedToActivity(projectID,activityID,session),
             notAssigned -> {
                 employeeDropdown.getItems().clear();
-                for (Employee employee : notAssigned) {
-                    employeeDropdown.getItems().add(employee.name);
+                for (AppBackend.EmployeeNotAssignedToActivity employee : notAssigned) {
+                    employeeDropdown.getItems().add(employee.employee().name);
                 }
             }
         );

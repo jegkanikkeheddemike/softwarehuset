@@ -48,18 +48,18 @@ public class AppBackend extends DataLayer {
     }
 
 
-    public int createProject(String projectName,String clientName,Session session,String startWeek) {
+    public int createProject(String projectName, String clientName, Session session, String startWeek) {
 
         assertLoggedIn(session);
         if (clientName.isEmpty()) {
             clientName = "SoftwareHusetAS";
         }
 
-        if(startWeek.isEmpty()){
+        if (startWeek.isEmpty()) {
             startWeek = "0";
         }
 
-        projects.add(new Project(projectName,clientName, projects.size(), Integer.parseInt(startWeek)));
+        projects.add(new Project(projectName, clientName, projects.size(), Integer.parseInt(startWeek)));
         //automatically assigns the Employee that creates the project
         projects.get(projects.size() - 1).assignEmployee(session.employee.id);
         return projects.size() - 1;
@@ -83,16 +83,16 @@ public class AppBackend extends DataLayer {
 
     public void createVacation(String startWeek, String endWeek, Session session) {
         assertLoggedIn(session);
-        employees.get(session.employee.id).vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
+        employees.get(session.employee.id).vacations.add(new Vacation(Integer.parseInt(startWeek), Integer.parseInt(endWeek), session.employee.vacations.size()));
     }
 
     public void createSickLeave(String employeeName, String startWeek, String endWeek, Session session) {
         assertLoggedIn(session);
-        if(endWeek.isEmpty()){
+        if (endWeek.isEmpty()) {
             endWeek = startWeek;
         }
         int employeeID = findEmployee(employeeName).id;
-        employees.get(employeeID).sickLeave.add(new SickLeave(Integer.parseInt(startWeek),Integer.parseInt(endWeek),employees.get(employeeID).sickLeave.size()));
+        employees.get(employeeID).sickLeave.add(new SickLeave(Integer.parseInt(startWeek), Integer.parseInt(endWeek), employees.get(employeeID).sickLeave.size()));
     }
 
     private void assertLoggedIn(Session session) {
@@ -153,14 +153,15 @@ public class AppBackend extends DataLayer {
         projects.get(projectID).assignEmployee(findEmployee(employeeName).id);
     }
 
-    public ArrayList<Employee> getEmployeesNotAssignedToActivity(int projectID, int activityID, Session session) {
+    public record EmployeeNotAssignedToActivity(boolean occupied,Employee employee) implements Serializable {}
+    public ArrayList<EmployeeNotAssignedToActivity> getEmployeesNotAssignedToActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
-        ArrayList<Employee> notAssigned = new ArrayList<>();
+        ArrayList<EmployeeNotAssignedToActivity> notAssigned = new ArrayList<>();
 
         for (Employee employee : employees) {
             if (projects.get(projectID).assignedEmployees.contains(employee.id)) {
                 if (!projects.get(projectID).activities.get(activityID).assignedEmployees.contains(employee.id)) {
-                    notAssigned.add(employee);
+                    notAssigned.add(new EmployeeNotAssignedToActivity(checkVacationing(projectID,activityID,employee.name),employee));
                 }
             }
         }
@@ -170,7 +171,7 @@ public class AppBackend extends DataLayer {
     public void addEmployeeToActivity(int projectID, int activityID, String employeeName, Session session) {
         assertLoggedIn(session);
         assertNotVacationing(projects.get(projectID).activities.get(activityID).startWeek,
-                projects.get(projectID).activities.get(activityID).endWeek,findEmployee(employeeName).id);
+                projects.get(projectID).activities.get(activityID).endWeek, findEmployee(employeeName).id);
 
         Employee foundEmployee = findEmployee(employeeName);
 
@@ -179,19 +180,30 @@ public class AppBackend extends DataLayer {
         projects.get(projectID).activities.get(activityID).assignEmployee(foundEmployee.id);
 
     }
+    private boolean checkVacationing(int projectID, int activityID, String employeeName) {
+        try {
+            assertNotVacationing(projects.get(projectID).activities.get(activityID).startWeek,
+                    projects.get(projectID).activities.get(activityID).endWeek, findEmployee(employeeName).id);
+        } catch (Exception e) {
+            return true;
+        }
+        return false;
+    }
 
-    private void assertNotVacationing(int start,int end,int employeeID) {
-        if(getVacations(employeeID).isEmpty()){return;}
+    private void assertNotVacationing(int start, int end, int employeeID) {
+        if (getVacations(employeeID).isEmpty()) {
+            return;
+        }
 
-        for(int vac = 0; vac < getVacations(employeeID).size(); vac++){
-            if(getVacations(employeeID).get(vac).startWeek <= start
-                    && getVacations(employeeID).get(vac).endWeek >= end){
+        for (int vac = 0; vac < getVacations(employeeID).size(); vac++) {
+            if (getVacations(employeeID).get(vac).startWeek <= start
+                    && getVacations(employeeID).get(vac).endWeek >= end) {
                 throw new RuntimeException("Employee on vacation");
             }
         }
     }
 
-    private void assertEmployeeInProject(int projectID,int employeeID) {
+    private void assertEmployeeInProject(int projectID, int employeeID) {
         if (!projects.get(projectID).assignedEmployees.contains(employeeID)) {
             throw new RuntimeException("Employee not in project");
         }
@@ -264,18 +276,18 @@ public class AppBackend extends DataLayer {
 
     public void setBudgetedTime(int projectID, int activityID, int BudgetedTime, Session session) {
         assertLoggedIn(session);
-        getActivity(projectID,activityID,session).setBudgetedTime(BudgetedTime);
+        getActivity(projectID, activityID, session).setBudgetedTime(BudgetedTime);
     }
+
     public int TimeRemainingActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
-        return getActivity(projectID,activityID,session).timeRemaining();
+        return getActivity(projectID, activityID, session).timeRemaining();
     }
+
     public int TimeUsedActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         return getProject(projectID, session).timeUsedActivity(activityID, session.employee.id);
     }
-
-
 
 
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
@@ -284,6 +296,7 @@ public class AppBackend extends DataLayer {
     public ArrayList<Vacation> getVacations(int employeeID) {
         return employees.get(employeeID).vacations;
     }
+
     public ArrayList<SickLeave> getSickLeaves(int employeeID) {
         return employees.get(employeeID).sickLeave;
     }
@@ -303,18 +316,35 @@ public class AppBackend extends DataLayer {
         return activities;
     }
 
-    public record ActivityStat(int projectID, String projectName, Activity activity) implements Serializable {}
-    public record EmployeeStat(Employee employee, ArrayList<ActivityStat> assignedActivities) implements Serializable {}
-    public record ProjectStat(ArrayList<EmployeeStat> employeeStats, ArrayList<Activity> unassignedActivities) implements Serializable{}
+    public record ActivityStat(int projectID, String projectName, Activity activity) implements Serializable {
+    }
+
+    public record EmployeeStat(Employee employee, ArrayList<ActivityStat> assignedActivities) implements Serializable {
+    }
+
+    public record ProjectStat(ArrayList<EmployeeStat> employeeStats,
+                              ArrayList<Activity> unassignedActivities) implements Serializable {
+    }
+
     public ProjectStat getProjectStats(int projectID, Session session) {
         assertLoggedIn(session);
-        assertEmployeeInProject(projectID,session.employee.id);
+        assertEmployeeInProject(projectID, session.employee.id);
 
-        Project project =projects.get(projectID);
+        Project project = projects.get(projectID);
         if (project.projectLeaderId != session.employee.id) {
             throw new RuntimeException("Employee is not project leader");
         }
         HashMap<Integer, ArrayList<ActivityStat>> employeeActivities = new HashMap<>();
+
+        for (int employeeId : project.assignedEmployees) {
+            ArrayList<ActivityStat> vacationsAndSick = new ArrayList<>();
+            //get vacations of Employee
+            vacationsAndSick.addAll(getVacations(employeeId).stream().map(vacation -> new ActivityStat(-1,"Vacation",vacation)).toList());
+            //get Sick Leaves of Employee
+            vacationsAndSick.addAll(getSickLeaves(employeeId).stream().map(vacation -> new ActivityStat(-2,"Sick leave",vacation)).toList());
+
+            employeeActivities.put(employeeId,vacationsAndSick);
+        }
 
         for (Project cProject : projects) {
             for (Activity activity : cProject.activities) {
@@ -323,26 +353,31 @@ public class AppBackend extends DataLayer {
                         continue;
                     }
 
-                    ArrayList<ActivityStat> assignedActivities = employeeActivities.computeIfAbsent(employeeID, k -> new ArrayList<>());
-                    assignedActivities.add(new ActivityStat(cProject.id,cProject.name,activity));
+                    ArrayList<ActivityStat> assignedActivities = employeeActivities.get(employeeID);
+                    assignedActivities.add(new ActivityStat(cProject.id, cProject.name, activity));
                 }
             }
         }
         ArrayList<EmployeeStat> employeeStats = new ArrayList<>();
-        employeeActivities.forEach((key,value) -> {
-            //get vacations of Employee
-            value.addAll(getVacations(key).stream().map(vacation -> new ActivityStat(-1,"Vacation",vacation)).toList());
-            //get Sick Leaves of Employee
-            value.addAll(getSickLeaves(key).stream().map(vacation -> new ActivityStat(-2,"Sick leave",vacation)).toList());
-            employeeStats.add(new EmployeeStat(
-                    employees.get(key),value
-            ));
+        employeeActivities.forEach((key, value) -> {
+            employeeStats.add(new EmployeeStat(employees.get(key), value));
         });
-
 
 
         ArrayList<Activity> unassignedActivities = new ArrayList<>(project.activities.stream().filter(activity -> activity.assignedEmployees.isEmpty()).toList());
 
-        return new ProjectStat(employeeStats,unassignedActivities);
+        return new ProjectStat(employeeStats, unassignedActivities);
+    }
+
+    public void removeEmployeeFromActivity(int projectID, int activityID, String employeeName, Session session) {
+        int employeeID = findEmployee(employeeName).id;
+        //Check if employee on activity
+        Activity activity = getActivity(projectID, activityID, session);
+        if (!activity.assignedEmployees.contains(employeeID)) {
+            throw new RuntimeException("Employee not assigned to activity");
+        }
+
+        activity.assignedEmployees.removeIf(integer -> integer == employeeID);
+
     }
 }
