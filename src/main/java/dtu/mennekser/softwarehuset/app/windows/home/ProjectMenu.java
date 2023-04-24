@@ -8,10 +8,12 @@ import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import dtu.mennekser.softwarehuset.backend.schema.Project;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -84,6 +86,21 @@ public class ProjectMenu extends BorderPane {
                     Style.setActivityButtonStyle(button);
                     button.setOnAction(actionEvent -> HomePage.setActivity(projectName,projectID,activity));
                     activitiesPane.getChildren().add(buttonStack);
+
+
+                    HBox bottomPane = new HBox();
+
+                    setBottom(bottomPane);
+                    Button setStart = new Button("Set start week");
+                    bottomPane.getChildren().add(setStart);
+                    Style.setBarButtonStyle(setStart,100);
+                    TextField startField = new TextField();
+                    bottomPane.getChildren().add(startField);
+
+                    startField.setOnAction(ActionEvent -> {
+                        String startWeek = startField.getText().trim();
+                        DataTask.SubmitTask(appBackend -> appBackend.setStartTime(projectID,session,Integer.parseInt(startWeek)));
+                    });
                 }
             }
         );
