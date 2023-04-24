@@ -43,8 +43,14 @@ public class ManageProjectMenu extends BorderPane {
                 Label weekLabel = new Label(" " + i + " ");
                 weekLabel.setMinWidth(30);
                 if (i == TimeManager.getWeek()) {
+                    weekLabel.setText(weekLabel.getText() + " (current week) ");
                     weekLabel.setTextFill(Color.RED);
                 }
+                if (i == projectStat.projectWeek()) {
+                    weekLabel.setText(weekLabel.getText() + " (Project start) ");
+                }
+
+
                 gridPane.add(weekLabel, i, 0);
             }
 

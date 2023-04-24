@@ -369,7 +369,7 @@ public class AppBackend extends DataLayer {
 
 
     public record ProjectStat(ArrayList<EmployeeStat> employeeStats,
-                              ArrayList<Activity> unassignedActivities) implements Serializable {
+                              ArrayList<Activity> unassignedActivities, int projectWeek) implements Serializable {
     }
 
     public ProjectStat getProjectStats(int projectID, Session session) {
@@ -410,7 +410,7 @@ public class AppBackend extends DataLayer {
 
         ArrayList<Activity> unassignedActivities = new ArrayList<>(project.activities.stream().filter(activity -> activity.assignedEmployees.isEmpty()).toList());
 
-        return new ProjectStat(employeeStats, unassignedActivities);
+        return new ProjectStat(employeeStats, unassignedActivities, projects.get(projectID).startWeek);
     }
 
     public void removeEmployeeFromActivity(int projectID, int activityID, String employeeName, Session session) {
