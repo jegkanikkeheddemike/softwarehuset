@@ -45,7 +45,7 @@ public class ProjectTopBar extends BorderPane {
 
             Button becomeProjectLeader = new Button("Become Project Leader");
             right.getChildren().add(becomeProjectLeader);
-            Style.setBarButtonStyle(becomeProjectLeader,180);
+            Style.setBarButtonStyle(becomeProjectLeader,165);
 
             becomeProjectLeader.setOnAction(actionEvent -> {
                 DataTask.SubmitTask(appBackend -> appBackend.setProjectLeader(project.id, session));

@@ -2,6 +2,7 @@ package dtu.mennekser.softwarehuset.app.windows;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -29,6 +30,12 @@ public class Style {
         button.setFont(setTitleFont());
         button.setPrefSize(160, 40);
         //button.setBorder(setBorder(2,5, "nej"));
+    }
+
+    public static void setButtonBig(Button button) {
+        setEmployeeButtonStyle(button);
+        button.setMinSize(300,120);
+        button.setFont(setTitleFont());
     }
 
     public static void setBarButtonStyle(Button button, double width){
@@ -97,6 +104,12 @@ public class Style {
         return Color.RED;
     }
 
+    public static void setTextField(TextField field, double width){
+        field.setBackground(Style.setBackground(0, 5.0));
+        field.setFont(Style.setTextFont());
+        field.setStyle("-fx-highlight-fill: rgb(101,204,153);");
+        field.setPrefSize(width, 30);
+    }
 
     public static Font setTitleFont(){
        return Font.font("Helvetica", FontWeight.BOLD, 18);
@@ -107,8 +120,4 @@ public class Style {
     }
 
 
-    public static void setButtonBig(Button button) {
-        button.setMinSize(300,120);
-        button.setFont(setTitleFont());
-    }
 }

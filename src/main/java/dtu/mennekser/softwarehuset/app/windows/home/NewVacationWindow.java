@@ -38,19 +38,13 @@ public class NewVacationWindow {
         //-------------- Start week -----------------------
         root.getChildren().add(new Label("Start week"));
         TextField startWeekField = new TextField();
-        startWeekField.setBackground(Style.setBackground(0, 5.0));
-        startWeekField.setFont(Style.setTextFont());
-        startWeekField.setStyle("-fx-highlight-fill: rgb(101,204,153);");
-        startWeekField.setPrefSize(300, 30);
+        Style.setTextField(startWeekField,300);
         root.getChildren().add(startWeekField);
 
         //----------------- End Week ----------------------
         root.getChildren().add(new Label("End week"));
         TextField endWeekField = new TextField();
-        endWeekField.setBackground(Style.setBackground(0, 5.0));
-        endWeekField.setFont(Style.setTextFont());
-        endWeekField.setStyle("-fx-highlight-fill: rgb(101,204,153);");
-        endWeekField.setPrefSize(300, 30);
+        Style.setTextField(endWeekField,300);
         root.getChildren().add(endWeekField);
 
         //--------------- Create Button ------------------

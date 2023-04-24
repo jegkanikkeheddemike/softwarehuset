@@ -60,13 +60,29 @@ class InnerHomePage extends BorderPane {
         VBox rightMenu = new VBox();
         setMargin(rightMenu,new Insets(30));
 
+        Label welcome = new Label("Welcome " + session.employee.name);
+        welcome.setFont(Style.setTitleFont());
+        welcome.setStyle("-fx-text-fill: rgb(54,174,123);");
+        rightMenu.getChildren().add(welcome);
+
         Label activeActivitesLabel = new Label("Active Activites");
         activeActivitesLabel.setFont(Style.setTitleFont());
+        activeActivitesLabel.setBorder(Style.setBorder(1,0,"top"));
         rightMenu.getChildren().add(activeActivitesLabel);
         setRight(rightMenu);
 
         VBox activeActivitiesBox = new VBox();
         ScrollPane activitiesScroll = new ScrollPane(activeActivitiesBox);
+
+
+        activitiesScroll.setStyle(
+                "-fx-control-inner-background: rgb(255, 255, 255);" +
+                        "-fx-faint-focus-color: transparent;" +
+                       "-fx-focus-color: transparent;" +
+                        "-fx-highlight-fill: rgb(101,204,153);"+
+                        "-fx-background-insets: 10;"
+        );
+
 
         rightMenu.getChildren().add(activitiesScroll);
         activeActivities = new DataListener<>(appBackend -> appBackend.getActiveActivities(session),
@@ -84,6 +100,9 @@ class InnerHomePage extends BorderPane {
                 for (AppBackend.ActiveActivity activity : activities) {
 
                     Button activityButton = new Button(activity.project().name + " / " + activity.activity().name);
+                    activityButton.setFont(Style.setTextFont());
+                    Style.setActivityButtonStyle(activityButton);
+                    activityButton.setPrefSize(200,30);
                     HBox buttonBox = new HBox();
                     buttonBox.setSpacing(10);
 
@@ -107,6 +126,13 @@ class InnerHomePage extends BorderPane {
             }
         );
 
+        Label today = new Label("Today's Time Registrations: ");
+        today.setFont(Style.setTitleFont());
+        today.setBorder(Style.setBorder(1,0,"top"));
+        rightMenu.getChildren().add(today);
+
+
+        //---------------- General Menu --------------
         VBox leftMenu = new VBox();
         setMargin(leftMenu,new Insets(30));
         leftMenu.setSpacing(40);
