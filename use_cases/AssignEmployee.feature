@@ -5,9 +5,9 @@ Feature: Assign Employee to Project
   Scenario: Assign Employee to Project
     Given user is logged in
     And user creates a project
-    And another Employee "Karsten" exists
-    When another Employee "Karsten" is added to the project
-    Then the Employee "Karsten" is part of the project
+    And another Employee "Karsten Ung" exists
+    When another Employee "kaun" is added to the project
+    Then the Employee "kaun" is part of the project
 
   Scenario: Assign Employee that does not exist to Project
     Given user is logged in

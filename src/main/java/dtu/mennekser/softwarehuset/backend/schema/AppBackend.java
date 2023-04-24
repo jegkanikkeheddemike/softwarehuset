@@ -20,8 +20,21 @@ public class AppBackend extends DataLayer {
         }
     }
 
-    public int createEmployee(String name) {
-        employees.add(new Employee(name, employees.size()));
+    public int createEmployee(String realName) {
+        String[] temp = realName.split(" ");
+        String name = "";
+        if (temp.length >= 2) {
+            for (int j = 0; j < 2; j++) {
+                for (int i = 0; i < 2; i++) {
+                    name += temp[j].charAt(i);
+                }
+            }
+        } else {
+            for (int i = 0; i < 4; i++) {
+                name += temp[0].charAt(i);
+            }
+        }
+        employees.add(new Employee(name.toLowerCase(), realName, employees.size()));
         return employees.size() - 1;
     }
 
@@ -285,7 +298,6 @@ public class AppBackend extends DataLayer {
 
     public record TimeRegisActivity(String projectName, String activityName,
                                     TimeRegistration timeRegistration) implements Serializable {
-
     }
 
     public ArrayList<Vacation> getVacations(int employeeID) {
