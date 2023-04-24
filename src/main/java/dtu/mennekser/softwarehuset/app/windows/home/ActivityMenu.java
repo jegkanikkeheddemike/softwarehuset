@@ -61,6 +61,8 @@ public class ActivityMenu extends BorderPane {
                 endWeekText.setFont(Style.setTitleFont());
 
                 Button changeWeekBounds = new Button("Change Start and End Time");
+                Style.setEmployeeButtonStyle(changeWeekBounds);
+                changeWeekBounds.setMinSize(160,30);
                 changeWeekBounds.setOnAction(actionEvent -> {
                     ChangeWeekBoundsWindow.tryCreate(projectID,activityID);
                 });
@@ -109,6 +111,9 @@ public class ActivityMenu extends BorderPane {
 
 
                 Button save = new Button("Save");
+                Style.setEmployeeButtonStyle(save);
+                save.setMinSize(45,30);
+
                 save.setOnAction(actionEvent -> {
                     String newDescription = descriptionText.getText().trim();
                     DataTask.SubmitTask(appBackend -> {
@@ -189,17 +194,23 @@ public class ActivityMenu extends BorderPane {
         });
 
 
-        //--------------------------------
+        //------------------ Time Registration --------------
 
 
         BorderPane bottomBox = new BorderPane();
         timerPane.setBottom(bottomBox);
 
         Button addTimerButton = new Button("+");
+        addTimerButton.setFont(Style.setTextFont());
+        Style.setEmployeeButtonStyle(addTimerButton);
+        addTimerButton.setMinSize(20, 20);
         bottomBox.setRight(addTimerButton);
 
         TextField timerField = new TextField("");
-        bottomBox.setCenter(timerField);
+        timerField.setBackground(Style.setBackground(0,5));
+        timerField.setPrefSize(107,20);
+        bottomBox.setPadding(new Insets( 5));
+        bottomBox.setLeft(timerField);
 
 
         addTimerButton.setOnAction(actionEvent -> {
@@ -227,7 +238,7 @@ public class ActivityMenu extends BorderPane {
                 timeRegistrations -> {
                     timerBox.getChildren().clear();
                     for (TimeRegistration regis : timeRegistrations) {
-                        timerBox.getChildren().add(new Label(regis.employeeID + " : " + regis.usedTime));
+                        timerBox.getChildren().add(new Label(regis.employeeID + " : " +regis.usedTime/60 +" h. "+ regis.usedTime%60 + " m."));
                     }
                 }
         );
