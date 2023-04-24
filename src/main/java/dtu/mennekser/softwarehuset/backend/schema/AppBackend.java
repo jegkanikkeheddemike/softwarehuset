@@ -331,9 +331,9 @@ public class AppBackend extends DataLayer {
         ArrayList<EmployeeStat> employeeStats = new ArrayList<>();
         employeeActivities.forEach((key,value) -> {
             //get vacations of Employee
-            value.addAll(getVacations(key));
+            value.addAll(getVacations(key).stream().map(vacation -> new ActivityStat(-1,"Vacation",vacation)).toList());
             //get Sick Leaves of Employee
-            value.addAll(getSickLeaves(key));
+            value.addAll(getSickLeaves(key).stream().map(vacation -> new ActivityStat(-2,"Sick leave",vacation)).toList());
             employeeStats.add(new EmployeeStat(
                     employees.get(key),value
             ));

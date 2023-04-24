@@ -53,7 +53,7 @@ public class ManageProjectMenu extends BorderPane {
             for (AppBackend.EmployeeStat stat : projectStat.employeeStats()) {
                 gridPane.add(new Label(stat.employee().name), 0, minEmployeeHeight);
 
-                for (Activity activity : stat.assignedActivities()) {
+                for (AppBackend.ActivityStat activity : stat.assignedActivities()) {
                     //Tjek om plades er omtaget
                     currentMaxHeight = Math.max(currentMaxHeight, insertAtOptimal(gridPane, activity, minEmployeeHeight, projectID));
                 }
@@ -62,7 +62,7 @@ public class ManageProjectMenu extends BorderPane {
             if (!projectStat.unassignedActivities().isEmpty()) {
                 gridPane.add(new Label("Unassigned:"), 0, minEmployeeHeight);
                 for (Activity activity : projectStat.unassignedActivities()) {
-                    insertAtOptimal(gridPane, activity, minEmployeeHeight, projectID);
+                    insertAtOptimal(gridPane, new AppBackend.ActivityStat(projectID,"This value is ignored",activity) , minEmployeeHeight, projectID);
                 }
             }
         });
@@ -71,10 +71,10 @@ public class ManageProjectMenu extends BorderPane {
 
     }
 
-    private int insertAtOptimal(GridPane gridPane, Activity activity, int minEmployeeHeight, int projectID) {
+    private int insertAtOptimal(GridPane gridPane, AppBackend.ActivityStat activity, int minEmployeeHeight, int projectID) {
         //Tjek om der er plads ved employeeHeight
-        int minWeekCol = activity.getStartWeek();
-        int maxWeekCol = activity.getEndWeek();
+        int minWeekCol = activity.activity().getStartWeek();
+        int maxWeekCol = activity.activity().getEndWeek();
 
         int colSpan = maxWeekCol - minWeekCol + 1;
 
@@ -87,9 +87,16 @@ public class ManageProjectMenu extends BorderPane {
             minEmployeeHeight += 1;
         }
 
-        Button activityButton = new Button(activity.name);
+        String buttonName;
+        if (projectID == activity.projectID() || (activity.projectID() < 0)) {
+            buttonName = activity.activity().name;
+        } else {
+            buttonName = activity.projectName() + " / " + activity.activity().name;
+        }
 
-        Background buttonBackground = new Background(new BackgroundFill(calcColor(activity.name), CornerRadii.EMPTY, new Insets(0)));
+        Button activityButton = new Button(buttonName);
+
+        Background buttonBackground = new Background(new BackgroundFill(calcColor(activity.activity().name), CornerRadii.EMPTY, new Insets(0)));
 
         activityButton.setBackground(buttonBackground);
         activityButton.setMaxWidth(Double.MAX_VALUE);
@@ -102,8 +109,13 @@ public class ManageProjectMenu extends BorderPane {
                 activityButton.setBackground(buttonBackground);
             }
         });
-        activityButton.setOnAction(actionEvent -> setBottomMenu(new ActivityEditor(projectID, activity.id)));
-
+        if (activity.projectID() == projectID) {
+            activityButton.setOnAction(actionEvent -> setBottomMenu(new ActivityEditor(projectID, activity.activity().id)));
+        } else if (activity.projectID() >= 0) {
+            activityButton.setOnAction(actionEvent -> setBottomMenu(new Label("Cannot edit activity from other project")));
+        } else {
+            activityButton.setOnAction(actionEvent -> setBottomMenu(new Label("Cannot edit vacation / sick leave")));
+        }
         return minEmployeeHeight;
     }
 

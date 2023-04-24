@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.Socket;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
 
@@ -53,7 +54,7 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
 
 
         T newData = query.apply(tables);
-        int newHash = customHash(newData);
+        int newHash = customHash(newData, new HashSet<>());
 
         if (prevDataExists) {
             if (newHash==prevHash) {
@@ -93,8 +94,13 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
     //Dette kan løses ved at gøre funktionen rekursiv men hvad nu hvis et felt i et objekt i en liste i et objekt
     // ændrer sig. Så aner jeg ikke hvordan man skal kunne fange det.
 
-    public static int customHash(Object object) {
+    public static int customHash(Object object, HashSet<Object> hashed) {
+        if (hashed.contains(object)) {
+            return 0;
+        }
+
         int sum = Objects.hash(object);
+        hashed.add(object);
 
         if (object == null) {
             return sum;
@@ -104,13 +110,14 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
             try {
                 field.setAccessible(true);
                 Object fieldValue = field.get(object);
-                int hash = Objects.hash(fieldValue);
-                sum += hash;
 
                 //Make it recursive
+                sum += customHash(fieldValue, hashed);
+
+                //Make it loop over collections
                 if (fieldValue instanceof Collection<?> fieldCollection) {
                     for (Object subObj : fieldCollection) {
-                        sum += customHash(subObj);
+                        sum += customHash(subObj, hashed);
                     }
                 }
             } catch (Exception e) {
