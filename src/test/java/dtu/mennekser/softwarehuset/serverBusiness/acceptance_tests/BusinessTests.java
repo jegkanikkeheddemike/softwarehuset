@@ -77,7 +77,7 @@ public class BusinessTests {
     @When("a user creates an activity {string} with {int} hours")
     public void a_user_creates_an_activity(String string, int hours) {
         try {
-            activityID = appBackend.createActivity(projectID,string,hours,session);
+            activityID = appBackend.getProject(projectID,session).createActivity(string,hours);
         } catch (Exception e){
             error = e.getMessage();
         }

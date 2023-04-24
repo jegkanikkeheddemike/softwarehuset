@@ -4,7 +4,7 @@ Feature: Create Activity
 
   Scenario: a user creates an activity
     Given user is logged in
-    And user creates a project
+    And a project "Projektplanlægningsprogram" exists
     When  a user creates an activity "Design GUI" with 100 hours
     Then an activity "Design GUI" is created
     And the activity "Design GUI" is added to the list of activities
