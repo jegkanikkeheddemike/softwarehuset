@@ -1,12 +1,14 @@
 package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.app.LoginManager;
+import dtu.mennekser.softwarehuset.app.TimeManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,10 +17,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 
 public class HomePage extends Scene {
@@ -38,6 +38,10 @@ public class HomePage extends Scene {
     public static void setProject(int projectID) {
         instance.root.setCenter(new ProjectMenu(projectID));
     }
+    public static void setProjectStats(int projectID) {
+        instance.root.setCenter(new ProjectStatMenu(projectID));
+    }
+
     public static void setActivity(String projectName,int projectID, Activity activity) {
         instance.root.setCenter(new ActivityMenu(projectName,projectID, activity.id));
     }
@@ -52,16 +56,33 @@ class InnerHomePage extends BorderPane {
     DataListener<ArrayList<AppBackend.ActiveActivity>> activeActivities;
     InnerHomePage() {
         Session session = LoginManager.getCurrentSession();
+        //----------------- Personal Menu ----------------
         VBox rightMenu = new VBox();
         setMargin(rightMenu,new Insets(30));
+
+        Label welcome = new Label("Welcome " + session.employee.name);
+        welcome.setFont(Style.setTitleFont());
+        welcome.setStyle("-fx-text-fill: rgb(54,174,123);");
+        rightMenu.getChildren().add(welcome);
+
         Label activeActivitesLabel = new Label("Active Activites");
         activeActivitesLabel.setFont(Style.setTitleFont());
+        activeActivitesLabel.setBorder(Style.setBorder(1,0,"top"));
         rightMenu.getChildren().add(activeActivitesLabel);
         setRight(rightMenu);
 
         VBox activeActivitiesBox = new VBox();
-
         ScrollPane activitiesScroll = new ScrollPane(activeActivitiesBox);
+
+
+        activitiesScroll.setStyle(
+                "-fx-control-inner-background: rgb(255, 255, 255);" +
+                        "-fx-faint-focus-color: transparent;" +
+                       "-fx-focus-color: transparent;" +
+                        "-fx-highlight-fill: rgb(101,204,153);"+
+                        "-fx-background-insets: 10;"
+        );
+
 
         rightMenu.getChildren().add(activitiesScroll);
         activeActivities = new DataListener<>(appBackend -> appBackend.getActiveActivities(session),
@@ -74,14 +95,20 @@ class InnerHomePage extends BorderPane {
                 activities.sort(Comparator.comparing(activeActivity -> activeActivity.activity().getStartWeek()));
                 activities.sort(Comparator.comparing(activeActivity -> activeActivity.activity().getEndWeek()));
 
-                int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+                int week = TimeManager.getWeek();
 
                 for (AppBackend.ActiveActivity activity : activities) {
 
                     Button activityButton = new Button(activity.project().name + " / " + activity.activity().name);
+                    activityButton.setFont(Style.setTextFont());
+                    Style.setActivityButtonStyle(activityButton);
+                    activityButton.setPrefSize(200,30);
                     HBox buttonBox = new HBox();
                     buttonBox.setSpacing(10);
-                    setMargin(buttonBox, new Insets(5));
+
+                    activeActivitiesBox.setMargin(buttonBox, new Insets(5));
+                    buttonBox.setAlignment(Pos.CENTER_LEFT);
+
                     buttonBox.getChildren().add(activityButton);
                     activityButton.setOnAction(actionEvent -> HomePage.setActivity(activity.project().name,activity.project().id,activity.activity()));
 
@@ -99,6 +126,13 @@ class InnerHomePage extends BorderPane {
             }
         );
 
+        Label today = new Label("Today's Time Registrations: ");
+        today.setFont(Style.setTitleFont());
+        today.setBorder(Style.setBorder(1,0,"top"));
+        rightMenu.getChildren().add(today);
+
+
+        //---------------- General Menu --------------
         VBox leftMenu = new VBox();
         setMargin(leftMenu,new Insets(30));
         leftMenu.setSpacing(40);
@@ -108,12 +142,18 @@ class InnerHomePage extends BorderPane {
         Style.setButtonBig(registerTidButton);
         leftMenu.getChildren().add(registerTidButton);
 
-        Button meldSygButton = new Button("Meld syg");
-        Style.setButtonBig(meldSygButton);
-        leftMenu.getChildren().add(meldSygButton);
+        Button sickLeaveButton = new Button("Sick Leave");
+        Style.setButtonBig(sickLeaveButton);
+        sickLeaveButton.setOnAction(actionEvent -> {
+            NewSickLeaveWindow.tryCreate();
+        });
+        leftMenu.getChildren().add(sickLeaveButton);
 
-        Button ferieButton = new Button("Ferie");
-        Style.setButtonBig(ferieButton);
-        leftMenu.getChildren().add(ferieButton);
+        Button vacationButton = new Button("Vacation");
+        Style.setButtonBig(vacationButton);
+        vacationButton.setOnAction(actionEvent -> {
+            NewVacationWindow.tryCreate();
+        });
+        leftMenu.getChildren().add(vacationButton);
     }
 }

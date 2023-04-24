@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.Socket;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Random;
 
@@ -92,22 +93,33 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
     //Dette kan løses ved at gøre funktionen rekursiv men hvad nu hvis et felt i et objekt i en liste i et objekt
     // ændrer sig. Så aner jeg ikke hvordan man skal kunne fange det.
 
-    static int customHash(Object object) {
+    public static int customHash(Object object) {
         int sum = Objects.hash(object);
 
         if (object == null) {
             return sum;
         }
 
-        for (Field field : object.getClass().getFields()) {
+        for (Field field : object.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
-                sum += Objects.hash(field.get(object));
-            } catch ( Exception e) {
-                throw new RuntimeException("Illegal hash lol. Failed at: " + object.getClass().getName() + "." + field.getName());
+                Object fieldValue = field.get(object);
+                int hash = Objects.hash(fieldValue);
+                sum += hash;
+
+                //Make it recursive
+                if (fieldValue instanceof Collection<?> fieldCollection) {
+                    for (Object subObj : fieldCollection) {
+                        sum += customHash(subObj);
+                    }
+                }
+            } catch (Exception e) {
+                // there are fields with illegal access on every object. So just ignore them.
+                // for example SerializationID is a field on every serializable object but the access is illegal
+
+                //throw new RuntimeException("Illegal hash lol. Failed at: " + object.getClass().getName() + "." + field.getName());
             }
         }
-
         return sum;
     }
 }
