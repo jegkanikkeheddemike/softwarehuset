@@ -86,21 +86,7 @@ public class ProjectMenu extends BorderPane {
                     Style.setActivityButtonStyle(button);
                     button.setOnAction(actionEvent -> HomePage.setActivity(projectName,projectID,activity));
                     activitiesPane.getChildren().add(buttonStack);
-
-
-                    HBox bottomPane = new HBox();
-
-                    setBottom(bottomPane);
-                    Button setStart = new Button("Set start week");
-                    bottomPane.getChildren().add(setStart);
-                    Style.setBarButtonStyle(setStart,100);
-                    TextField startField = new TextField();
-                    bottomPane.getChildren().add(startField);
-
-                    setStart.setOnAction(ActionEvent -> {
-                        String startWeek = startField.getText().trim();
-                        DataTask.SubmitTask(appBackend -> appBackend.setStartTime(projectID,session,Integer.parseInt(startWeek)));
-                    });
+                    
                 }
             }
         );
