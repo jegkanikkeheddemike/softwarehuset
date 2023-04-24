@@ -4,9 +4,9 @@ public class SickLeave extends Activity{
         int startWeek;
         int endWeek;
 
-    public SickLeave(int startWeek, int id) {
-        super("Sick Leave", 0, startWeek, startWeek+1, id);
+    public SickLeave(int startWeek,int endWeek, int id) {
+        super("Sick Leave", 0, startWeek, endWeek, id);
         this.startWeek = startWeek;
-        this.endWeek = startWeek +1;
+        this.endWeek = endWeek;
     }
 }

@@ -86,10 +86,13 @@ public class AppBackend extends DataLayer {
         employees.get(session.employee.id).vacations.add(new Vacation(Integer.parseInt(startWeek),Integer.parseInt(endWeek),session.employee.vacations.size()));
     }
 
-    public void createSickLeave(String employeeName, String week, Session session) {
+    public void createSickLeave(String employeeName, String startWeek, String endWeek, Session session) {
         assertLoggedIn(session);
+        if(endWeek.isEmpty()){
+            endWeek = startWeek;
+        }
         int employeeID = findEmployee(employeeName).id;
-        employees.get(employeeID).sickLeave.add(new SickLeave(Integer.parseInt(week),employees.get(employeeID).sickLeave.size()));
+        employees.get(employeeID).sickLeave.add(new SickLeave(Integer.parseInt(startWeek),Integer.parseInt(endWeek),employees.get(employeeID).sickLeave.size()));
     }
 
     private void assertLoggedIn(Session session) {

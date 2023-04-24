@@ -12,7 +12,7 @@ public class RegisterSickness {
 
     @When("the user registers that they are sick in week {string}")
     public void theUserRegistersThatTheyAreSickInWeek(String week) {
-        BusinessTests.appBackend.createSickLeave("Hanne", week ,BusinessTests.session);
+        BusinessTests.appBackend.createSickLeave("Hanne", week ,"",BusinessTests.session);
     }
     @Then("the user is registered as sick in week {string}")
     public void theUserIsRegisteredAsSickInWeek(String week) {
@@ -22,7 +22,7 @@ public class RegisterSickness {
     @Given("{string} is sick in week {string}")
     public void isSickInWeek(String employeeName, String week) {
         BusinessTests.session =  BusinessTests.appBackend.attemptLogin("Hanne");
-        BusinessTests.appBackend.createSickLeave(employeeName, week ,BusinessTests.session);
+        BusinessTests.appBackend.createSickLeave(employeeName, week,"" ,BusinessTests.session);
     }
 
 
