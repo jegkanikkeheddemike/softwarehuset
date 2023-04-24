@@ -97,7 +97,7 @@ public class ProjectMenu extends BorderPane {
                     TextField startField = new TextField();
                     bottomPane.getChildren().add(startField);
 
-                    startField.setOnAction(ActionEvent -> {
+                    setStart.setOnAction(ActionEvent -> {
                         String startWeek = startField.getText().trim();
                         DataTask.SubmitTask(appBackend -> appBackend.setStartTime(projectID,session,Integer.parseInt(startWeek)));
                     });
