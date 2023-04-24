@@ -86,7 +86,7 @@ public class ProjectMenu extends BorderPane {
                     Style.setActivityButtonStyle(button);
                     button.setOnAction(actionEvent -> HomePage.setActivity(projectName,projectID,activity));
                     activitiesPane.getChildren().add(buttonStack);
-                    
+
                 }
             }
         );
