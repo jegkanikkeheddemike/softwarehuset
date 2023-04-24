@@ -21,11 +21,11 @@ import javafx.scene.paint.Color;
 import java.util.Objects;
 import java.util.Random;
 
-public class ProjectStatMenu extends BorderPane {
+public class ManageProjectMenu extends BorderPane {
 
     DataListener<AppBackend.ProjectStat> projectStatListener;
 
-    public ProjectStatMenu(int projectID) {
+    public ManageProjectMenu(int projectID) {
         GridPane gridPane = new GridPane();
         ScrollPane gridScroll = new ScrollPane(gridPane);
         setMargin(gridScroll, new Insets(20));

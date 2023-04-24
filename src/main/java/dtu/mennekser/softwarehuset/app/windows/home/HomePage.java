@@ -17,10 +17,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 
 public class HomePage extends Scene {
@@ -41,7 +39,7 @@ public class HomePage extends Scene {
         instance.root.setCenter(new ProjectMenu(projectID));
     }
     public static void setProjectStats(int projectID) {
-        instance.root.setCenter(new ProjectStatMenu(projectID));
+        instance.root.setCenter(new ManageProjectMenu(projectID));
     }
 
     public static void setActivity(String projectName,int projectID, Activity activity) {

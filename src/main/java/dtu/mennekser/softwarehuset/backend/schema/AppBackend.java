@@ -289,7 +289,8 @@ public class AppBackend extends DataLayer {
         return activities;
     }
 
-    public record EmployeeStat(Employee employee, ArrayList<Activity> assignedActivities) implements Serializable {}
+    public record ActivityStat(int projectID, String projectName, Activity activity) implements Serializable {}
+    public record EmployeeStat(Employee employee, ArrayList<ActivityStat> assignedActivities) implements Serializable {}
     public record ProjectStat(ArrayList<EmployeeStat> employeeStats, ArrayList<Activity> unassignedActivities) implements Serializable{}
     public ProjectStat getProjectStats(int projectID, Session session) {
         assertLoggedIn(session);
@@ -299,7 +300,7 @@ public class AppBackend extends DataLayer {
         if (project.projectLeaderId != session.employee.id) {
             throw new RuntimeException("Employee is not project leader");
         }
-        HashMap<Integer, ArrayList<Activity>> employeeActivities = new HashMap<>();
+        HashMap<Integer, ArrayList<ActivityStat>> employeeActivities = new HashMap<>();
 
         for (Project cProject : projects) {
             for (Activity activity : cProject.activities) {
@@ -308,8 +309,8 @@ public class AppBackend extends DataLayer {
                         continue;
                     }
 
-                    ArrayList<Activity> assignedActivities = employeeActivities.computeIfAbsent(employeeID, k -> new ArrayList<>());
-                    assignedActivities.add(activity);
+                    ArrayList<ActivityStat> assignedActivities = employeeActivities.computeIfAbsent(employeeID, k -> new ArrayList<>());
+                    assignedActivities.add(new ActivityStat(cProject.id,cProject.name,activity));
                 }
             }
         }
