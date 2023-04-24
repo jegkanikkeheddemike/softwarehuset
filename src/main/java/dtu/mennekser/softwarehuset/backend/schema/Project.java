@@ -36,11 +36,13 @@ public class Project implements Serializable {
     }
 
     public int createActivity(String name, int budgetedTime, int startWeek, int endWeek) {
+        assert (startWeek >= 1 && startWeek <= 52 && endWeek >=1 && endWeek <= 52);
         activities.add(new Activity(name, budgetedTime,startWeek,endWeek,activities.size()));
         return activities.size()-1;
     }
 
     public void updateActivityWeekBounds(int activityId, int newStartWeek, int newEndWeek) {
+        assert (newStartWeek >= 1 && newStartWeek <= 52 && newEndWeek >=1 && newEndWeek <= 52);
         Activity activity = findActivity(activityId);
         if(activity == null) {
             return;

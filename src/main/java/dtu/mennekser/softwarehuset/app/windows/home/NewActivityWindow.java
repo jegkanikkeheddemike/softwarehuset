@@ -81,6 +81,9 @@ public class NewActivityWindow {
 
             int startWeek = startWeekField.getText().trim().equals("") ? 1 : Integer.parseInt(startWeekField.getText().trim());
             int endWeek = endWeekField.getText().trim().equals("") ? 52 : Integer.parseInt(endWeekField.getText().trim());
+            if(startWeek < 1 || startWeek > 52 || endWeek < 0 || endWeek > 52) {
+                throw new RuntimeException("Invalid week bounds. Can't be less than 1 or greater than 52.");
+            }
             DataTask.SubmitTask(appBackend -> appBackend.createActivity(projectId,name,time,startWeek,endWeek, session));
 
 
