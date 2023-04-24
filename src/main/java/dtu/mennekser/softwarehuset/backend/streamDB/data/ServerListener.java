@@ -1,5 +1,6 @@
 package dtu.mennekser.softwarehuset.backend.streamDB.data;
 
+import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.ConnInterface;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.Ping;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.Socket;
+import java.time.format.TextStyle;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -105,15 +107,23 @@ public class ServerListener<Schema extends DataLayer,T extends Serializable> {
         if (object == null) {
             return sum;
         }
+        String className =object.getClass().getName();
+        Random random = new Random(Objects.hash(className));
+        if (className.startsWith("java.lang.")) {
+            return sum * random.nextInt();
+        }
+
 
         for (Field field : object.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
                 Object fieldValue = field.get(object);
 
-                //Make it recursive
-                sum += customHash(fieldValue, hashed);
 
+                //Make it recursive
+                int hashvalue = customHash(fieldValue, hashed);
+                sum += hashvalue * random.nextInt();
+                //System.out.println(object.getClass().getName() +"." + field.getName() + ": " + fieldValue +" -> " + hashvalue);
                 //Make it loop over collections
                 if (fieldValue instanceof Collection<?> fieldCollection) {
                     for (Object subObj : fieldCollection) {
