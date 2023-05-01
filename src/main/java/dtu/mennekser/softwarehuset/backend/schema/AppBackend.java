@@ -39,12 +39,13 @@ public class AppBackend extends DataLayer {
     }
 
     public Employee findEmployee(String name) {
-        for (Employee employee : employees) {
-            if (employee.name.equals(name)) {
-                return employee;
+        assert name != null;
+        for (Employee employee : employees) {               //1
+            if (employee.name.equals(name)) {               //2
+                return employee;                            //3
             }
         }
-        throw new RuntimeException("Employee not found");
+        throw new RuntimeException("Employee not found");   //4
     }
 
     public Project findProject(String name) {
