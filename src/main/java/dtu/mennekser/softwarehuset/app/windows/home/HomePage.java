@@ -163,8 +163,11 @@ class InnerHomePage extends BorderPane {
         leftMenu.setSpacing(40);
         setCenter(leftMenu);
 
-        Button registerTidButton = new Button("Registrer tid");
+        Button registerTidButton = new Button("Register time");
         Style.setButtonBig(registerTidButton);
+        registerTidButton.setOnAction(actionEvent -> {
+            NewTimeRegistrationWindow.tryCreate();
+        });
         leftMenu.getChildren().add(registerTidButton);
 
         Button sickLeaveButton = new Button("Sick Leave");
