@@ -1,7 +1,7 @@
 package dtu.mennekser.softwarehuset.app.windows.debug;
 
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
-import dtu.mennekser.softwarehuset.backend.schema.Log;
+import dtu.mennekser.softwarehuset.backend.streamDB.Log;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

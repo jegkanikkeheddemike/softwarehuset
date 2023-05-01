@@ -3,7 +3,6 @@ package dtu.mennekser.softwarehuset.backend.streamDB;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.Query;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.Task;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.ServerListener;
-import dtu.mennekser.softwarehuset.backend.schema.Log;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.ConnInterface;
 import dtu.mennekser.softwarehuset.backend.streamDB.networking.ConnType;
 
@@ -13,7 +12,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 
 /**

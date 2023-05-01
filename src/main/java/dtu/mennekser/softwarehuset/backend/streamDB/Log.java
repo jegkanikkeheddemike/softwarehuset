@@ -1,4 +1,4 @@
-package dtu.mennekser.softwarehuset.backend.schema;
+package dtu.mennekser.softwarehuset.backend.streamDB;
 
 import java.io.Serializable;
 import java.util.Date;

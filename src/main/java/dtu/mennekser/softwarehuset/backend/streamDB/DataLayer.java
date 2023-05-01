@@ -1,7 +1,5 @@
 package dtu.mennekser.softwarehuset.backend.streamDB;
 
-import dtu.mennekser.softwarehuset.backend.schema.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
