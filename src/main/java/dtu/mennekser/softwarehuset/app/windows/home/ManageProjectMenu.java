@@ -5,10 +5,7 @@ import dtu.mennekser.softwarehuset.app.TimeManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
-import dtu.mennekser.softwarehuset.backend.schema.Activity;
-import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
-import dtu.mennekser.softwarehuset.backend.schema.Employee;
-import dtu.mennekser.softwarehuset.backend.schema.Session;
+import dtu.mennekser.softwarehuset.backend.schema.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -16,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -76,6 +74,10 @@ public class ManageProjectMenu extends BorderPane {
             }
         });
 
+
+        gridScroll.setOnMouseClicked(mouseEvent -> {
+            setBottomMenu(new ProjectTimeStats(projectID));
+        });
         setBottomMenu(new Label("Click on an activity to edit"));
 
     }
@@ -178,6 +180,31 @@ public class ManageProjectMenu extends BorderPane {
         setMargin(pane, new Insets(0, 20, 20, 20));
         pane.setCenter(node);
         setBottom(pane);
+    }
+}
+
+class ProjectTimeStats extends BorderPane {
+    // Time used and time remaining for all activities in the current project should be displayed
+
+    DataListener<Project> projectListener;
+    ProjectTimeStats(int projectID){
+        Session session = LoginManager.getCurrentSession();
+
+        projectListener = new DataListener<>(appBackend -> appBackend.getProject(projectID, session), project -> {
+            System.out.println("Hejsa :D");
+            Label titleLabel = new Label(project.name +"/ all Activities");
+            titleLabel.setFont(Style.setTitleFont());
+            setTop(titleLabel);
+
+            VBox timeStats = new VBox();
+            Label workedHours = new Label("Time used:" + project.getUsedTime()/60 +" h. "+ project.getUsedTime()%60 + " m.");
+            Label remainingHours = new Label("Time used:" + project.remainingTime()/60 +" h. "+ project.remainingTime()%60 + " m.");
+
+            timeStats.getChildren().addAll(workedHours,remainingHours);
+            setCenter(timeStats);
+
+        });
+
     }
 }
 
