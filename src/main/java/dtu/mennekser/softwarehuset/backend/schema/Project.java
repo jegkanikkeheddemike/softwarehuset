@@ -31,6 +31,15 @@ public class Project implements Serializable {
 
         return timeSum;
     }
+    public int remainingTime() {
+        int timeSum = 0;
+        for (Activity activity : activities) {
+            timeSum += (activity.getBudgetTime()-activity.getUsedTime());
+        }
+
+        return timeSum;
+
+    }
     public int createActivity(String name, int budgetedTime) {
         return createActivity(name,budgetedTime,1,52);
     }
@@ -92,4 +101,5 @@ public class Project implements Serializable {
             throw new RuntimeException("Employee not project leader");
         }
     }
+
 }

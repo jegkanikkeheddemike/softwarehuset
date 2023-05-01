@@ -7,6 +7,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
+import io.cucumber.java.sl.In;
 
 import static org.junit.Assert.*;
 
@@ -18,6 +19,7 @@ public class BusinessTests {
     static int projectID;
     static int activityID;
     static int employeeID;
+    static AppBackend.ProjectStat projectStat;
 
     public BusinessTests() {
         appBackend = new AppBackend();
@@ -246,5 +248,47 @@ public class BusinessTests {
     @When("a user sets the start time to week {int} and the end time to week {int}")
     public void aUserSetsTheStartTimeToWeekAndTheEndTimeToWeek(int startWeek, int endWeek) {
         appBackend.updateActivityWeekBounds(projectID,activityID,startWeek,endWeek,session);
+    }
+
+    //----------------------------------------------------------//
+    //               Find time usage on project                 //
+    //----------------------------------------------------------//
+    @Given("a project {string} exists with start week {int}")
+    public void aProjectExistsWithStartWeek(String string, Integer int1) {
+        projectID = appBackend.createProject(string,"Tonny",session,int1.toString());
+    }
+    @Given("an activity {string} with {int} hours budgeted time exists")
+    public void anActivityWithHoursBudgetedTimeExists(String string, Integer int1) {
+        activityID = appBackend.createActivity(projectID,string,int1,session);
+    }
+
+    @Given("there is {int} hours and {int} minutes registered to the activity")
+    public void thereIsHoursRegisteredToTheActivity(Integer int1, Integer int2) {
+        appBackend.getActivity(projectID,activityID,session).registerTime(employeeID,int1,int2);
+    }
+    @Given("there is a project leader of {string}")
+    public void thereIsAProjectLeaderOf(String string) {
+        appBackend.getProject(projectID,session).setProjectLeader(employeeID);
+    }
+    @Given("project leader of {string} is logged in")
+    public void projectLeaderOfIsLoggedIn(String string) {
+        session = appBackend.attemptLogin("hann");
+    }
+    @When("the user checks the time usage of the project")
+    public void theUserChecksTheTimeUsageOfTheProject() {
+        try {
+            projectStat = appBackend.getProjectStats(projectID,session);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+    }
+    @Then("the program outputs {int} hours {int} minutes as worked and {int} hours {int} minutes as remaining")
+    public void theProgramOutputsAnd(Integer hWorked, Integer mWorked, Integer hRemaining , Integer mRemaining) {
+        System.out.println(appBackend.getActivity(projectID,activityID,session).name);
+        System.out.println(appBackend.getActivity(projectID,activityID,session).getBudgetTime());
+        System.out.println(hRemaining*60 + mRemaining);
+        System.out.println(projectStat.timeRemaining());
+
+        assertTrue(hWorked*60 + mWorked == projectStat.timeWorked() && hRemaining*60 + mRemaining == projectStat.timeRemaining());
     }
 }
