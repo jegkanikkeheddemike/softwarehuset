@@ -23,15 +23,15 @@ public class AppBackend extends DataLayer {
     public int createEmployee(String realName) {
         String[] temp = realName.split(" ");
         String name = "";
-        if (temp.length >= 2) {
-            for (int j = 0; j < 2; j++) {
-                for (int i = 0; i < 2; i++) {
-                    name += temp[j].charAt(i);
+        if (temp.length >= 2) {                                     //1
+            for (int j = 0; j < 2; j++) {                           //2
+                for (int i = 0; i < 2; i++) {                       //3
+                    name += temp[j].charAt(i % temp[j].length());
                 }
             }
         } else {
-            for (int i = 0; i < 4; i++) {
-                name += temp[0].charAt(i);
+            for (int i = 0; i < 4; i++) {                           //4
+                name += temp[0].charAt(i % temp[0].length());
             }
         }
         employees.add(new Employee(name.toLowerCase(), realName, employees.size()));
