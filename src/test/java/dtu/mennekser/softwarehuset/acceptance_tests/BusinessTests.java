@@ -270,6 +270,13 @@ public class BusinessTests {
     public void thereIsAProjectLeaderOf(String string) {
         appBackend.getProject(projectID,session).setProjectLeader(employeeID);
     }
+
+    @Given("project leader of {string} is not logged in")
+    public void projectLeaderOfIsNotLoggedIn(String string) {
+        appBackend.createEmployee("Karsten");
+        appBackend.getProject(projectID,session).assignEmployee(appBackend.findEmployee("kars").id);
+        session = appBackend.attemptLogin("kars");
+    }
     @Given("project leader of {string} is logged in")
     public void projectLeaderOfIsLoggedIn(String string) {
         session = appBackend.attemptLogin("hann");
@@ -284,11 +291,6 @@ public class BusinessTests {
     }
     @Then("the program outputs {int} hours {int} minutes as worked and {int} hours {int} minutes as remaining")
     public void theProgramOutputsAnd(Integer hWorked, Integer mWorked, Integer hRemaining , Integer mRemaining) {
-        System.out.println(appBackend.getActivity(projectID,activityID,session).name);
-        System.out.println(appBackend.getActivity(projectID,activityID,session).getBudgetTime());
-        System.out.println(hRemaining*60 + mRemaining);
-        System.out.println(projectStat.timeRemaining());
-
         assertTrue(hWorked*60 + mWorked == projectStat.timeWorked() && hRemaining*60 + mRemaining == projectStat.timeRemaining());
     }
 }

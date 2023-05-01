@@ -15,7 +15,8 @@ Feature: Find time usage on project
 
   Scenario: A non-project leader checks time usage on a project
     Given user is logged in
-    And a project "Byg et hus" exists with a budgeted time of 10 hours
-    And the user is not the project leader of "Byg et hus"
+    Given a project "Byg et hus" exists with start week 10
+    Given there is a project leader of "Byg et hus"
+    Given project leader of "Byg et hus" is not logged in
     When the user checks the time usage of the project
-    Then the error message "Can't check time usage when not the project leader" is given
+    Then error message "Employee is not project leader" is given

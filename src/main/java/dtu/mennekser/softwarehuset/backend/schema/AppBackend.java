@@ -225,6 +225,9 @@ public class AppBackend extends DataLayer {
         }
     }
 
+    /*
+    SKAL DENNE HER FJERNES??? DEN BLIVER IKKE BRUGT
+     */
     private void assertEmployeeInActivity(int projectID, int activityID, int employeeID) {
         assertEmployeeInProject(projectID, employeeID);
 
