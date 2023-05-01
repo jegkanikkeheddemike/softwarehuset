@@ -1,4 +1,4 @@
-package dtu.mennekser.softwarehuset.serverBusiness.acceptance_tests;
+package dtu.mennekser.softwarehuset.acceptance_tests;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

@@ -4,10 +4,7 @@ import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
 import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
-import dtu.mennekser.softwarehuset.backend.schema.Activity;
-import dtu.mennekser.softwarehuset.backend.schema.Employee;
-import dtu.mennekser.softwarehuset.backend.schema.Session;
-import dtu.mennekser.softwarehuset.backend.schema.TimeRegistration;
+import dtu.mennekser.softwarehuset.backend.schema.*;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.ServerListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,8 +26,9 @@ public class ActivityMenu extends BorderPane {
 
     DataListener<Activity> activityListener;
     DataListener<ArrayList<Employee>> assignedListener;
-    DataListener<ArrayList<Employee>> notAssignedListener;
-    DataListener<ArrayList<TimeRegistration>> timerListener;
+    DataListener<ArrayList<AppBackend.EmployeeNotAssignedToActivity>> notAssignedListener;
+
+    DataListener<ArrayList<AppBackend.RegistrationJoinEmployee>> timerListener;
 
     //Det her gør at hvis der kommer ændringer på projektet mens den er åben bliver det ikke reflekteret.
     //Men det er vel ok siden man ikke kan ændre på projektnavnet osv.
@@ -175,8 +173,8 @@ public class ActivityMenu extends BorderPane {
             appBackend -> appBackend.getEmployeesNotAssignedToActivity(projectID,activityID,session),
             notAssigned -> {
                 employeeDropdown.getItems().clear();
-                for (Employee employee : notAssigned) {
-                    employeeDropdown.getItems().add(employee.name);
+                for (AppBackend.EmployeeNotAssignedToActivity employee : notAssigned) {
+                    employeeDropdown.getItems().add(employee.employee().name);
                 }
             }
         );
@@ -237,8 +235,8 @@ public class ActivityMenu extends BorderPane {
                 appBackend -> appBackend.getTimeRegistrationsOfActivity(projectID,activityID,session),
                 timeRegistrations -> {
                     timerBox.getChildren().clear();
-                    for (TimeRegistration regis : timeRegistrations) {
-                        timerBox.getChildren().add(new Label(regis.employeeID + " : " +regis.usedTime/60 +" h. "+ regis.usedTime%60 + " m."));
+                    for (AppBackend.RegistrationJoinEmployee regis : timeRegistrations) {
+                        timerBox.getChildren().add(new Label(regis.employeeName() + " : " +regis.timeRegistration().usedTime/60 +" h. "+ regis.timeRegistration().usedTime%60 + " m."));
                     }
                 }
         );

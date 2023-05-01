@@ -39,7 +39,7 @@ public class HomePage extends Scene {
         instance.root.setCenter(new ProjectMenu(projectID));
     }
     public static void setProjectStats(int projectID) {
-        instance.root.setCenter(new ProjectStatMenu(projectID));
+        instance.root.setCenter(new ManageProjectMenu(projectID));
     }
 
     public static void setActivity(String projectName,int projectID, Activity activity) {
@@ -61,7 +61,7 @@ class InnerHomePage extends BorderPane {
         VBox rightMenu = new VBox();
         setMargin(rightMenu,new Insets(30));
 
-        Label welcome = new Label("Welcome " + session.employee.name);
+        Label welcome = new Label("Welcome " + session.employee.realName);
         welcome.setFont(Style.setTitleFont());
         welcome.setStyle("-fx-text-fill: rgb(54,174,123);");
         rightMenu.getChildren().add(welcome);

@@ -1,6 +1,5 @@
-package dtu.mennekser.softwarehuset.serverBusiness.acceptance_tests;
+package dtu.mennekser.softwarehuset.acceptance_tests;
 
-import dtu.mennekser.softwarehuset.app.LoginManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

@@ -1,9 +1,5 @@
-package dtu.mennekser.softwarehuset.serverBusiness.acceptance_tests;
+package dtu.mennekser.softwarehuset.acceptance_tests;
 
-import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
-import dtu.mennekser.softwarehuset.backend.schema.Session;
-import dtu.mennekser.softwarehuset.backend.schema.TimeRegistration;
-import io.cucumber.java.an.E;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -28,7 +24,7 @@ public class EmployeeRegistersWorkHours {
     public void the_work_hours_are_registered_to(String hours, String string) {
         String[] hoursMinutes = hours.split(":");
         int time = Integer.parseInt(hoursMinutes[0])*60 +  Integer.parseInt(hoursMinutes[1]);
-        assertTrue(BusinessTests.appBackend.getTimeRegistrationsOfActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).get(BusinessTests.appBackend.getTimeRegistrationsOfActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).size()-1).usedTime == time);
+        assertTrue(BusinessTests.appBackend.getTimeRegistrationsOfActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).get(BusinessTests.appBackend.getTimeRegistrationsOfActivity(BusinessTests.projectID,BusinessTests.activityID,BusinessTests.session).size()-1).timeRegistration().usedTime == time);
     }
 
 }
