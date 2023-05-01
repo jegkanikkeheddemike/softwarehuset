@@ -2,10 +2,10 @@ package dtu.mennekser.softwarehuset.app.windows.home;
 
 import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
-import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.schema.Employee;
+import dtu.mennekser.softwarehuset.backend.schema.Project;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,20 +21,21 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class NewSickLeaveWindow extends VBox {
+public class NewTimeRegistrationWindow extends VBox {
+
     public static boolean exists = false;
-    DataListener<ArrayList<Employee>> allEmployeeListener;
+    DataListener<ArrayList<Project>> allProjectsListener;
     public static void tryCreate() {
         if (exists) {
             return;
         }
         exists = true;
-        Stage makeSickLeaveWindow = new Stage();
-        NewSickLeaveWindow root = new NewSickLeaveWindow();
+        Stage makeTimeRegistrationWindow = new Stage();
+        NewTimeRegistrationWindow root = new NewTimeRegistrationWindow();
         root.setSpacing(5);
         root.setPadding(new Insets(10));
         Scene newActivityScene = new Scene(root,300,400);
-        makeSickLeaveWindow.setScene(newActivityScene);
+        makeTimeRegistrationWindow.setScene(newActivityScene);
 
         Label title = new Label("Sick Leave:");
         title.setFont(Style.setTitleFont());
@@ -61,59 +62,60 @@ public class NewSickLeaveWindow extends VBox {
 
         //------------------ ComboBox to choose an employee (optional) ---------------------
 
-        root.getChildren().add(new Label("Employee Name (optional)"));
-        ComboBox<String> employeeNameBox = new ComboBox<>();
+        root.getChildren().add(new Label("Activity:"));
+        ComboBox<String> activityName = new ComboBox<>();
 
         //set styling of the combo box
-        employeeNameBox.setBackground(Style.setBackground(0, 5.0));
-        employeeNameBox.setOnMouseEntered(actionEvent -> {
-            employeeNameBox.setBackground(Style.setBackground(3, 5.0));
+        activityName.setBackground(Style.setBackground(0, 5.0));
+        activityName.setOnMouseEntered(actionEvent -> {
+            activityName.setBackground(Style.setBackground(3, 5.0));
         });
-        employeeNameBox.setOnMouseExited(actionEvent -> {
-            employeeNameBox.setBackground(Style.setBackground(0, 5.0));
+        activityName.setOnMouseExited(actionEvent -> {
+            activityName.setBackground(Style.setBackground(0, 5.0));
         });
-        employeeNameBox.setPrefSize(300, 30);
+        activityName.setPrefSize(300, 30);
 
-        root.allEmployeeListener = new DataListener<>(
+
+        root.allProjectsListener = new DataListener<>(
                 AppBackend::getEmployees,
                 employees -> {
-                    employeeNameBox.getItems().clear();
-                    employeeNameBox.getItems().add("");
-                    employeeNameBox.getSelectionModel().select(0);
+                    activityName.getItems().clear();
+                    activityName.getItems().add("");
+                    activityName.getSelectionModel().select(0);
                     for (Employee employee : employees) {
-                        employeeNameBox.getItems().add(employee.name);
+                        activityName.getItems().add(employee.name);
                     }
                 }
         );
 
-        root.getChildren().add(employeeNameBox);
+        root.getChildren().add(activityName);
 
         //------------------- Create button -----------------------
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER);
 
-        Button create = new Button("Create");
-        Style.setActivityButtonStyle(create);
-        create.setPrefSize(120,30);
-        hBox.getChildren().add(create);
+        Button register = new Button("Register");
+        Style.setActivityButtonStyle(register);
+        register.setPrefSize(120,30);
+        hBox.getChildren().add(register);
         root.getChildren().add(hBox);
 
         Label errorField = new Label("");
         root.getChildren().add(errorField);
 
-        create.setOnAction(actionEvent -> {
+        register.setOnAction(actionEvent -> {
+            // check who is logged in
             Session session = LoginManager.getCurrentSession();
-            String startWeek = startWeekField.getText().trim();
-            String endWeek = endWeekField.getText().trim();
 
-            String employeeName = employeeNameBox.getValue().equals("") ? session.employee.name : employeeNameBox.getValue();
-            DataTask.SubmitTask(appBackend -> appBackend.createSickLeave(employeeName, startWeek, endWeek, session));
+            // get contents of dropdown menu
+
 
             exists = false;
-            makeSickLeaveWindow.close();
+            makeTimeRegistrationWindow.close();
         });
 
-        makeSickLeaveWindow.show();
-        makeSickLeaveWindow.setOnCloseRequest(windowEvent -> exists = false);
+        makeTimeRegistrationWindow.show();
+        makeTimeRegistrationWindow.setOnCloseRequest(windowEvent -> exists = false);
     }
+
 }
