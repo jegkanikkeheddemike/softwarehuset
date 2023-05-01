@@ -78,7 +78,7 @@ public class ManageProjectMenu extends BorderPane {
         gridScroll.setOnMouseClicked(mouseEvent -> {
             setBottomMenu(new ProjectTimeStats(projectID));
         });
-        setBottomMenu(new Label("Click on an activity to edit"));
+        setBottomMenu(new ProjectTimeStats(projectID));
 
     }
 
@@ -191,16 +191,16 @@ class ProjectTimeStats extends BorderPane {
         Session session = LoginManager.getCurrentSession();
 
         projectListener = new DataListener<>(appBackend -> appBackend.getProject(projectID, session), project -> {
-            System.out.println("Hejsa :D");
             Label titleLabel = new Label(project.name +"/ all Activities");
             titleLabel.setFont(Style.setTitleFont());
             setTop(titleLabel);
 
             VBox timeStats = new VBox();
-            Label workedHours = new Label("Time used:" + project.getUsedTime()/60 +" h. "+ project.getUsedTime()%60 + " m.");
-            Label remainingHours = new Label("Time used:" + project.remainingTime()/60 +" h. "+ project.remainingTime()%60 + " m.");
+            Label budgetTime = new Label("Budgeted time: "+ project.getBudgetTime()/60+" h. "+ project.getBudgetTime()/60 + " m.");
+            Label workedHours = new Label("Time used: " + project.getUsedTime()/60 +" h. "+ project.getUsedTime()%60 + " m.");
+            Label remainingHours = new Label("Remaining time: " + project.remainingTime()/60 +" h. "+ project.remainingTime()%60 + " m.");
 
-            timeStats.getChildren().addAll(workedHours,remainingHours);
+            timeStats.getChildren().addAll(budgetTime,workedHours,remainingHours);
             setCenter(timeStats);
 
         });
