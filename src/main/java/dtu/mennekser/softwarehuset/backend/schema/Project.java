@@ -22,6 +22,14 @@ public class Project implements Serializable {
         this.startWeek = startWeek;
     }
 
+    public  int getBudgetTime(){
+        int timeSum = 0;
+        for (Activity activity : activities) {
+            timeSum += activity.getBudgetTime();
+        }
+
+        return timeSum;
+    }
 
     public int getUsedTime() {
         int timeSum = 0;
