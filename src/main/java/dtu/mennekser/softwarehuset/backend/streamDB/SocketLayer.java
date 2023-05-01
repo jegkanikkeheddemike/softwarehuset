@@ -13,6 +13,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.BufferOverflowException;
+import java.nio.BufferUnderflowException;
 
 /**
  * @author Thor
@@ -87,6 +89,9 @@ public class SocketLayer<Schema extends DataLayer> {
                     ServerListener<Schema,?> subscriber = new ServerListener<>(query,client);
                     executionLayer.submitSubscriber(subscriber);
                 }
+            } catch (BufferUnderflowException e) {
+                //Received connection not following protocol.
+                //This error can safely get ignored
             } catch (Exception e) {
 
                 StringWriter writer = new StringWriter();

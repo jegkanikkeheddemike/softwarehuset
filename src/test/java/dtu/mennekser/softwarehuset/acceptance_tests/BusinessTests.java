@@ -1,4 +1,4 @@
-package dtu.mennekser.softwarehuset.serverBusiness.acceptance_tests;
+package dtu.mennekser.softwarehuset.acceptance_tests;
 
 import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
