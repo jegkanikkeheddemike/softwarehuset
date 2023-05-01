@@ -84,7 +84,7 @@ public class AppBackend extends DataLayer {
 
     public int createActivity(int projectID, String activityName, int budgetedTime, int startWeek, int endWeek, Session session) {
         assertLoggedIn(session);
-        return projects.get(projectID).createActivity(activityName, budgetedTime, startWeek, endWeek);
+        return projects.get(projectID).createActivity(activityName, budgetedTime * 60, startWeek, endWeek);
     }
 
     public void updateActivityWeekBounds(int projectId, int activityId, int newStartWeek, int newEndWeek, Session session) {
@@ -225,6 +225,9 @@ public class AppBackend extends DataLayer {
         }
     }
 
+    /*
+    SKAL DENNE HER FJERNES??? DEN BLIVER IKKE BRUGT
+     */
     private void assertEmployeeInActivity(int projectID, int activityID, int employeeID) {
         assertEmployeeInProject(projectID, employeeID);
 
@@ -369,12 +372,15 @@ public class AppBackend extends DataLayer {
 
 
     public record ProjectStat(ArrayList<EmployeeStat> employeeStats,
-                              ArrayList<Activity> unassignedActivities, int projectWeek) implements Serializable {
+                              ArrayList<Activity> unassignedActivities, int projectWeek, int timeWorked, int timeRemaining) implements Serializable {
     }
 
     public ProjectStat getProjectStats(int projectID, Session session) {
         assertLoggedIn(session);
         assertEmployeeInProject(projectID, session.employee.id);
+
+        int timeWorked = projects.get(projectID).getUsedTime();
+        int timeRemaining = projects.get(projectID).remainingTime();
 
         Project project = projects.get(projectID);
         if (project.projectLeaderId != session.employee.id) {
@@ -402,6 +408,9 @@ public class AppBackend extends DataLayer {
                 }
             }
         }
+
+
+
         ArrayList<EmployeeStat> employeeStats = new ArrayList<>();
         employeeActivities.forEach((key, value) -> {
             employeeStats.add(new EmployeeStat(employees.get(key), value));
@@ -410,7 +419,7 @@ public class AppBackend extends DataLayer {
 
         ArrayList<Activity> unassignedActivities = new ArrayList<>(project.activities.stream().filter(activity -> activity.assignedEmployees.isEmpty()).toList());
 
-        return new ProjectStat(employeeStats, unassignedActivities, projects.get(projectID).startWeek);
+        return new ProjectStat(employeeStats, unassignedActivities, projects.get(projectID).startWeek, timeWorked, timeRemaining);
     }
 
     public void removeEmployeeFromActivity(int projectID, int activityID, String employeeName, Session session) {
