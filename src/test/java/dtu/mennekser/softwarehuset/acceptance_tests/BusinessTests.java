@@ -293,4 +293,23 @@ public class BusinessTests {
     public void theProgramOutputsAnd(Integer hWorked, Integer mWorked, Integer hRemaining , Integer mRemaining) {
         assertTrue(hWorked*60 + mWorked == projectStat.timeWorked() && hRemaining*60 + mRemaining == projectStat.timeRemaining());
     }
+
+    //----------------------------------------------------------//
+    //                Edit time registrations                   //
+    //----------------------------------------------------------//
+
+    @Given("a time registration of {string} work hours is registered to the activity")
+    public void aTimeRegistrationOfWorkHoursAreRegisteredTo(String string) {
+        appBackend.registerTime(projectID,activityID,string,session);
+    }
+    @When("the user changes the registration from {string} to {string}")
+    public void theUserChangesTheRegistrationTo(String string1 ,String string2) {
+        int time = Integer.parseInt(string1.split(":")[0]) * 60 + Integer.parseInt(string1.split(":")[1]) ;
+        appBackend.editTime(appBackend.getTimeRegistration(projectID,activityID,employeeID,time,session),activityID,string2,session);
+    }
+    @Then("the time registration is changed to {string}")
+    public void theTimeRegistrationIsChangedTo(String string) {
+        int time = Integer.parseInt(string.split(":")[0]) * 60 + Integer.parseInt(string.split(":")[1]) ;
+        assertEquals(appBackend.getTimeRegistration(projectID, activityID, employeeID, time, session).usedTime, time);
+    }
 }

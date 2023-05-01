@@ -167,6 +167,18 @@ public class AppBackend extends DataLayer {
         projects.get(projectID).assignEmployee(findEmployee(employeeName).id);
     }
 
+    public TimeRegistration getTimeRegistration(int projectID, int activityID, int employeeID, int time, Session session) {
+        return getTimeRegistrationsOfActivity(projectID,activityID,session).stream().filter(timeReg -> timeReg.timeRegistration.usedTime == time).findFirst().get().timeRegistration();
+    }
+
+    public void editTime(TimeRegistration timeRegistration, int activityID, String newTime, Session session) {
+        String[] split = newTime.split(":");
+        int hours = Integer.parseInt(split[0]);
+        int minutes = Integer.parseInt(split[1]);
+
+        timeRegistration.setTime(hours*60 +minutes);
+    }
+
     public record EmployeeNotAssignedToActivity(boolean occupied, Employee employee) implements Serializable {
     }
 
