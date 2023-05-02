@@ -446,4 +446,7 @@ public class AppBackend extends DataLayer {
 
         activity.assignedEmployees.removeIf(integer -> integer == employeeID);
     }
+    public boolean isProjectLeader(int projectID,int employeeID, Session session) {
+        return getProject(projectID,session).projectLeaderId == employeeID;
+    }
 }

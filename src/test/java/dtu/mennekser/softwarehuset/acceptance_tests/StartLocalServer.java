@@ -1,8 +1,11 @@
 package dtu.mennekser.softwarehuset.acceptance_tests;
 
+import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
+import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 import dtu.mennekser.softwarehuset.backend.streamDB.SocketLayer;
 import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientSettings;
+import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientTask;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -23,6 +26,16 @@ public class StartLocalServer {
 
     @And("a server is running")
     public void aLocalServerIsRunning() {
+        // Hvis der allerede kører en server fordi der LIGE er blevet kørt tests,
+        // vil den her fejle med at lave en ny server
+        // Den har brug for at sende det to gange på grund af en implementations detalje.
+        try {
+            new ClientTask<>(DataLayer::shutdown, error -> {});
+            Thread.sleep(100);
+            new ClientTask<>(DataLayer::shutdown, error -> {});
+            Thread.sleep(100);
+        } catch (Exception ignored){}
+
         new SocketLayer<>(false, new AppBackend()).start();
     }
 

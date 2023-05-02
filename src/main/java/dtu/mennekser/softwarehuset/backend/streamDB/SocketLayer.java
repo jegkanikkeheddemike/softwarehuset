@@ -56,7 +56,7 @@ public class SocketLayer<Schema extends DataLayer> {
         }).start();
     }
 
-    private boolean running;
+    boolean running;
     public synchronized void start() {
         if (running) {
             throw new IllegalStateException("Already running");
@@ -66,9 +66,10 @@ public class SocketLayer<Schema extends DataLayer> {
         new Thread(this::run).start();
 
     }
+    ServerSocket socket;
 
     void run() {
-        ServerSocket socket;
+
         try {
             socket = new ServerSocket(ClientSettings.port);
         } catch (IOException e) {
@@ -76,6 +77,9 @@ public class SocketLayer<Schema extends DataLayer> {
         }
 
         while (running) {
+            if (!executionLayer.running) {
+                running = false;
+            }
             try {
                 Socket client = socket.accept();
                 client.setKeepAlive(true);

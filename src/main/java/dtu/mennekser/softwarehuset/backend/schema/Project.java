@@ -103,10 +103,6 @@ public class Project implements Serializable {
 
         projectLeaderId = employeeID;
     }
-    public boolean isProjectLeader(int employeeID) {
-        return projectLeaderId == employeeID;
-    }
-
     public void setStartWeek(int startWeek){
         this.startWeek = startWeek;
     }

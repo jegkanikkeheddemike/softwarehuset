@@ -57,7 +57,7 @@ public class ExecutionLayer<Schema extends DataLayer> {
     }
 
 
-    private boolean running;
+    boolean running;
 
     public synchronized void start() {
         if (running) {
@@ -82,6 +82,9 @@ public class ExecutionLayer<Schema extends DataLayer> {
             synchronized (datalayer) {
                 try {
                     task.accept(datalayer);
+                    if (datalayer.shutdown) {
+                        running = false;
+                    }
                 } catch (Exception e) {
                     submitLog(Log.LogLevel.ERROR, "Failed to execute task: " + e, true);
                 }

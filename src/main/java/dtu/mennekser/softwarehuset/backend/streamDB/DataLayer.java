@@ -6,4 +6,8 @@ import java.util.ArrayList;
 public class DataLayer implements Serializable {
     public int activeConnections = 0;
     public ArrayList<Log> logs = new ArrayList<>();
+    boolean shutdown = false;
+    public void shutdown(){
+        shutdown = true;
+    }
 }

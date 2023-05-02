@@ -158,7 +158,7 @@ public class BusinessTests {
     }
     @Then("the user is the project leader of {string}")
     public void the_user_is_the_project_leader_of(String string) {
-        assertEquals(appBackend.getProjectLeader(projectID, session).id, employeeID);
+        assertTrue(appBackend.isProjectLeader(projectID,session.employee.id,session));
     }
     @Given("{string} is project leader")
     public void is_project_leader(String string) {
