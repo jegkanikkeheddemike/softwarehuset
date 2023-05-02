@@ -167,16 +167,12 @@ public class AppBackend extends DataLayer {
         projects.get(projectID).assignEmployee(findEmployee(employeeName).id);
     }
 
-    public TimeRegistration getTimeRegistration(int projectID, int activityID, int employeeID, int time, Session session) {
-        return getTimeRegistrationsOfActivity(projectID,activityID,session).stream().filter(timeReg -> timeReg.timeRegistration.usedTime == time).findFirst().get().timeRegistration();
+    public TimeRegistration getTimeRegistration(int projectID, int activityID, int registrationID, Session session) {
+        return getActivity(projectID,activityID,session).timeRegistrations.get(registrationID);
     }
 
-    public void editTime(TimeRegistration timeRegistration, int activityID, String newTime, Session session) {
-        String[] split = newTime.split(":");
-        int hours = Integer.parseInt(split[0]);
-        int minutes = Integer.parseInt(split[1]);
-
-        timeRegistration.setTime(hours*60 +minutes);
+    public void editTime(int projectID, int activityID, int registrationID, int newTime, Session session) {
+        getTimeRegistration(projectID,activityID,registrationID, session).setTime(newTime);
     }
 
     public record EmployeeNotAssignedToActivity(boolean occupied, Employee employee) implements Serializable {
@@ -336,6 +332,10 @@ public class AppBackend extends DataLayer {
 
     public record TimeRegisActivity(String projectName, String activityName,int projectID, int activityID,
                                     TimeRegistration timeRegistration) implements Serializable {
+        @Override
+        public String toString() {
+            return projectName + "/" + activityName + " - " + timeRegistration.usedTime/60 + ":" + timeRegistration.usedTime%60;
+        }
     }
 
     public ArrayList<Vacation> getVacations(int employeeID) {

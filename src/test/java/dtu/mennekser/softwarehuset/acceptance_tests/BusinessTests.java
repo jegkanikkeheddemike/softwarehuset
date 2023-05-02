@@ -305,11 +305,16 @@ public class BusinessTests {
     @When("the user changes the registration from {string} to {string}")
     public void theUserChangesTheRegistrationTo(String string1 ,String string2) {
         int time = Integer.parseInt(string1.split(":")[0]) * 60 + Integer.parseInt(string1.split(":")[1]) ;
-        appBackend.editTime(appBackend.getTimeRegistration(projectID,activityID,employeeID,time,session),activityID,string2,session);
+        String[] split = string2.split(":");
+        int hours = Integer.parseInt(split[0]);
+        int minutes = Integer.parseInt(split[1]);
+        int newTime = hours*60 + minutes;
+
+        appBackend.editTime(appBackend.getTimeRegistration(projectID,activityID,time,session),projectID,activityID,newTime,session);
     }
     @Then("the time registration is changed to {string}")
     public void theTimeRegistrationIsChangedTo(String string) {
         int time = Integer.parseInt(string.split(":")[0]) * 60 + Integer.parseInt(string.split(":")[1]) ;
-        assertEquals(appBackend.getTimeRegistration(projectID, activityID, employeeID, time, session).usedTime, time);
+        assertEquals(appBackend.getTimeRegistration(projectID, activityID, time, session).usedTime, time);
     }
 }

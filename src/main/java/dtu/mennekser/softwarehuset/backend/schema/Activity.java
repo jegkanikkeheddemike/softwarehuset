@@ -56,8 +56,7 @@ public class Activity implements Serializable {
     public void setEndWeek(int endWeek) { this.endWeek = endWeek; }
     public void registerTime(int employeeID, int hours, int minutes) {
         int time = hours*60 + minutes;
-        timeRegistrations.add(new TimeRegistration(employeeID,time));
-        //Fancy math that finds out whether half an hour should be registered.
+        timeRegistrations.add(new TimeRegistration(employeeID,time,timeRegistrations.size()));
     }
 
     public void setDescription(String description) {
