@@ -196,7 +196,7 @@ class ProjectTimeStats extends BorderPane {
             setTop(titleLabel);
 
             VBox timeStats = new VBox();
-            Label budgetTime = new Label("Budgeted time: "+ project.getBudgetTime()/60+" h. "+ project.getBudgetTime()/60 + " m.");
+            Label budgetTime = new Label("Budgeted time: "+ project.getBudgetTime()/60+" h. ");
             Label workedHours = new Label("Time used: " + project.getUsedTime()/60 +" h. "+ project.getUsedTime()%60 + " m.");
             Label remainingHours = new Label("Remaining time: " + project.remainingTime()/60 +" h. "+ project.remainingTime()%60 + " m.");
 

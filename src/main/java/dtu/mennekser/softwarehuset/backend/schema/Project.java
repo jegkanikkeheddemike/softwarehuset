@@ -77,6 +77,15 @@ public class Project implements Serializable {
         return null;
     }
 
+    public Activity findActivity(String activityName) {
+        for(Activity activity : activities) {
+            if(activity.name.equals(activityName)) {
+                return activity;
+            }
+        }
+        return null;
+    }
+
     public void assignEmployee(int employeeID) {
         if (!assignedEmployees.contains(employeeID)) {
             assignedEmployees.add(employeeID);

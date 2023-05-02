@@ -18,7 +18,6 @@ import java.util.function.Consumer;
  * @author Thor
  */
 public class ClientTask<Schema extends DataLayer> {
-    private final int port = 7009;
 
     private final Task<Schema> task;
     private final Consumer<IOException> onError;
@@ -31,7 +30,7 @@ public class ClientTask<Schema extends DataLayer> {
 
     void run() {
         try {
-            Socket socket = new Socket(ClientSettings.remoteLocation,port);
+            Socket socket = new Socket(ClientSettings.remoteLocation,ClientSettings.port);
             ConnInterface.send(ConnType.Task, socket);
             ConnInterface.send(task, socket);
         } catch (IOException e) {

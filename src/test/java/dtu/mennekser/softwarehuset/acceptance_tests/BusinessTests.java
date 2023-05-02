@@ -2,12 +2,10 @@ package dtu.mennekser.softwarehuset.acceptance_tests;
 
 import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
-import io.cucumber.java.an.E;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
-import io.cucumber.java.sl.In;
 
 import static org.junit.Assert.*;
 
@@ -20,6 +18,7 @@ public class BusinessTests {
     static int activityID;
     static int employeeID;
     static AppBackend.ProjectStat projectStat;
+    int registrationID;
 
     public BusinessTests() {
         appBackend = new AppBackend();
@@ -292,5 +291,28 @@ public class BusinessTests {
     @Then("the program outputs {int} hours {int} minutes as worked and {int} hours {int} minutes as remaining")
     public void theProgramOutputsAnd(Integer hWorked, Integer mWorked, Integer hRemaining , Integer mRemaining) {
         assertTrue(hWorked*60 + mWorked == projectStat.timeWorked() && hRemaining*60 + mRemaining == projectStat.timeRemaining());
+    }
+
+    //----------------------------------------------------------//
+    //                Edit time registrations                   //
+    //----------------------------------------------------------//
+
+    @Given("a time registration of {string} work hours is registered to the activity")
+    public void aTimeRegistrationOfWorkHoursAreRegisteredTo(String string) {
+        registrationID = appBackend.registerTime(projectID,activityID,string,session);
+    }
+    @When("the user changes the registration from {string} to {string}")
+    public void theUserChangesTheRegistrationTo(String string1 ,String string2) {
+        String[] split = string2.split(":");
+        int hours = Integer.parseInt(split[0]);
+        int minutes = Integer.parseInt(split[1]);
+        int newTime = hours*60 + minutes;
+
+        appBackend.editTime(projectID,activityID,registrationID,newTime, session);
+    }
+    @Then("the time registration is changed to {string}")
+    public void theTimeRegistrationIsChangedTo(String string) {
+        int time = Integer.parseInt(string.split(":")[0]) * 60 + Integer.parseInt(string.split(":")[1]) ;
+        assertEquals(appBackend.getTimeRegistration(projectID, activityID, registrationID, session).usedTime, time);
     }
 }

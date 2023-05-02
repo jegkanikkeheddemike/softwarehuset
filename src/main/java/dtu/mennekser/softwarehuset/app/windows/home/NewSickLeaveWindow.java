@@ -9,7 +9,6 @@ import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;

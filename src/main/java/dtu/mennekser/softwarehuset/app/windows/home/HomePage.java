@@ -3,6 +3,7 @@ package dtu.mennekser.softwarehuset.app.windows.home;
 import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.app.TimeManager;
 import dtu.mennekser.softwarehuset.app.networking.DataListener;
+import dtu.mennekser.softwarehuset.app.networking.DataTask;
 import dtu.mennekser.softwarehuset.app.windows.Style;
 import dtu.mennekser.softwarehuset.backend.schema.Activity;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
@@ -157,14 +158,35 @@ class InnerHomePage extends BorderPane {
         }
         );
 
+        regisActivitiesScroll.setStyle(
+                "-fx-control-inner-background: rgb(255, 255, 255);" +
+                        "-fx-faint-focus-color: transparent;" +
+                        "-fx-focus-color: transparent;" +
+                        "-fx-highlight-fill: rgb(101,204,153);"+
+                        "-fx-background-insets: 10;"
+        );
+
+        Button editTimeRegistrations = new Button("Edit");
+        Style.setActivityButtonStyle(editTimeRegistrations);
+        editTimeRegistrations.setPrefSize(100,20);
+
+        editTimeRegistrations.setOnAction(actionEvent -> {
+            EditTimeRegistrationWindow.tryCreate();
+        });
+
+        rightMenu.getChildren().add(editTimeRegistrations);
+
             //---------------- General Menu --------------
         VBox leftMenu = new VBox();
         setMargin(leftMenu,new Insets(30));
         leftMenu.setSpacing(40);
         setCenter(leftMenu);
 
-        Button registerTidButton = new Button("Registrer tid");
+        Button registerTidButton = new Button("Register time");
         Style.setButtonBig(registerTidButton);
+        registerTidButton.setOnAction(actionEvent -> {
+            NewTimeRegistrationWindow.tryCreate();
+        });
         leftMenu.getChildren().add(registerTidButton);
 
         Button sickLeaveButton = new Button("Sick Leave");

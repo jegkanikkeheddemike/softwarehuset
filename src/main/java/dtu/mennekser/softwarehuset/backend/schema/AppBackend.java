@@ -167,6 +167,14 @@ public class AppBackend extends DataLayer {
         projects.get(projectID).assignEmployee(findEmployee(employeeName).id);
     }
 
+    public TimeRegistration getTimeRegistration(int projectID, int activityID, int registrationID, Session session) {
+        return getActivity(projectID,activityID,session).timeRegistrations.get(registrationID);
+    }
+
+    public void editTime(int projectID, int activityID, int registrationID, int newTime, Session session) {
+        getTimeRegistration(projectID,activityID,registrationID, session).setTime(newTime);
+    }
+
     public record EmployeeNotAssignedToActivity(boolean occupied, Employee employee) implements Serializable {
     }
 
@@ -237,7 +245,7 @@ public class AppBackend extends DataLayer {
         }
     }
 
-    public void registerTime(int projectID, int activityID, String time, Session session) {
+    public int registerTime(int projectID, int activityID, String time, Session session) {
         assertLoggedIn(session);
 
 
@@ -250,6 +258,7 @@ public class AppBackend extends DataLayer {
                 hours,
                 minutes
         );
+        return projects.get(projectID).activities.get(activityID).timeRegistrations.size()-1;
     }
 
     public record RegistrationJoinEmployee(String employeeName,
@@ -322,8 +331,12 @@ public class AppBackend extends DataLayer {
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
     }
 
-    public record TimeRegisActivity(String projectName, String activityName,
+    public record TimeRegisActivity(String projectName, String activityName,int projectID, int activityID,
                                     TimeRegistration timeRegistration) implements Serializable {
+        @Override
+        public String toString() {
+            return projectName + "/" + activityName + " - " + timeRegistration.usedTime/60 + ":" + timeRegistration.usedTime%60;
+        }
     }
 
     public ArrayList<Vacation> getVacations(int employeeID) {
@@ -357,7 +370,7 @@ public class AppBackend extends DataLayer {
             for (Activity activity : project.activities) {
                 for (TimeRegistration time : activity.timeRegistrations) {
                     if (time.employeeID == session.employee.id) {
-                        timeRegisActivities.add(new TimeRegisActivity(project.name, activity.name, time));
+                        timeRegisActivities.add(new TimeRegisActivity(project.name, activity.name, project.id,activity.id,time));
                     }
                 }
             }

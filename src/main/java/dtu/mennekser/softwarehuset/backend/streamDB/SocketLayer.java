@@ -1,5 +1,6 @@
 package dtu.mennekser.softwarehuset.backend.streamDB;
 
+import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientSettings;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.Query;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.Task;
 import dtu.mennekser.softwarehuset.backend.streamDB.data.ServerListener;
@@ -69,7 +70,7 @@ public class SocketLayer<Schema extends DataLayer> {
     void run() {
         ServerSocket socket;
         try {
-            socket = new ServerSocket(7009);
+            socket = new ServerSocket(ClientSettings.port);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

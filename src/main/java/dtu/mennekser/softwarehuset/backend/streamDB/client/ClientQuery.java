@@ -26,7 +26,6 @@ import java.util.function.Function;
  * @author Thor
  */
 public class ClientQuery<Schema extends DataLayer,T extends Serializable> {
-        public final int port = 7009;
         private final Function<Schema,T> query;
         final private Consumer<IOException> onError;
         public ClientQuery(Query<Schema,T> query, Consumer<IOException> onError) {
@@ -38,7 +37,7 @@ public class ClientQuery<Schema extends DataLayer,T extends Serializable> {
 
         public T fetch(){
             try {
-                Socket socket = new Socket(ClientSettings.remoteLocation, port);
+                Socket socket = new Socket(ClientSettings.remoteLocation, ClientSettings.port);
                 ConnInterface.send(ConnType.Subscribe,socket);
                 ConnInterface.send((Function<AppBackend,T> & Serializable) query,socket);
 
