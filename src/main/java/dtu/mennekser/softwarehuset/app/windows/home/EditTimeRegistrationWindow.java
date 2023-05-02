@@ -75,13 +75,16 @@ public class EditTimeRegistrationWindow {
                 String newTime = newTimeRegistration.getText().trim();
                 String projectName = activityBox.getValue().split("/")[0];
                 String activityName = activityBox.getValue().split("/")[1].split(" - ")[0];
+                String[] timesplit = activityBox.getValue().split("/")[1].split(" - ")[1].split(":");
+                int time = Integer.parseInt(timesplit[0])*60+Integer.parseInt(timesplit[1]);
 
-                /*
+
                 DataTask.SubmitTask(appBackend -> appBackend.editTime(appBackend.getTimeRegistration(
                         appBackend.findProject(projectName).id,
-                        appBackend.findProject(projectName).activities.//equals name of activity
+                        appBackend.findProject(projectName).findActivity(activityName).id, session.employee.id, time,session),
+                        appBackend.findProject(projectName).findActivity(activityName).id, newTime,session
                         ));
-                */
+                HomePage.setHome();
                 exists = false;
                 editTimeRegistrationWindow.close();
             });
