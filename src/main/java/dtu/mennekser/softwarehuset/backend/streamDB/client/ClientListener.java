@@ -32,7 +32,6 @@ import java.util.function.Function;
  * @author Thor
  */
 public class ClientListener<Schema extends DataLayer,T extends Serializable> {
-    public final int port = 7009;
 
     private final Consumer<T> callback;
     private final Function<Schema,T> query;
@@ -59,7 +58,7 @@ public class ClientListener<Schema extends DataLayer,T extends Serializable> {
 
     private void run() {
         try {
-            socket = new Socket(ClientSettings.remoteLocation, port);
+            socket = new Socket(ClientSettings.remoteLocation, ClientSettings.port);
             socket.setKeepAlive(true);
             ConnInterface.send(ConnType.Subscribe, socket);
             ConnInterface.send((Function<AppBackend, T> & Serializable) query, socket);

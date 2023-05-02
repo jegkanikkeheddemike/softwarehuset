@@ -245,7 +245,7 @@ public class AppBackend extends DataLayer {
         }
     }
 
-    public void registerTime(int projectID, int activityID, String time, Session session) {
+    public int registerTime(int projectID, int activityID, String time, Session session) {
         assertLoggedIn(session);
 
 
@@ -258,6 +258,7 @@ public class AppBackend extends DataLayer {
                 hours,
                 minutes
         );
+        return projects.get(projectID).activities.get(activityID).timeRegistrations.size()-1;
     }
 
     public record RegistrationJoinEmployee(String employeeName,
