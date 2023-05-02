@@ -334,7 +334,7 @@ public class AppBackend extends DataLayer {
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
     }
 
-    public record TimeRegisActivity(String projectName, String activityName,
+    public record TimeRegisActivity(String projectName, String activityName,int projectID, int activityID,
                                     TimeRegistration timeRegistration) implements Serializable {
     }
 
@@ -369,7 +369,7 @@ public class AppBackend extends DataLayer {
             for (Activity activity : project.activities) {
                 for (TimeRegistration time : activity.timeRegistrations) {
                     if (time.employeeID == session.employee.id) {
-                        timeRegisActivities.add(new TimeRegisActivity(project.name, activity.name, time));
+                        timeRegisActivities.add(new TimeRegisActivity(project.name, activity.name, project.id,activity.id,time));
                     }
                 }
             }
