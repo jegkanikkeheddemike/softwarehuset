@@ -1,11 +1,16 @@
 package dtu.mennekser.softwarehuset.acceptance_tests;
 
 import dtu.mennekser.softwarehuset.app.LoginManager;
+import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
+import io.cucumber.java.an.E;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -314,5 +319,42 @@ public class BusinessTests {
     public void theTimeRegistrationIsChangedTo(String string) {
         int time = Integer.parseInt(string.split(":")[0]) * 60 + Integer.parseInt(string.split(":")[1]) ;
         assertEquals(appBackend.getTimeRegistration(projectID, activityID, registrationID, session).usedTime, time);
+    }
+
+
+    //----------------------------------------------------------//
+    //         Remove Employees from activity or project        //
+    //----------------------------------------------------------//
+
+    @Given("{string} is assigned to project {string}")
+    public void isAssignedToProject(String string, String string2) {
+        appBackend.addEmployeeToProject(projectID,string,session);
+    }
+
+    @When("{string} is unassigned from the activity")
+    public void isUnassignedFromTheActivity(String string) {
+        String username = string.substring(0,4).toLowerCase();
+        try{
+            appBackend.removeEmployeeFromActivity(projectID,activityID,username,session);
+        } catch (Exception e){
+            error = e.getMessage();
+        }
+
+    }
+    @Then("{string} is no longer part of that activity")
+    public void isNoLongerPartOfThatActivity(String string) {
+        String username = string.substring(0,4).toLowerCase();
+        assertTrue(appBackend.getEmployeesNotAssignedToActivity(projectID,activityID,session).
+                stream().map(AppBackend.EmployeeNotAssignedToActivity::employee).map(employee -> employee.name).toList().contains(username));
+    }
+
+    List<String> names;
+    @When("the user requests a list of unassigned employees")
+    public void theUserRequestsAListOfUnassignedEmployees() {
+        names = appBackend.getNotAssignedEmployees(projectID,session).stream().map(employee -> employee.name).toList();
+    }
+    @Then("a list containing {string}, {string} and {string} is returned")
+    public void aListContainingAndIsReturned(String string, String string2, String string3) {
+        assertTrue(names.contains(string) && names.contains(string2) && names.contains(string3));
     }
 }
