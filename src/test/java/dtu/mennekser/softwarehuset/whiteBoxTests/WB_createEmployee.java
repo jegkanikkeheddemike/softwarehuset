@@ -38,7 +38,7 @@ public class WB_createEmployee {
     @Then("employees has an element with the name {string}")
     public void employeesHasAnElementWithTheName(String name) {
         ArrayList<Employee> employees = appBackend.getEmployees();
-        assertEquals(employees.get(employees.size() - 1).name, name);
+        assertTrue(employees.stream().anyMatch(employee -> employee.name.equals(name)));
     }
 
 
