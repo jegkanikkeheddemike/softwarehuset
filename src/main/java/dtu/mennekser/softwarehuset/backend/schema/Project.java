@@ -2,12 +2,16 @@ package dtu.mennekser.softwarehuset.backend.schema;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Project implements Serializable {
 
     public final int id;
     public String name;
     public String client;
+    public final String runningNumber;
     public ArrayList<Activity> activities = new ArrayList<>();
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
 
@@ -20,6 +24,7 @@ public class Project implements Serializable {
         this.name = name;
         this.id = id;
         this.startWeek = startWeek;
+        this.runningNumber = new GregorianCalendar().get(Calendar.YEAR) + "" + id;
     }
 
     public  int getBudgetTime(){
@@ -77,15 +82,6 @@ public class Project implements Serializable {
         return null;
     }
 
-    public Activity findActivity(String activityName) {
-        for(Activity activity : activities) {
-            if(activity.name.equals(activityName)) {
-                return activity;
-            }
-        }
-        return null;
-    }
-
     public void assignEmployee(int employeeID) {
         if (!assignedEmployees.contains(employeeID)) {
             assignedEmployees.add(employeeID);
@@ -114,5 +110,4 @@ public class Project implements Serializable {
             throw new RuntimeException("Employee not project leader");
         }
     }
-
 }
