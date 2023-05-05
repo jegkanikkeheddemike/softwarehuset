@@ -439,14 +439,14 @@ public class AppBackend extends DataLayer {
     }
 
     public void removeEmployeeFromActivity(int projectID, int activityID, String employeeName, Session session) {
-        int employeeID = findEmployee(employeeName).id;
+        int employeeID = findEmployee(employeeName).id;                         
         //Check if employee on activity
         Activity activity = getActivity(projectID, activityID, session);
         if (!activity.assignedEmployees.contains(employeeID)) {
             throw new RuntimeException("Employee not assigned to activity");
         }
 
-        activity.assignedEmployees.removeIf(integer -> integer == employeeID);
+        activity.assignedEmployees.removeIf(id -> id == employeeID);
     }
     public boolean isProjectLeader(int projectID,int employeeID, Session session) {
         return getProject(projectID,session).projectLeaderId == employeeID;
