@@ -21,6 +21,8 @@ public class AppBackend extends DataLayer {
     }
 
     public int createEmployee(String realName) {
+        assert realName != null && realName.length() > 0;
+
         String[] temp = realName.split(" ");
         String name = "";
         if (temp.length >= 2) {                                     //1
@@ -35,6 +37,9 @@ public class AppBackend extends DataLayer {
             }
         }
         employees.add(new Employee(name.toLowerCase(), realName, employees.size()));
+
+        assert employees.get(employees.size() - 1).name.equals(name.toLowerCase());
+
         return employees.size() - 1;
     }
 
