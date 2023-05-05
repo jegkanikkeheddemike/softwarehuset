@@ -193,16 +193,19 @@ public class AppBackend extends DataLayer {
         return notAssigned;
     }
 
-    public void addEmployeeToActivity(int projectID, int activityID, String employeeName, Session session) {
-        assertLoggedIn(session);
-        assertNotVacationing(projects.get(projectID).activities.get(activityID).startWeek,
-                projects.get(projectID).activities.get(activityID).endWeek, findEmployee(employeeName).id);
+    public void addEmployeeToActivity(int projectID, int activityID,
+                                      String employeeName, Session session) {
+        assertLoggedIn(session);                                                                //1
+        Employee foundEmployee = findEmployee(employeeName);                                    //2
 
-        Employee foundEmployee = findEmployee(employeeName);
+        assertNotVacationing(
+                projects.get(projectID).activities.get(activityID).startWeek,
+                projects.get(projectID).activities.get(activityID).endWeek,
+                foundEmployee.id);                                                              //3
 
-        assertEmployeeInProject(projectID, session.employee.id);
+        assertEmployeeInProject(projectID, session.employee.id);                                //4
 
-        projects.get(projectID).activities.get(activityID).assignEmployee(foundEmployee.id);
+        projects.get(projectID).activities.get(activityID).assignEmployee(foundEmployee.id);    //5
 
     }
 
