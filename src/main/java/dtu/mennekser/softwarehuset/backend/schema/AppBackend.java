@@ -234,18 +234,7 @@ public class AppBackend extends DataLayer {
             throw new RuntimeException("Employee not in project");
         }
     }
-
-    /*
-    SKAL DENNE HER FJERNES??? DEN BLIVER IKKE BRUGT
-     */
-    private void assertEmployeeInActivity(int projectID, int activityID, int employeeID) {
-        assertEmployeeInProject(projectID, employeeID);
-
-        if (!projects.get(projectID).activities.get(activityID).assignedEmployees.contains(employeeID)) {
-            throw new RuntimeException("Employee not in activity");
-        }
-    }
-
+    
     public int registerTime(int projectID, int activityID, String time, Session session) {
         assertLoggedIn(session);
 
