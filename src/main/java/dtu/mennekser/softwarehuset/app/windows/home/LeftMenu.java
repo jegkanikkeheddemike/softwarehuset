@@ -37,7 +37,7 @@ public class LeftMenu extends BorderPane {
                     title.setFont(Style.setTitleFont());
                     projectList.getChildren().add(title);
                     for (Project project : projects) {
-                        Button button = new Button(project.name);
+                        Button button = new Button(project.name + ": " + project.runningNumber);
                         button.setOnAction(actionEvent -> HomePage.setProject(project.id));
                         Style.setProjectButtonStyle(button);
                         button.setStyle("-fx-text-fill: rgb(60,130,100)");
