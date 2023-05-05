@@ -40,6 +40,4 @@ public class WB_createEmployee {
         ArrayList<Employee> employees = appBackend.getEmployees();
         assertTrue(employees.stream().anyMatch(employee -> employee.name.equals(name)));
     }
-
-
 }
