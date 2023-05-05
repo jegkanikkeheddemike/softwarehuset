@@ -25,7 +25,7 @@ public class WB_createEmployee {
     public WB_createEmployee() {
         appBackend = new AppBackend();
     }
-    @Given("the variable realName has value {string}")
+    @Given("the argument realName has value {string}")
     public void theVariableRealNameHasValue(String name) {
         realName = name;
     }
