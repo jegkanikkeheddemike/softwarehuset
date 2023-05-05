@@ -68,7 +68,6 @@ public class AppBackend extends DataLayer {
 
 
     public int createProject(String projectName, String clientName, Session session, String startWeek) {
-
         assertLoggedIn(session);
         if (clientName.isEmpty()) {
             clientName = "SoftwareHusetAS";
@@ -76,6 +75,9 @@ public class AppBackend extends DataLayer {
 
         if (startWeek.isEmpty()) {
             startWeek = "0";
+        }
+        if (projects.stream().anyMatch(project -> project.name.equals(projectName))) {
+            throw new RuntimeException("Projectname is already taken");
         }
 
         projects.add(new Project(projectName, clientName, projects.size(), Integer.parseInt(startWeek)));
@@ -447,14 +449,15 @@ public class AppBackend extends DataLayer {
     }
 
     public void removeEmployeeFromActivity(int projectID, int activityID, String employeeName, Session session) {
-        int employeeID = findEmployee(employeeName).id;
+        assertLoggedIn(session);                                            //1
+        int employeeID = findEmployee(employeeName).id;                     //2
         //Check if employee on activity
         Activity activity = getActivity(projectID, activityID, session);
-        if (!activity.assignedEmployees.contains(employeeID)) {
+        if (!activity.assignedEmployees.contains(employeeID)) {             //3
             throw new RuntimeException("Employee not assigned to activity");
         }
 
-        activity.assignedEmployees.removeIf(integer -> integer == employeeID);
+        activity.assignedEmployees.removeIf(id -> id == employeeID);
     }
     public boolean isProjectLeader(int projectID,int employeeID, Session session) {
         return getProject(projectID,session).projectLeaderId == employeeID;
