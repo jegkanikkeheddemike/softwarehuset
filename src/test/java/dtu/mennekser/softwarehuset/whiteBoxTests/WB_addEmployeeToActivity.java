@@ -41,11 +41,11 @@ public class WB_addEmployeeToActivity {
         appBackend.getActivity(projectID,activityID,session).setStartWeek(5);
         appBackend.getActivity(projectID,activityID,session).setEndWeek(7);
     }
-
-    @Given("session is null")
+    @Given("the session is null")
     public void sessionIsNull() {
         session = null;
     }
+
 
     @Given("employeeName is {string}")
     public void employeeNameIs(String string) {

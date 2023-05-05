@@ -3,7 +3,7 @@ Feature: White Box tests for addEmployeeToActivity method
   Scenario: session is null
     Given a project "Make a cake" exists with projectID 0
     And an activity "Buy ingredients" exists with activityID 0
-    And session is null
+    And the session is null
     When the method addEmployeeToActivity is called
     Then error message "Employee not logged in" is given
 
