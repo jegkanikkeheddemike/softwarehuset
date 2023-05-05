@@ -63,7 +63,6 @@ public class AppBackend extends DataLayer {
 
 
     public int createProject(String projectName, String clientName, Session session, String startWeek) {
-
         assertLoggedIn(session);
         if (clientName.isEmpty()) {
             clientName = "SoftwareHusetAS";
@@ -71,6 +70,9 @@ public class AppBackend extends DataLayer {
 
         if (startWeek.isEmpty()) {
             startWeek = "0";
+        }
+        if (projects.stream().anyMatch(project -> project.name.equals(projectName))) {
+            throw new RuntimeException("Projectname is already taken");
         }
 
         projects.add(new Project(projectName, clientName, projects.size(), Integer.parseInt(startWeek)));
