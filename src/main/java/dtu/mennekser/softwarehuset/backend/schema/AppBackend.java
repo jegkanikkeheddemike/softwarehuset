@@ -172,6 +172,7 @@ public class AppBackend extends DataLayer {
     }
 
     public void editTime(int projectID, int activityID, int registrationID, int newTime, Session session) {
+        assertLoggedIn(session);
         getTimeRegistration(projectID,activityID,registrationID, session).setTime(newTime);
     }
 
@@ -248,8 +249,10 @@ public class AppBackend extends DataLayer {
     public int registerTime(int projectID, int activityID, String time, Session session) {
         assertLoggedIn(session);
 
+        assertValidTimeString(time);
 
         String[] split = time.split(":");
+
         int hours = Integer.parseInt(split[0]);
         int minutes = Integer.parseInt(split[1]);
 
@@ -259,6 +262,16 @@ public class AppBackend extends DataLayer {
                 minutes
         );
         return projects.get(projectID).activities.get(activityID).timeRegistrations.size()-1;
+    }
+
+    void assertValidTimeString(String time){
+        try {
+            String[] split = time.split(":");
+            Integer.parseInt(split[0]);
+            Integer.parseInt(split[1]);
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid time string");
+        }
     }
 
     public record RegistrationJoinEmployee(String employeeName,
