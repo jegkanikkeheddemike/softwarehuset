@@ -31,7 +31,7 @@ public class ProjectTopBar extends BorderPane {
         setLeft(left);
         setRight(right);
 
-        Label title = new Label(project.name);
+        Label title = new Label(project.name + " (" + project.runningNumber + ")");
         Label client = new Label(" : " + project.client);
         Label startWeek = new Label(" - uge " + project.startWeek);
         client.setFont(Style.setTitleFont());
