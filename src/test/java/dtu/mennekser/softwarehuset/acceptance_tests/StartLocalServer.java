@@ -30,9 +30,9 @@ public class StartLocalServer {
         // vil den her fejle med at lave en ny server
         // Den har brug for at sende det to gange på grund af en implementations detalje.
         try {
-            new ClientTask<>(DataLayer::shutdown, error -> {});
+            new ClientTask<>(dataLayer -> dataLayer.shutdown = true, error -> {});
             Thread.sleep(100);
-            new ClientTask<>(DataLayer::shutdown, error -> {});
+            new ClientTask<>(dataLayer -> dataLayer.shutdown = true, error -> {});
             Thread.sleep(100);
         } catch (Exception ignored){}
 
