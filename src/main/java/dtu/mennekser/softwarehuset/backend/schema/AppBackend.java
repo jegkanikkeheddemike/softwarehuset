@@ -54,11 +54,13 @@ public class AppBackend extends DataLayer {
     }
 
     public Project findProject(String name) {
+        assert name != null;
         for (Project project : projects) {
             if (project.name.equals(name)) {
                 return project;
             }
         }
+        assert projects.stream().noneMatch(project -> project.name.equals(name));
         return null;
     }
 
