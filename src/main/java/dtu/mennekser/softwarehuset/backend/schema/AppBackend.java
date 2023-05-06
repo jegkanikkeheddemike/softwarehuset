@@ -202,6 +202,11 @@ public class AppBackend extends DataLayer {
 
     public void addEmployeeToActivity(int projectID, int activityID,
                                       String employeeName, Session session) {
+        //pre-condition
+        assert projects.stream().anyMatch(project -> project.id == projectID);
+        assert projects.get(projectID).activities.stream().anyMatch(activity -> activity.id == activityID);
+        assert employeeName != null;
+
         assertLoggedIn(session);                                                                //1
         Employee foundEmployee = findEmployee(employeeName);                                    //2
 
@@ -214,6 +219,8 @@ public class AppBackend extends DataLayer {
 
         projects.get(projectID).activities.get(activityID).assignEmployee(foundEmployee.id);    //5
 
+        //post-condition
+        assert projects.get(projectID).activities.get(activityID).assignedEmployees.contains(foundEmployee.id);
     }
 
     private boolean checkVacationing(int projectID, int activityID, String employeeName) {
