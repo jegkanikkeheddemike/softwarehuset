@@ -66,6 +66,10 @@ public class AppBackend extends DataLayer {
         return employees;
     }
 
+    public void setProjectClient(int projectID, String clientName, Session session) {
+        assertLoggedIn(session);
+        getProject(projectID,session).setClient(clientName);
+    }
 
     public int createProject(String projectName, String clientName, Session session, String startWeek) {
         assertLoggedIn(session);
@@ -263,7 +267,7 @@ public class AppBackend extends DataLayer {
         return projects.get(projectID).activities.get(activityID).timeRegistrations.size()-1;
     }
 
-    void assertValidTimeString(String time){
+    private static void assertValidTimeString(String time){
         try {
             String[] split = time.split(":");
             Integer.parseInt(split[0]);

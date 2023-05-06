@@ -1,7 +1,5 @@
 package dtu.mennekser.softwarehuset.backend.schema;
 
-import javafx.scene.control.TextArea;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -15,7 +13,7 @@ public class Activity implements Serializable {
     public boolean finished = false;
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
     public ArrayList<TimeRegistration> timeRegistrations = new ArrayList<>();
-    public Activity(String name, int budgetedTime, int startWeek, int endWeek, int id) {
+    Activity(String name, int budgetedTime, int startWeek, int endWeek, int id) {
         this.name = name;
         this.budgetedTime = budgetedTime; //TODO DET HER SKAL GØRES ANDERLEDES // bliver nu sendt ind i timer fra appBackend
         this.startWeek = startWeek;
@@ -23,11 +21,11 @@ public class Activity implements Serializable {
         this.id = id;
     }
 
-    public void setBudgetedTime(int budgetedTime) {
+    void setBudgetedTime(int budgetedTime) {
         this.budgetedTime = budgetedTime;
     }
 
-    public void assignEmployee(int id) {
+    void assignEmployee(int id) {
         if (!assignedEmployees.contains(id)) {
             assignedEmployees.add(id);
         } else {
@@ -51,7 +49,7 @@ public class Activity implements Serializable {
         return this.endWeek;
     }
 
-    public void setStartWeek(int startWeek) { this.startWeek = startWeek; }
+    void setStartWeek(int startWeek) { this.startWeek = startWeek; }
 
     public void setEndWeek(int endWeek) { this.endWeek = endWeek; }
     public void registerTime(int employeeID, int hours, int minutes) {
@@ -59,7 +57,7 @@ public class Activity implements Serializable {
         timeRegistrations.add(new TimeRegistration(employeeID,time,timeRegistrations.size()));
     }
 
-    public void setDescription(String description) {
+    void setDescription(String description) {
         this.description = description;
     }
 

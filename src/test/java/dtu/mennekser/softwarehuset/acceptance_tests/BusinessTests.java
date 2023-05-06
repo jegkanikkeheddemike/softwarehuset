@@ -73,7 +73,7 @@ public class BusinessTests {
 
     @When("a client {string} is added to the project")
     public void a_client_is_added_to_the_project(String string) {
-        appBackend.findProject("Sommerhus infoside").setClient(string);
+        appBackend.setProjectClient(projectID,string,session);
     }
     @Then("that project has a client {string}")
     public void that_project_has_a_client(String string) {
@@ -83,7 +83,7 @@ public class BusinessTests {
     @When("a user creates an activity {string} with {int} hours")
     public void a_user_creates_an_activity(String string, int hours) {
         try {
-            activityID = appBackend.getProject(projectID,session).createActivity(string,hours);
+            activityID = appBackend.createActivity(projectID,string,hours,session);
         } catch (Exception e){
             error = e.getMessage();
         }
@@ -224,7 +224,7 @@ public class BusinessTests {
     }
     @Then("the activity {string} has budgeted time of {int} hours")
     public void the_activity_has_budgeted_time_of_hours(String string, int int1) {
-        assertEquals(int1, appBackend.getActivity(projectID, activityID, session).getBudgetTime());
+        assertEquals(int1, appBackend.getActivity(projectID, activityID, session).getBudgetTime()/60);
     }
 
     //----------------------------------------------------------//
@@ -272,13 +272,13 @@ public class BusinessTests {
     }
     @Given("there is a project leader of {string}")
     public void thereIsAProjectLeaderOf(String string) {
-        appBackend.getProject(projectID,session).setProjectLeader(employeeID);
+        appBackend.setProjectLeader(projectID,session);
     }
 
     @Given("project leader of {string} is not logged in")
     public void projectLeaderOfIsNotLoggedIn(String string) {
         appBackend.createEmployee("Karsten");
-        appBackend.getProject(projectID,session).assignEmployee(appBackend.findEmployee("kars").id);
+        appBackend.addEmployeeToProject(projectID,"kars",session);
         session = appBackend.attemptLogin("kars");
     }
     @Given("project leader of {string} is logged in")
