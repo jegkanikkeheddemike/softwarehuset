@@ -13,7 +13,7 @@ public class TimeRegistration implements Serializable {
         this.timeRegistrationID = timeRegistrationID;
     }
 
-    public void setTime(int minutes) {
+    void setTime(int minutes) {
         this.usedTime = minutes;
     }
 }

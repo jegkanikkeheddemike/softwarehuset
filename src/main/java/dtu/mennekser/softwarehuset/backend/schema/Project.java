@@ -53,7 +53,7 @@ public class Project implements Serializable {
         return timeSum;
 
     }
-    public int createActivity(String name, int budgetedTime) {
+    int createActivity(String name, int budgetedTime) {
         return createActivity(name,budgetedTime,1,52);
     }
 
@@ -63,7 +63,7 @@ public class Project implements Serializable {
         return activities.size()-1;
     }
 
-    public void updateActivityWeekBounds(int activityId, int newStartWeek, int newEndWeek) {
+    void updateActivityWeekBounds(int activityId, int newStartWeek, int newEndWeek) {
         assert (newStartWeek >= 1 && newStartWeek <= 52 && newEndWeek >=1 && newEndWeek <= 52);
         Activity activity = findActivity(activityId);
         if(activity == null) {
@@ -82,24 +82,24 @@ public class Project implements Serializable {
         return null;
     }
 
-    public void assignEmployee(int employeeID) {
+    void assignEmployee(int employeeID) {
         if (!assignedEmployees.contains(employeeID)) {
             assignedEmployees.add(employeeID);
         } else {
             throw new RuntimeException("Employee already assigned to project");
         }
     }
-    public void setClient(String name){
+    void setClient(String name){
         client = name;
     }
-    public void setProjectLeader(int employeeID) {
+    void setProjectLeader(int employeeID) {
         if (projectLeaderId != -1) {
             throw new RuntimeException("Project leader already exists");
         }
 
         projectLeaderId = employeeID;
     }
-    public void setStartWeek(int startWeek){
+    void setStartWeek(int startWeek){
         this.startWeek = startWeek;
     }
 

@@ -38,8 +38,7 @@ public class WB_addEmployeeToActivity {
     @Given("an activity {string} exists with activityID {int}")
     public void anActivityExistsWithActivityID(String string, Integer int1) {
         activityID = appBackend.createActivity(projectID,string,10,session);
-        appBackend.getActivity(projectID,activityID,session).setStartWeek(5);
-        appBackend.getActivity(projectID,activityID,session).setEndWeek(7);
+        appBackend.updateActivityWeekBounds(projectID, activityID, 5,7,session);
     }
     @Given("the session is null")
     public void sessionIsNull() {
