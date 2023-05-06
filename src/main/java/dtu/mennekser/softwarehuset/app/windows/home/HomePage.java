@@ -27,7 +27,7 @@ public class HomePage extends Scene {
 
     BorderPane root;
     public HomePage() {
-        super(new BorderPane(), 1920*0.5,1080*0.5);
+        super(new BorderPane(), 1920*0.6,1080*0.6);
         instance = this;
 
         root = (BorderPane) getRoot();
