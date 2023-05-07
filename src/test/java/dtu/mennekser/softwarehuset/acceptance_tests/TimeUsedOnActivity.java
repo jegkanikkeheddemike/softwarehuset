@@ -8,6 +8,9 @@ import io.cucumber.java.en.When;
 import static org.junit.Assert.assertTrue;
 
 public class TimeUsedOnActivity {
+    /**
+     * @Author Tobias
+     */
     public TimeUsedOnActivity() {
     }
     @Given("the activity {string} has budgeted time of {string} hour")
