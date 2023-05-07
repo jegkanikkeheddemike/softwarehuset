@@ -15,7 +15,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 public class ProjectTopBar extends BorderPane {
-
+    /**
+     * @Author Tobias
+     */
     HBox left;
     HBox right;
 

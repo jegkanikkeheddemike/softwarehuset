@@ -2,7 +2,11 @@ package dtu.mennekser.softwarehuset.backend.schema;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * Filen er skrevet af flere personer
+ * Et navn vil stå hvor alle linjer kode der kommer efter er skrevet af den person
+ * indtil et nyt navn står osv.
+ */
 public class Activity implements Serializable {
     public final int id;
     public String name;
@@ -20,7 +24,9 @@ public class Activity implements Serializable {
         this.endWeek = endWeek;
         this.id = id;
     }
-
+    /**
+     * @Author Thor
+     */
     void setBudgetedTime(int budgetedTime) {
         this.budgetedTime = budgetedTime;
     }
@@ -40,7 +46,9 @@ public class Activity implements Serializable {
         }
         return timeSum;
     }
-
+    /**
+     * @Author Christian
+     */
     public int getStartWeek() {
         return this.startWeek;
     }
@@ -60,7 +68,9 @@ public class Activity implements Serializable {
     void setDescription(String description) {
         this.description = description;
     }
-
+    /**
+     * @Author Tobias
+     */
     public int getBudgetTime() {
       return budgetedTime;
     }

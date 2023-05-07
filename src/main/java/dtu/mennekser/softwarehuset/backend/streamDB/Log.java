@@ -2,7 +2,9 @@ package dtu.mennekser.softwarehuset.backend.streamDB;
 
 import java.io.Serializable;
 import java.util.Date;
-
+/**
+ * @Author Thor
+ */
 public class Log implements Serializable {
     final LogLevel logLevel;
     final Date date;

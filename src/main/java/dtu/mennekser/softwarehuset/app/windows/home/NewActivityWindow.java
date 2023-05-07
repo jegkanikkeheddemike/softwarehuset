@@ -13,10 +13,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+/**
+ * Filen er skrevet af flere personer
+ * Et navn vil stå hvor alle linjer kode der kommer efter er skrevet af den person
+ * indtil et nyt navn står osv.
+ */
 public class NewActivityWindow {
     public static boolean exists = false;
-
+    /**
+     * @Author Thor
+     */
     public static void tryCreate(int projectId) {
         if (exists) {
             return;
@@ -72,7 +78,9 @@ public class NewActivityWindow {
         Label errorField = new Label("");
         root.getChildren().add(errorField);
 
-
+        /**
+         * @Author Christian
+         */
         create.setOnAction(actionEvent -> {
             String name = nameField.getText();
             Session session = LoginManager.getCurrentSession();

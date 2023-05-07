@@ -15,7 +15,9 @@ import javafx.stage.Stage;
 public class ChangeWeekBoundsWindow {
 
     private static boolean exists = false;
-
+    /**
+     * @Author Christian
+     */
     public static void tryCreate(int projectId, int activityId) {
         if (exists) {
             return;

@@ -30,10 +30,11 @@ public class ActivityMenu extends BorderPane {
 
     DataListener<ArrayList<AppBackend.RegistrationJoinEmployee>> timerListener;
 
-    //Det her gør at hvis der kommer ændringer på projektet mens den er åben bliver det ikke reflekteret.
-    //Men det er vel ok siden man ikke kan ændre på projektnavnet osv.
-    //Måske kan det fikses men det er ok som det er indtil videre.
-
+    /**
+     * Filen er skrevet af flere personer
+     * Et navn vil stå hvor alle linjer kode der kommer efter er skrevet af den person
+     * indtil et nyt navn står osv.
+     */
     public ActivityMenu(String projectName, int projectID, int activityID) {
         assignedPane = new BorderPane();
         activityCenter = new BorderPane();
@@ -48,6 +49,10 @@ public class ActivityMenu extends BorderPane {
         activityCenter.setBorder(Style.setBorder(1, 10, "all"));
 
         Session session = LoginManager.getCurrentSession();
+
+        /**
+         * @Author Christian
+         */
         activityListener = new DataListener<>(
             appBackend -> appBackend.getActivity(projectID,activityID, session),
             activity -> {
@@ -69,7 +74,9 @@ public class ActivityMenu extends BorderPane {
                 startEndWeekDisplay.getChildren().addAll(startWeekText,endWeekText,changeWeekBounds);
 
 
-
+                /**
+                 * @Author Katinka
+                 */
                 //initialise description area
                 startEndWeekDisplay.setPadding(new Insets(5, 5, 5, 5));
                 description.getChildren().clear();
@@ -193,7 +200,9 @@ public class ActivityMenu extends BorderPane {
 
 
         //------------------ Time Registration --------------
-
+        /**
+         * @Author Thor
+         */
 
         BorderPane bottomBox = new BorderPane();
         timerPane.setBottom(bottomBox);

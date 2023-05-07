@@ -15,7 +15,9 @@ import javafx.scene.layout.HBox;
 public class ActivityTopBar extends BorderPane {
     HBox left;
     HBox right;
-
+    /**
+     * @Author Thor
+     */
     ActivityTopBar(String projectName, int projectID, Activity activity) {
         setBorder(Style.setBorder(3, 0, "bottom"));
         left = new HBox();

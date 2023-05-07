@@ -4,7 +4,7 @@ import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.streamDB.client.ClientTask;
 
 /**
- * @author Thor
+ * @Author Thor
  */
 public class ReloadServer {
     public static void main(String[] args) {

@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
+/**
+ * Filen er skrevet af flere personer
+ * Et navn vil stå hvor alle linjer kode der kommer efter er skrevet af den person
+ * indtil et nyt navn står osv.
+ */
 public class Project implements Serializable {
 
     public final int id;
@@ -24,7 +28,9 @@ public class Project implements Serializable {
         this.startWeek = startWeek;
         this.runningNumber = new GregorianCalendar().get(Calendar.YEAR) + "" + id;
     }
-
+    /**
+     * @Author Katinka
+     */
     public  int getBudgetTime(){
         int timeSum = 0;
         for (Activity activity : activities) {
@@ -33,7 +39,9 @@ public class Project implements Serializable {
 
         return timeSum;
     }
-
+    /**
+     * @Author Thor
+     */
     public int getUsedTime() {
         int timeSum = 0;
         for (Activity activity : activities) {
@@ -42,6 +50,9 @@ public class Project implements Serializable {
 
         return timeSum;
     }
+    /**
+     * @Author Katinka
+     */
     public int remainingTime() {
         int timeSum = 0;
         for (Activity activity : activities) {
@@ -51,7 +62,9 @@ public class Project implements Serializable {
         return timeSum;
 
     }
-
+    /**
+     * @Author Christian
+     */
     int createActivity(String name, int budgetedTime) {
         return createActivity(name,budgetedTime,1,52);
     }
@@ -80,7 +93,9 @@ public class Project implements Serializable {
         }
         return null;
     }
-
+    /**
+     * @Author Thor
+     */
     void assignEmployee(int employeeID) {
         if (!assignedEmployees.contains(employeeID)) {
             assignedEmployees.add(employeeID);
@@ -101,7 +116,9 @@ public class Project implements Serializable {
     void setStartWeek(int startWeek){
         this.startWeek = startWeek;
     }
-
+    /**
+     * @Author Tobias
+     */
     public int timeUsedActivity(int activityID, int employeeID) {
         if (employeeID == projectLeaderId) {
             return activities.get(activityID).getUsedTime();

@@ -2,7 +2,9 @@ package dtu.mennekser.softwarehuset;
 
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
 import dtu.mennekser.softwarehuset.backend.streamDB.SocketLayer;
-
+/**
+ * @Author Thor
+ */
 public class ServerMain {
     public static void main(String[] args) {
         //Bemærk at man skal give en (Schema extends DataLayer) database instans

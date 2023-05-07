@@ -10,7 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 
 public class TopBar extends HBox {
-
+    /**
+     * @Author Tobias
+     */
     TopBar() {
 
         setAlignment(Pos.TOP_RIGHT);

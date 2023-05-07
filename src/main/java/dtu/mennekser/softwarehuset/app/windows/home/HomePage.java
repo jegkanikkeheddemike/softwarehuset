@@ -21,7 +21,11 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-
+/**
+ * Filen er skrevet af flere personer
+ * Et navn vil stå hvor alle linjer kode der kommer efter er skrevet af den person
+ * indtil et nyt navn står osv.
+ */
 public class HomePage extends Scene {
     static HomePage instance;
 
@@ -35,6 +39,9 @@ public class HomePage extends Scene {
         root.setLeft(new LeftMenu());
         root.setCenter(new InnerHomePage());
     }
+    /**
+     * @Author Thor
+     */
 
     public static void setProject(int projectID) {
         instance.root.setCenter(new ProjectMenu(projectID));
@@ -129,6 +136,9 @@ class InnerHomePage extends BorderPane {
             }
         );
 
+        /**
+         * @Author Frederik
+         */
         Label week = new Label("This week's Time Registrations: ");
         week.setFont(Style.setTitleFont());
         week.setBorder(Style.setBorder(1,0,"top"));
@@ -157,7 +167,9 @@ class InnerHomePage extends BorderPane {
 
         }
         );
-
+        /**
+         * @Author Katinka
+         */
         regisActivitiesScroll.setStyle(
                 "-fx-control-inner-background: rgb(255, 255, 255);" +
                         "-fx-faint-focus-color: transparent;" +

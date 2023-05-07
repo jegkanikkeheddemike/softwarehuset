@@ -25,7 +25,9 @@ import java.util.HashSet;
 public class EditTimeRegistrationWindow {
     private static boolean exists = false;
 
-
+    /**
+     * @Author Katinka
+     */
     static DataListener<ArrayList<AppBackend.TimeRegisActivity>> registeredActivities;
     public static void tryCreate() {
         if (exists) {

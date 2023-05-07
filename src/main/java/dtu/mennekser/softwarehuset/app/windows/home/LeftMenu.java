@@ -12,7 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
-
+/**
+ * @Author Thor
+ */
 public class LeftMenu extends BorderPane {
     final DataListener<ArrayList<Project>> projectListener;
 

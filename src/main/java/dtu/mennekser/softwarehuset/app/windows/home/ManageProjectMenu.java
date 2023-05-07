@@ -20,9 +20,15 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
-
+/**
+ * Filen er skrevet af flere personer
+ * Et navn vil stå hvor alle linjer kode der kommer efter er skrevet af den person
+ * indtil et nyt navn står osv.
+ */
 public class ManageProjectMenu extends BorderPane {
-
+    /**
+     * @Author thor
+     */
     DataListener<AppBackend.ProjectStat> projectStatListener;
 
     public ManageProjectMenu(int projectID) {
@@ -182,7 +188,9 @@ public class ManageProjectMenu extends BorderPane {
         setBottom(pane);
     }
 }
-
+/**
+ * @Author Katinka
+ */
 class ProjectTimeStats extends BorderPane {
     // Time used and time remaining for all activities in the current project should be displayed
 
@@ -208,6 +216,9 @@ class ProjectTimeStats extends BorderPane {
     }
 }
 
+/**
+ * @Author Thor
+ */
 class ActivityEditor extends BorderPane {
 
     DataListener<Activity> activityListener;
