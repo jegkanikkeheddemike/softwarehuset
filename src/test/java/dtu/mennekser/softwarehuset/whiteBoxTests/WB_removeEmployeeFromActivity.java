@@ -17,6 +17,9 @@ public class WB_removeEmployeeFromActivity {
     static String error;
     static Session session;
 
+    /**
+     * @Author Thor
+     */
     public WB_removeEmployeeFromActivity() {
         appBackend = new AppBackend();
     }

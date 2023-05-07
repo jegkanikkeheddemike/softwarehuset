@@ -1,3 +1,4 @@
+#Skrevet af Christian
 Feature: Find time used on activity
   Description: The user can see time used
   Actors: user

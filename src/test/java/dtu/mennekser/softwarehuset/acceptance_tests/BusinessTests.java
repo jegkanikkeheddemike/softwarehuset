@@ -33,7 +33,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                  Create Project Feature                  //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Katinka
+     */
     @Given("user is logged in")
     public void user_is_logged_in() {
         //logIn Hanne and get the session
@@ -70,7 +72,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                  Create Activity Feature                 //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Christian
+     */
     @When("a client {string} is added to the project")
     public void a_client_is_added_to_the_project(String string) {
         appBackend.setProjectClient(projectID,string,session);
@@ -230,7 +234,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                       Set start time                     //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Frederik
+     */
     @When("start time is set to week {int}")
     public void start_time_is_set(int startWeek) {
         try {

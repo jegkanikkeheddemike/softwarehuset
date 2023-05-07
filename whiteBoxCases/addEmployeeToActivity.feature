@@ -1,3 +1,4 @@
+#Skrevet af Katinka
 Feature: White Box tests for addEmployeeToActivity method
 
   Scenario: session is null

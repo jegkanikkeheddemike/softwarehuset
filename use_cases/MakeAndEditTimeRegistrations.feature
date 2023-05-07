@@ -1,3 +1,4 @@
+#Skrevet af Katinka
 Feature: Employee makes and edits time registrations
 
   Scenario: Employee has registed work hours and then edits the registration

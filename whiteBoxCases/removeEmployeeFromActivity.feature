@@ -1,3 +1,4 @@
+#Skrevet af Thor
 Feature: White Box tests for removeEmployeeFromActivity method
 
   Scenario: user not logged in

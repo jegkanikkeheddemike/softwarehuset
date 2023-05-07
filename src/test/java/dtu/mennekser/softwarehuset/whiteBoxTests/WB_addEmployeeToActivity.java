@@ -10,6 +10,9 @@ import io.cucumber.java.en.When;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @Author Katinka
+ */
 public class WB_addEmployeeToActivity {
 
     static AppBackend appBackend;

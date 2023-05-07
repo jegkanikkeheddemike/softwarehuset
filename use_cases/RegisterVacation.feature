@@ -1,3 +1,4 @@
+#Skrevet af Katinka
 Feature: Register Vacation
   Description: the user can registers a vacation, with start and end date
   Actors: user
