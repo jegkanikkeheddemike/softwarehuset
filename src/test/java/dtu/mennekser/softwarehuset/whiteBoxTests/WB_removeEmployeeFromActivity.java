@@ -2,6 +2,7 @@ package dtu.mennekser.softwarehuset.whiteBoxTests;
 
 import dtu.mennekser.softwarehuset.app.LoginManager;
 import dtu.mennekser.softwarehuset.backend.schema.AppBackend;
+import dtu.mennekser.softwarehuset.backend.schema.Employee;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -22,6 +23,13 @@ public class WB_removeEmployeeFromActivity {
      */
     public WB_removeEmployeeFromActivity() {
         appBackend = new AppBackend();
+        //Fyld med data
+        int tmpEmployeeId = appBackend.createEmployee("Barack Obama");
+        Employee tmpEmployee= appBackend.getEmployees().get(tmpEmployeeId);
+
+        int tmpProjectId = appBackend.createProject("junkdata","",appBackend.attemptLogin(tmpEmployee.name),"0");
+        appBackend.createActivity(tmpProjectId,"Byg en by", 1, appBackend.attemptLogin(tmpEmployee.name));
+
     }
 
 
