@@ -14,9 +14,7 @@ public class Project implements Serializable {
     public final String runningNumber;
     public ArrayList<Activity> activities = new ArrayList<>();
     public ArrayList<Integer> assignedEmployees = new ArrayList<>();
-
     public int projectLeaderId = -1;
-
     public int startWeek;
 
     public Project(String name,String client, int id,int startWeek) {
@@ -53,6 +51,7 @@ public class Project implements Serializable {
         return timeSum;
 
     }
+    
     int createActivity(String name, int budgetedTime) {
         return createActivity(name,budgetedTime,1,52);
     }

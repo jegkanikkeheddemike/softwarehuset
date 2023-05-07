@@ -3,7 +3,9 @@ package dtu.mennekser.softwarehuset.backend.schema;
 import dtu.mennekser.softwarehuset.backend.schema.Employee;
 
 import java.io.Serializable;
-
+/**
+ * @Author Thor
+ */
 public class Session implements Serializable {
     public Employee employee;
 

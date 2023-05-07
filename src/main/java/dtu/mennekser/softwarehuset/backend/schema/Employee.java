@@ -1,9 +1,12 @@
 package dtu.mennekser.softwarehuset.backend.schema;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
+/**
+* @Author Katinka
+*/
 public final class Employee implements Serializable {
     public String name;
     public String realName;

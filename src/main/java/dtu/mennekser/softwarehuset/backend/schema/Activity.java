@@ -15,7 +15,7 @@ public class Activity implements Serializable {
     public ArrayList<TimeRegistration> timeRegistrations = new ArrayList<>();
     Activity(String name, int budgetedTime, int startWeek, int endWeek, int id) {
         this.name = name;
-        this.budgetedTime = budgetedTime; //TODO DET HER SKAL GØRES ANDERLEDES // bliver nu sendt ind i timer fra appBackend
+        this.budgetedTime = budgetedTime;
         this.startWeek = startWeek;
         this.endWeek = endWeek;
         this.id = id;
