@@ -208,6 +208,11 @@ public class AppBackend extends DataLayer {
 
     public void addEmployeeToActivity(int projectID, int activityID,
                                       String employeeName, Session session) {
+        //pre-condition
+        assert projects.stream().anyMatch(project -> project.id == projectID);
+        assert projects.get(projectID).activities.stream().anyMatch(activity -> activity.id == activityID);
+        assert employeeName != null;
+
         assertLoggedIn(session);                                                                //1
         Employee foundEmployee = findEmployee(employeeName);                                    //2
 
@@ -220,6 +225,8 @@ public class AppBackend extends DataLayer {
 
         projects.get(projectID).activities.get(activityID).assignEmployee(foundEmployee.id);    //5
 
+        //post-condition
+        assert projects.get(projectID).activities.get(activityID).assignedEmployees.contains(foundEmployee.id);
     }
 
     private boolean checkVacationing(int projectID, int activityID, String employeeName) {
@@ -454,7 +461,13 @@ public class AppBackend extends DataLayer {
         return new ProjectStat(employeeStats, unassignedActivities, projects.get(projectID).startWeek, timeWorked, timeRemaining);
     }
 
-    public void removeEmployeeFromActivity(int projectID, int activityID, String employeeName, Session session) {
+    public void removeEmployeeFromActivity(int projectID,
+                                           int activityID, String employeeName, Session session) {
+        //pre-condition
+        assert projects.stream().anyMatch(project -> project.id == projectID);
+        assert projects.get(projectID).activities.stream().anyMatch(activity -> activity.id == activityID);
+        assert employeeName != null;
+
         assertLoggedIn(session);                                            //1
         int employeeID = findEmployee(employeeName).id;                     //2
         //Check if employee on activity
@@ -464,6 +477,9 @@ public class AppBackend extends DataLayer {
         }
 
         activity.assignedEmployees.removeIf(id -> id == employeeID);
+
+        //post-condition
+        assert !projects.get(projectID).activities.get(activityID).assignedEmployees.contains(employeeID);
     }
     public boolean isProjectLeader(int projectID,int employeeID, Session session) {
         return getProject(projectID,session).projectLeaderId == employeeID;
