@@ -1,4 +1,4 @@
-streamDB er navnet på denne database.
+# streamDB er navnet på denne database.
 
 Det virker ved at når Clienter forbinder til databasen, siger de om de vil:
 1. Lytte til en query (Listener)
