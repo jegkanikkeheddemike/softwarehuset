@@ -9,7 +9,9 @@ import static org.junit.Assert.assertTrue;
 public class RegisterVacation {
 
     public RegisterVacation(){}
-
+    /**
+     * @Author Katinka
+     */
     @When("the user register a vacation from week {string} to week {string}")
     public void theUserRegisterAVacationFromWeekToWeek(String string, String string2) {
         try {

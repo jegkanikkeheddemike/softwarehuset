@@ -51,7 +51,7 @@ public class Project implements Serializable {
         return timeSum;
 
     }
-    
+
     int createActivity(String name, int budgetedTime) {
         return createActivity(name,budgetedTime,1,52);
     }

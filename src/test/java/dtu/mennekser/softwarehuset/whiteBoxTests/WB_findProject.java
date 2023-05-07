@@ -11,6 +11,10 @@ import static org.junit.Assert.*;
 public class WB_findProject {
     static AppBackend appBackend;
     static Project project;
+
+    /**
+     * @Author Tobias
+     */
     public WB_findProject() {appBackend = new AppBackend();}
     @Given("projects is empty")
     public void projectsIsEmpty() {

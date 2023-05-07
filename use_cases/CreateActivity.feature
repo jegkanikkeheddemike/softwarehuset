@@ -1,3 +1,4 @@
+#Skrevet af Frederik
 Feature: Create Activity
   Description: The user creates an activity
   Actors: User

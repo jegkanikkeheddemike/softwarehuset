@@ -1,3 +1,4 @@
+#Skrevet af Christian
 Feature: Register Sickness
   Description: if an employee becomes sick, they will be able to register that they are sick
   Actors: user

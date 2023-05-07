@@ -1,3 +1,4 @@
+#Skrevet af Christian
 Feature: Find time usage on project
   Description: The project leader can check the amount of hours
   that are left on a given project, and also see how many hours have been worked

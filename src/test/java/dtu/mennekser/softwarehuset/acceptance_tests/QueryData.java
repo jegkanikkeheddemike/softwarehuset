@@ -14,7 +14,9 @@ import java.util.ArrayList;
 
 public class QueryData {
     public QueryData(){}
-
+    /**
+     * @Author Thor
+     */
     Project data;
     @When("a query is made")
     public void aQueryIsMade() {

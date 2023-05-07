@@ -33,7 +33,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                  Create Project Feature                  //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Frederik
+     */
     @Given("user is logged in")
     public void user_is_logged_in() {
         //logIn Hanne and get the session
@@ -70,7 +72,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                  Create Activity Feature                 //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Frederik
+     */
     @When("a client {string} is added to the project")
     public void a_client_is_added_to_the_project(String string) {
         appBackend.setProjectClient(projectID,string,session);
@@ -89,6 +93,9 @@ public class BusinessTests {
         }
     }
 
+    /**
+     * @Author Christian
+     */
     @When("a user creates an activity {string} with {int} hours, from week {int} to week {int}")
     public void aUserCreatesAnActivityWithHoursFromWeekToWeek(String name, int budgetedTime, int startWeek, int endWeek) {
         try {
@@ -126,7 +133,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                  Assign Employee Feature                 //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Katinka
+     */
     @Given("another Employee {string} exists")
     public void another_employee_exists(String string) {
         appBackend.createEmployee(string);
@@ -146,7 +155,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                   Assign Project Leader                  //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Katinka
+     */
     @Given("a project {string} exists")
     public void a_project_exists(String string) {
         session = appBackend.attemptLogin("hann");
@@ -176,7 +187,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                Assign Employee To Activity               //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Thor
+     */
     @Given("an activity {string} exists")
     public void an_activity_exists(String string) {
         activityID = appBackend.createActivity(projectID,string, 100, session);
@@ -215,7 +228,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                      Set Budget Time                     //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Frederik
+     */
     @Given("ProjectLeader is logged in")
     public void project_leader_is_logged_in() {
         session = appBackend.attemptLogin("hann");
@@ -230,7 +245,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                       Set start time                     //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Tobias
+     */
     @When("start time is set to week {int}")
     public void start_time_is_set(int startWeek) {
         try {
@@ -248,7 +265,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //          Set start and end week on activity              //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Christian
+     */
     @When("a user sets the start time to week {int} and the end time to week {int}")
     public void aUserSetsTheStartTimeToWeekAndTheEndTimeToWeek(int startWeek, int endWeek) {
         appBackend.updateActivityWeekBounds(projectID,activityID,startWeek,endWeek,session);
@@ -257,6 +276,10 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //               Find time usage on project                 //
     //----------------------------------------------------------//
+
+    /**
+     * @Author Christian
+     */
     @Given("a project {string} exists with start week {int}")
     public void aProjectExistsWithStartWeek(String string, Integer int1) {
         projectID = appBackend.createProject(string,"Tonny",session,int1.toString());
@@ -301,7 +324,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //                Edit time registrations                   //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Christian
+     */
     @Given("a time registration of {string} work hours is registered to the activity")
     public void aTimeRegistrationOfWorkHoursAreRegisteredTo(String string) {
         registrationID = appBackend.registerTime(projectID,activityID,string,session);
@@ -325,7 +350,9 @@ public class BusinessTests {
     //----------------------------------------------------------//
     //         Remove Employees from activity or project        //
     //----------------------------------------------------------//
-
+    /**
+     * @Author Tobias
+     */
     @Given("{string} is assigned to project {string}")
     public void isAssignedToProject(String string, String string2) {
         appBackend.addEmployeeToProject(projectID,string,session);

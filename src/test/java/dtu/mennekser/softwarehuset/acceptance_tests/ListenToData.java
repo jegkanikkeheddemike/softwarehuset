@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ListenToData {
+
+    /**
+     * @Author Thor
+     */
     public ListenToData() {
     }
 

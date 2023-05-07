@@ -1,3 +1,4 @@
+#Skrevet af Thor
 Feature: Query data
   Description: tests if it can query data
   Scenario: Query data

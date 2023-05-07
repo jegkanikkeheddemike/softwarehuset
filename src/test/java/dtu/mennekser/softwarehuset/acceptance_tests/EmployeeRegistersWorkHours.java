@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 
 public class EmployeeRegistersWorkHours {
 
-
+    /**
+     * @Author Katinka
+     */
     public EmployeeRegistersWorkHours() {
     }
 

@@ -17,7 +17,9 @@ import java.util.Random;
 public class StartLocalServer {
     public StartLocalServer() {
     }
-
+    /**
+     * @Author Thor
+     */
     @Given("the remote_location is set as localhost")
     public void theRemote_locationIsSetAsLocalhost() {
         ClientSettings.remoteLocation = "localhost";

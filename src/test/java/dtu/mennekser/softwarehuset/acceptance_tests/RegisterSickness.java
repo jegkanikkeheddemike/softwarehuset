@@ -8,7 +8,9 @@ import static org.junit.Assert.assertTrue;
 
 public class RegisterSickness {
     public RegisterSickness(){}
-
+    /**
+     * @Author Katinka
+     */
     @When("the user registers that they are sick in week {string}")
     public void theUserRegistersThatTheyAreSickInWeek(String week) {
         BusinessTests.appBackend.createSickLeave("hann", week ,"",BusinessTests.session);
