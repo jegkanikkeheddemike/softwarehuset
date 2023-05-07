@@ -33,6 +33,11 @@ Under en aktivitet kan man ændre i beskrivelsen af aktiviteten. Man kan
 i stil med projektet også ændre hvilke medarbejdere som er "assigned" til 
 aktiviteten. Der kan også ses og oprettes tidsregistreringer i aktiviteten 
 her. 
+## Detajler om serveren
+Der kan læses mere om serveren i readme'en under backend/streamDB
+```
+/src/main/java/dtu/mennekser/softwarehuset/backend/streamDB/readme.md
+```
 
 ## Selfhosting
 Hvis man ikke har lyst til at forbinde til serveren, er det muligt at 
