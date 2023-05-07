@@ -22,7 +22,11 @@ import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-
+/**
+ * Filen er skrevet af flere personer
+ * Et navn vil stå hvor alle linjer kode der kommer efter er skrevet af den person
+ * indtil et nyt navn står osv.
+ */
 public class ProjectMenu extends BorderPane {
 
     FlowPane activitiesPane;
@@ -35,7 +39,9 @@ public class ProjectMenu extends BorderPane {
     String projectName;
 
     static Image checkmark;
-
+    /**
+     * @Author Christian
+     */
 
     ProjectMenu(int projectID) {
 
@@ -129,6 +135,9 @@ public class ProjectMenu extends BorderPane {
         bottomMenu.setSpacing(5);
         assignedPane.setBottom(bottomMenu);
 
+        /**
+         * @Author Frederik
+         */
         ComboBox<String> employeeDropdown = new ComboBox<>();
 
         employeeDropdown.setBackground(Style.setBackground(0,5.0));

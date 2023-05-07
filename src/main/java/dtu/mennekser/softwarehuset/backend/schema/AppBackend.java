@@ -5,9 +5,15 @@ import dtu.mennekser.softwarehuset.backend.streamDB.DataLayer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/**
+ * Filen er skrevet af flere personer
+ * Et navn vil stå hvor alle linjer kode der kommer efter er skrevet af den person
+ * indtil et nyt navn står osv.
+ */
 public class AppBackend extends DataLayer {
-
+    /**
+     * @Author Thor
+     */
     ArrayList<Employee> employees = new ArrayList<>();
     ArrayList<Project> projects = new ArrayList<>();
 
@@ -19,7 +25,9 @@ public class AppBackend extends DataLayer {
             return null;
         }
     }
-
+    /**
+     * @Author Christian
+     */
     public int createEmployee(String realName) {
         assert realName != null && realName.length() > 0;
 
@@ -42,7 +50,9 @@ public class AppBackend extends DataLayer {
 
         return employees.size() - 1;
     }
-
+    /**
+     * @Author Frederik
+     */
     public Employee findEmployee(String name) {
         assert name != null;
         for (Employee employee : employees) {               //1
@@ -53,6 +63,9 @@ public class AppBackend extends DataLayer {
         throw new RuntimeException("Employee not found");   //4
     }
 
+    /**
+     * @Author Tobias
+     */
     public Project findProject(String name) {
         assert name != null;
         for (Project project : projects) {
@@ -72,7 +85,9 @@ public class AppBackend extends DataLayer {
         assertLoggedIn(session);
         getProject(projectID,session).setClient(clientName);
     }
-
+    /**
+     * @Author Frederik
+     */
     public int createProject(String projectName, String clientName, Session session, String startWeek) {
         assertLoggedIn(session);
         if (clientName.isEmpty()) {
@@ -91,7 +106,9 @@ public class AppBackend extends DataLayer {
         projects.get(projects.size() - 1).assignEmployee(session.employee.id);
         return projects.size() - 1;
     }
-
+    /**
+     * @Author Christian
+     */
     public int createActivity(int projectID, String activityName, int budgetedTime, Session session) {
         return createActivity(projectID, activityName, budgetedTime, 1, 52, session);
     }
@@ -101,13 +118,16 @@ public class AppBackend extends DataLayer {
         return projects.get(projectID).createActivity(activityName, budgetedTime * 60, startWeek, endWeek);
     }
 
+
     public void updateActivityWeekBounds(int projectId, int activityId, int newStartWeek, int newEndWeek, Session session) {
         assertLoggedIn(session);
         projects.get(projectId).updateActivityWeekBounds(activityId, newStartWeek, newEndWeek);
 
 
     }
-
+    /**
+     * @Author Katinka
+     */
     public void createVacation(String startWeek, String endWeek, Session session) {
         assertLoggedIn(session);
         employees.get(session.employee.id).vacations.add(new Vacation(Integer.parseInt(startWeek), Integer.parseInt(endWeek), session.employee.vacations.size()));
@@ -121,7 +141,9 @@ public class AppBackend extends DataLayer {
         int employeeID = findEmployee(employeeName).id;
         employees.get(employeeID).sickLeave.add(new SickLeave(Integer.parseInt(startWeek), Integer.parseInt(endWeek), employees.get(employeeID).sickLeave.size()));
     }
-
+    /**
+     * @Author Thor
+     */
     private void assertLoggedIn(Session session) {
         if (session == null) {
             throw new RuntimeException("Employee not logged in");
@@ -205,7 +227,9 @@ public class AppBackend extends DataLayer {
         }
         return notAssigned;
     }
-
+    /**
+     * @Author Katinka
+     */
     public void addEmployeeToActivity(int projectID, int activityID,
                                       String employeeName, Session session) {
         //pre-condition
@@ -228,7 +252,9 @@ public class AppBackend extends DataLayer {
         //post-condition
         assert projects.get(projectID).activities.get(activityID).assignedEmployees.contains(foundEmployee.id);
     }
-
+    /**
+     * @Author Thor
+     */
     private boolean checkVacationing(int projectID, int activityID, String employeeName) {
         try {
             assertNotVacationing(projects.get(projectID).activities.get(activityID).startWeek,
@@ -238,7 +264,9 @@ public class AppBackend extends DataLayer {
         }
         return false;
     }
-
+    /**
+     * @Author Katinka
+     */
     private void assertNotVacationing(int start, int end, int employeeID) {
         if (getVacations(employeeID).isEmpty()) {
             return;
@@ -251,7 +279,9 @@ public class AppBackend extends DataLayer {
             }
         }
     }
-
+    /**
+     * @Author Thor
+     */
     private void assertEmployeeInProject(int projectID, int employeeID) {
         if (!projects.get(projectID).assignedEmployees.contains(employeeID)) {
             throw new RuntimeException("Employee not in project");
@@ -289,7 +319,9 @@ public class AppBackend extends DataLayer {
     public record RegistrationJoinEmployee(String employeeName,
                                            TimeRegistration timeRegistration) implements Serializable {
     }
-
+    /**
+     * @Author Katinka
+     */
     public ArrayList<RegistrationJoinEmployee> getTimeRegistrationsOfActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         assertEmployeeInProject(projectID, session.employee.id);
@@ -301,7 +333,9 @@ public class AppBackend extends DataLayer {
         }
         return timeRegistrations;
     }
-
+    /**
+     * @Author Thor
+     */
     public Employee getProjectLeader(int projectID, Session session) {
         assertLoggedIn(session);
         return employees.get(projects.get(projectID).projectLeaderId);
@@ -321,7 +355,9 @@ public class AppBackend extends DataLayer {
         assertLoggedIn(session);
         getActivity(projectID, activityID, session).setDescription(newDescription);
     }
-
+    /**
+     * @Author Frederik
+     */
     public void setStartTime(int projectID, Session session, int startWeek) {
         assertLoggedIn(session);
         getProject(projectID, session).setStartWeek(startWeek);
@@ -331,12 +367,16 @@ public class AppBackend extends DataLayer {
         assertLoggedIn(session);
         return projects.get(projectID).startWeek;
     }
-
+    /**
+     * @Author Thor
+     */
     public void finishActivity(int projectID, int activityID, Session session) {
         assertLoggedIn(session);
         getActivity(projectID, activityID, session).finished = true;
     }
-
+    /**
+     * @Author Tobias
+     */
     public void setBudgetedTime(int projectID, int activityID, int BudgetedTime, Session session) {
         assertLoggedIn(session);
         getActivity(projectID, activityID, session).setBudgetedTime(BudgetedTime);
@@ -352,7 +392,9 @@ public class AppBackend extends DataLayer {
         return getProject(projectID, session).timeUsedActivity(activityID, session.employee.id);
     }
 
-
+    /**
+     * @Author Frederik
+     */
     public record ActiveActivity(Project project, Activity activity) implements Serializable {
     }
 
@@ -364,6 +406,9 @@ public class AppBackend extends DataLayer {
         }
     }
 
+    /**
+     * @Author Katinka
+     */
     public ArrayList<Vacation> getVacations(int employeeID) {
         return employees.get(employeeID).vacations;
     }
@@ -371,7 +416,9 @@ public class AppBackend extends DataLayer {
     public ArrayList<SickLeave> getSickLeaves(int employeeID) {
         return employees.get(employeeID).sickLeave;
     }
-
+    /**
+     * @Author Thor
+     */
     public ArrayList<ActiveActivity> getActiveActivities(Session session) {
         //Find alle projekter som employee er en del af
         ArrayList<Project> projects = getProjectsOfSession(session);
@@ -386,7 +433,9 @@ public class AppBackend extends DataLayer {
         }
         return activities;
     }
-
+    /**
+     * @Author Frederik
+     */
     public ArrayList<TimeRegisActivity> getTimeRegisActivity(Session session) {
         //Find alle projekter som employee er en del af
 
@@ -405,15 +454,21 @@ public class AppBackend extends DataLayer {
 
     public record ActivityStat(int projectID, String projectName, Activity activity) implements Serializable {
     }
-
+    /**
+     * @Author Thor
+     */
     public record EmployeeStat(Employee employee, ArrayList<ActivityStat> assignedActivities) implements Serializable {
     }
 
-
+    /**
+     * @Author Frederik
+     */
     public record ProjectStat(ArrayList<EmployeeStat> employeeStats,
                               ArrayList<Activity> unassignedActivities, int projectWeek, int timeWorked, int timeRemaining) implements Serializable {
     }
-
+    /**
+     * @Author Thor
+     */
     public ProjectStat getProjectStats(int projectID, Session session) {
         assertLoggedIn(session);
         assertEmployeeInProject(projectID, session.employee.id);

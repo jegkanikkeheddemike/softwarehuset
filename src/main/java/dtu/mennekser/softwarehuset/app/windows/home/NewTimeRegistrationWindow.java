@@ -18,7 +18,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-
+/**
+ * @Author Katinka
+ */
 public class NewTimeRegistrationWindow extends VBox {
 
     public static boolean exists = false;

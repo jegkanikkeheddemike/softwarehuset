@@ -2,7 +2,9 @@ package dtu.mennekser.softwarehuset.app;
 
 import dtu.mennekser.softwarehuset.app.networking.OnceQuery;
 import dtu.mennekser.softwarehuset.backend.schema.Session;
-
+/**
+ * @Author Tobias
+ */
 public class LoginManager {
     private static Session currentSession;
 

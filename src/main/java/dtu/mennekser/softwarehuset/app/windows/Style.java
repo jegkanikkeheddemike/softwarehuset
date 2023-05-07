@@ -11,7 +11,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 public class Style {
-
+    /**
+     * @Tobias
+     */
     public static void setActivityButtonStyle(Button button){
         //all the settings for activity buttons
         button.setBackground(setBackground(1,5.0));
