@@ -52,7 +52,7 @@ public class FillWithJunkData {
             database.addEmployeeToProject(byg,"giha",session);
 
             database.addEmployeeToActivity(byg,find,"kasp",session);
-            database.addEmployeeToActivity(byg,find,"thor",session);
+            database.addEmployeeToActivity(byg,find,"thsk",session);
 
             database.addEmployeeToActivity(byg,mursten,"frud",session);
             database.addEmployeeToActivity(byg,mursten,"kasp",session);
