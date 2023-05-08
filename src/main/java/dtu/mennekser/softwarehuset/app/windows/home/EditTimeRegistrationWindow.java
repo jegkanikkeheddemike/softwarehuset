@@ -63,6 +63,8 @@ public class EditTimeRegistrationWindow {
         //------------- all "my" time registrations ------------------
         root.getChildren().add(new Label("Time registration:"));
         ComboBox<AppBackend.TimeRegisActivity> activityBox = new ComboBox<>();
+        Label errorField = new Label("");
+
 
         registeredActivities = new DataListener<>(appBackend -> appBackend.getTimeRegisActivity(session), timeRegisActivities -> {
             activityBox.getItems().clear();
@@ -76,15 +78,20 @@ public class EditTimeRegistrationWindow {
             }
 
             change.setOnAction(actionEvent -> {
-                String[] timesplit = newTimeRegistration.getText().split(":");
-                int time = Integer.parseInt(timesplit[0])*60+Integer.parseInt(timesplit[1]);
+                try {
+                    String[] timesplit = newTimeRegistration.getText().split(":");
+                    int time = Integer.parseInt(timesplit[0])*60+Integer.parseInt(timesplit[1]);
 
-                AppBackend.TimeRegisActivity selected = activityBox.getValue();
+                    AppBackend.TimeRegisActivity selected = activityBox.getValue();
 
-                DataTask.SubmitTask(appBackend -> appBackend.editTime(selected.projectID(), selected.activityID(),selected.timeRegistration().timeRegistrationID,time,session));
-                HomePage.setHome();
-                exists = false;
-                editTimeRegistrationWindow.close();
+                    DataTask.SubmitTask(appBackend -> appBackend.editTime(selected.projectID(), selected.activityID(),selected.timeRegistration().timeRegistrationID,time,session));
+                    HomePage.setHome();
+                    exists = false;
+                    editTimeRegistrationWindow.close();
+                } catch (Exception e) {
+                    errorField.setText("Incorrect time format");
+                }
+
             });
 
         }
@@ -96,6 +103,7 @@ public class EditTimeRegistrationWindow {
         root.getChildren().add(new Label("new time (hh:mm)"));
         root.getChildren().add(newTimeRegistration);
         root.getChildren().add(hBox);
+        root.getChildren().add(errorField);
 
 
         editTimeRegistrationWindow.show();
