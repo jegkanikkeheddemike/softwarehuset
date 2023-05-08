@@ -306,7 +306,7 @@ public class AppBackend extends DataLayer {
         return projects.get(projectID).activities.get(activityID).timeRegistrations.size()-1;
     }
 
-    private static void assertValidTimeString(String time){
+    public static void assertValidTimeString(String time){
         try {
             String[] split = time.split(":");
             Integer.parseInt(split[0]);

@@ -63,14 +63,25 @@ public class NewVacationWindow {
         root.getChildren().add(errorField);
 
         create.setOnAction(actionEvent -> {
-            Session session = LoginManager.getCurrentSession();
-            String startWeek = startWeekField.getText().trim();
-            String endWeek = endWeekField.getText().trim();
-            DataTask.SubmitTask(appBackend -> appBackend.createVacation(startWeek,endWeek, session));
+            try {
+                Session session = LoginManager.getCurrentSession();
+                String startWeek = startWeekField.getText().trim();
+                String endWeek = endWeekField.getText().trim();
+                int begin = Integer.parseInt(startWeek);
+                int end = Integer.parseInt(endWeek);
+                if (begin < 1  || end > 52) {
+                    throw new RuntimeException("");
+                }
+                DataTask.SubmitTask(appBackend -> appBackend.createVacation(startWeek,endWeek, session));
 
 
-            exists = false;
-            makeVacationWindow.close();
+                exists = false;
+                makeVacationWindow.close();
+            } catch (Exception e) {
+                errorField.setText("Weeks must be between 1 and 52");
+            }
+
+
         });
 
         makeVacationWindow.show();

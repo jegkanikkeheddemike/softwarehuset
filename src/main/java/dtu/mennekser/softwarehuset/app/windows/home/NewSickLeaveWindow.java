@@ -104,15 +104,25 @@ public class NewSickLeaveWindow extends VBox {
         root.getChildren().add(errorField);
 
         create.setOnAction(actionEvent -> {
-            Session session = LoginManager.getCurrentSession();
-            String startWeek = startWeekField.getText().trim();
-            String endWeek = endWeekField.getText().trim();
+            try {
+                Session session = LoginManager.getCurrentSession();
+                String startWeek = startWeekField.getText().trim();
+                String endWeek = endWeekField.getText().trim();
+                int begin = Integer.parseInt(startWeek);
+                int end = Integer.parseInt(endWeek);
+                if (begin < 1  || end > 52) {
+                    throw new RuntimeException("");
+                }
 
-            String employeeName = employeeNameBox.getValue().equals("") ? session.employee.name : employeeNameBox.getValue();
-            DataTask.SubmitTask(appBackend -> appBackend.createSickLeave(employeeName, startWeek, endWeek, session));
+                String employeeName = employeeNameBox.getValue().equals("") ? session.employee.name : employeeNameBox.getValue();
+                DataTask.SubmitTask(appBackend -> appBackend.createSickLeave(employeeName, startWeek, endWeek, session));
 
-            exists = false;
-            makeSickLeaveWindow.close();
+                exists = false;
+                makeSickLeaveWindow.close();
+            } catch (Exception e) {
+                errorField.setText("Weeks must be between 1 and 52");
+            }
+
         });
 
         makeSickLeaveWindow.show();

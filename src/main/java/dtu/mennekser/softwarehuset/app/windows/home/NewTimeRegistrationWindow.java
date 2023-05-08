@@ -101,10 +101,16 @@ public class NewTimeRegistrationWindow extends VBox {
                     registerTimeArea.getChildren().add(register);
 
                     register.setOnAction(actionEvent3 -> {
-                        String time = timeUsedField.getText();
-                        DataTask.SubmitTask(appBackend -> appBackend.registerTime(selected.id,selectedActivity.id,time,session));
-                        exists = false;
-                        makeTimeRegistrationWindow.close();
+                        try {
+                            String time = timeUsedField.getText();
+                            AppBackend.assertValidTimeString(time);
+                            DataTask.SubmitTask(appBackend -> appBackend.registerTime(selected.id,selectedActivity.id,time,session));
+                            exists = false;
+                            makeTimeRegistrationWindow.close();
+                        } catch (Exception e) {
+                            errorField.setText("Not valid time string");
+                        }
+
                     });
                 });
             });
