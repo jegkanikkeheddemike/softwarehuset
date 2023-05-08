@@ -12,6 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.text.ParseException;
+
 public class ChangeWeekBoundsWindow {
 
     private static boolean exists = false;
@@ -41,19 +43,28 @@ public class ChangeWeekBoundsWindow {
         root.getChildren().add(save);
 
         Label errorField = new Label("");
+        errorField.setWrapText(true);
+        errorField.setMaxWidth(300);
         root.getChildren().add(errorField);
 
         save.setOnAction(actionEvent -> {
-            Session session = LoginManager.getCurrentSession();
-            int newStartWeek = Integer.parseInt(startWeekField.getText().trim());
-            int newEndWeek = Integer.parseInt(endWeekField.getText().trim());
-            if(newStartWeek < 1 || newStartWeek > 52 || newEndWeek < 0 || newEndWeek > 52) {
-                throw new RuntimeException("Invalid week bounds. Can't be less than 1 or greater than 52.");
-            }
-            DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectId,activityId,newStartWeek,newEndWeek,session));
+            try {
+                Session session = LoginManager.getCurrentSession();
+                int newStartWeek = Integer.parseInt(startWeekField.getText().trim());
+                int newEndWeek = Integer.parseInt(endWeekField.getText().trim());
+                if(newStartWeek < 1 || newStartWeek > 52 || newEndWeek < 0 || newEndWeek > 52) {
+                    throw new RuntimeException("Invalid week bounds. Can't be less than 1 or greater than 52.");
+                }
+                DataTask.SubmitTask(appBackend -> appBackend.updateActivityWeekBounds(projectId,activityId,newStartWeek,newEndWeek,session));
 
-            exists = false;
-            changeWeekBoundsWindow.close();
+                exists = false;
+                changeWeekBoundsWindow.close();
+            } catch (NumberFormatException e) {
+              errorField.setText("Failed to parse string");
+            } catch (Exception e) {
+                errorField.setText(e.getMessage());
+            }
+
         });
 
         changeWeekBoundsWindow.show();
