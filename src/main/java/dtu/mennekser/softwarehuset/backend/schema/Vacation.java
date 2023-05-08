@@ -1,7 +1,7 @@
 package dtu.mennekser.softwarehuset.backend.schema;
 
 /**
- * @Author Katinka
+ * @Author Tobias
  */
 public class Vacation extends Activity {
     public Vacation(int startWeek, int endWeek, int id){

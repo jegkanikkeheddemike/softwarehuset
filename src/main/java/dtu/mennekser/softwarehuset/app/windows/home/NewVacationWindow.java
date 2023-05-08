@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 /**
- * @Author Katinka
+ * @Author Tobias
  */
 public class NewVacationWindow {
     public static boolean exists = false;

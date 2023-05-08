@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 /**
- * @Author Katinka
+ * @Author Frederik
  */
 public class NewTimeRegistrationWindow extends VBox {
 

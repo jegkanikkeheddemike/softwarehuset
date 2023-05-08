@@ -57,10 +57,13 @@ public class AppBackend extends DataLayer {
         assert name != null;
         for (Employee employee : employees) {               //1
             if (employee.name.equals(name)) {               //2
+                assert employee.name.equals(name);
                 return employee;                            //3
             }
         }
+        assert employees.stream().noneMatch(employee -> employee.name.equals(name));
         throw new RuntimeException("Employee not found");   //4
+
     }
 
     /**
@@ -201,7 +204,9 @@ public class AppBackend extends DataLayer {
         assertLoggedIn(session);
         projects.get(projectID).assignEmployee(findEmployee(employeeName).id);
     }
-
+    /**
+     * @Author Tobias
+     */
     public TimeRegistration getTimeRegistration(int projectID, int activityID, int registrationID, Session session) {
         return getActivity(projectID,activityID,session).timeRegistrations.get(registrationID);
     }
